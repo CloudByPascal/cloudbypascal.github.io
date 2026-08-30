@@ -10,4 +10,3 @@ build/
 .env.local
 agents.md
 .agents/
-.gitignore

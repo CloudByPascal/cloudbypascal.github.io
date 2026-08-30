@@ -23,17 +23,17 @@ Rather than issuing short-lived ephemeral tokens that flood authentication endpo
 
 ```mermaid
 flowchart TD
-    subgraph Traditional ["Traditional OAuth 2.0 (1-Hour Fixed Token)"]
-        T1["User Authenticates"] --> T2["1-Hour Access Token Issued"]
-        T2 --> T3["Admin Revokes Session / Disables Account"]
-        T3 -->|"Security Gap: Up to 58 minutes"| T4["Token Finally Expires"]
+    subgraph Traditional [Traditional OAuth 2.0 - 1-Hour Fixed Token]
+        T1[User Authenticates] --> T2[1-Hour Access Token Issued]
+        T2 --> T3[Admin Revokes Session / Disables Account]
+        T3 -->|Security Gap: Up to 58 min| T4[Token Finally Expires]
     end
 
-    subgraph Modern ["Continuous Access Evaluation (CAE)"]
-        C1["User Authenticates (Client sends cp1)"] --> C2["28-Hour Long-Lived Token Issued"]
-        C2 --> C3["Critical Event / Location Change Detected"]
-        C3 -->|"Near Real-Time Backchannel Push"| C4["Resource Provider Rejects Token (401 Claims Challenge)"]
-        C4 --> C5["Client Forces Policy Re-Evaluation at Entra ID"]
+    subgraph Modern [Continuous Access Evaluation - CAE]
+        C1[User Authenticates with cp1] --> C2[28-Hour Long-Lived Token Issued]
+        C2 --> C3[Critical Event / Location Change Detected]
+        C3 -->|Real-Time Backchannel Push| C4[Resource Provider Rejects Token]
+        C4 --> C5[Client Forces Policy Re-Evaluation at Entra ID]
     end
 ```
 
@@ -54,9 +54,9 @@ CAE is a negotiated three-way handshake between the client application (e.g., Ou
 sequenceDiagram
     autonumber
     actor User as User Endpoint
-    participant Client as CAE-Aware App (Outlook/MSAL)
+    participant Client as CAE Client (Outlook/MSAL)
     participant Entra as Microsoft Entra ID
-    participant RP as Resource Provider (Exchange / SharePoint)
+    participant RP as Resource Provider (Exchange/SharePoint)
 
     User->>Client: Open Application
     Client->>Entra: POST /oauth2/v2.0/token (declaring cp1)
@@ -65,10 +65,10 @@ sequenceDiagram
     RP-->>Client: 200 OK (Data Returned)
 
     Note over Entra, RP: SecOps disables user or user changes location
-    Entra-)RP: Push Event: UserSessionRevoked (OpenID CAEP Stream)
+    Entra-->>RP: Push Event: UserSessionRevoked (OpenID CAEP Stream)
 
     Client->>RP: GET /messages (Presents cached token)
-    RP-->>Client: 401 Unauthorized (WWW-Authenticate: error="insufficient_claims")
+    RP-->>Client: 401 Unauthorized (Claims Challenge)
 
     Note over Client: Client invalidates local token cache
     Client->>Entra: POST /oauth2/v2.0/token (Refresh Token + Claims Challenge)
@@ -121,15 +121,15 @@ One of the most common operational challenges with CAE occurs in environments ut
 
 ```mermaid
 flowchart LR
-    User["Client Endpoint"]
-    Entra["Microsoft Entra ID (Auth)"]
-    M365["Exchange / SharePoint (Data)"]
+    User[Client Endpoint]
+    Entra[Microsoft Entra ID - Auth]
+    M365[Exchange / SharePoint - Data]
 
-    User -->|"Corporate Proxy Egress (1.1.1.1 - Trusted)"| Entra
-    User -->|"Local Split-Tunnel Egress (2.2.2.2 - Untrusted)"| M365
+    User -->|Corporate Proxy Egress 1.1.1.1 - Trusted| Entra
+    User -->|Local Split-Tunnel Egress 2.2.2.2 - Untrusted| M365
 
-    M365 -.->|"Standard Mode: 1-Hour Fallback Token"| User
-    M365 -.->|"Strict Mode: Immediate 401 Block"| User
+    M365 -. Standard Mode: 1-Hour Fallback Token .-> User
+    M365 -. Strict Mode: Immediate 401 Block .-> User
 ```
 
 If authentication traffic goes through corporate proxy IP `1.1.1.1` (trusted), but direct M365 data traffic routes through home ISP IP `2.2.2.2` (untrusted), an **IP mismatch** occurs:

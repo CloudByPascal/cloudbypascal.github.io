@@ -291,3 +291,18 @@ pre[class*="language-"] {
 .dark .nav-link.active {
   color: #60a5fa;
 }
+
+/* Mermaid Diagram Styling */
+.mermaid {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  background: transparent !important;
+  font-family: var(--font-sans) !important;
+}
+
+.mermaid svg {
+  max-width: 100%;
+  height: auto;
+}

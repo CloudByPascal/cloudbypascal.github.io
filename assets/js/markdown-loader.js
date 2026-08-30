@@ -103,7 +103,7 @@ class MarkdownLoader {
     // Custom renderer for marked
     const renderer = new marked.Renderer();
 
-    // Universal heading handler (supporting modern Marked v12+ token objects & legacy positional args)
+    // Universal heading handler
     renderer.heading = function (tokenOrText, levelMaybe, rawMaybe) {
       let rawText = '';
       let depth = 1;
@@ -146,12 +146,15 @@ class MarkdownLoader {
 
       const language = (lang || 'text').toLowerCase().trim();
 
-      // Special handling for Mermaid charts
+      // Special handling for Mermaid diagrams
       if (language === 'mermaid') {
         const encodedCode = encodeURIComponent(code);
         return `
-          <div class="mermaid-container my-8 p-6 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col items-center justify-center overflow-x-auto min-h-[120px]" data-mermaid-code="${encodedCode}">
-            <div class="text-xs text-slate-400 animate-pulse">Rendering diagram...</div>
+          <div class="mermaid-container my-8 p-6 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col items-center justify-center overflow-x-auto min-h-[140px]" data-mermaid-code="${encodedCode}">
+            <div class="mermaid-loading flex items-center gap-2 text-xs text-slate-400 font-medium">
+              <div class="w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+              <span>Rendering diagram...</span>
+            </div>
           </div>
         `;
       }
@@ -218,7 +221,18 @@ class MarkdownLoader {
 
   // Render or Re-render Mermaid Diagrams
   async renderMermaid() {
-    if (!window.mermaid) return;
+    // Wait for Mermaid to be loaded if CDN script is still downloading
+    if (!window.mermaid) {
+      for (let retry = 0; retry < 25; retry++) {
+        await new Promise(r => setTimeout(r, 100));
+        if (window.mermaid) break;
+      }
+    }
+
+    if (!window.mermaid) {
+      console.warn('Mermaid.js library not available.');
+      return;
+    }
 
     const isDark = document.documentElement.classList.contains('dark');
     
@@ -252,15 +266,20 @@ class MarkdownLoader {
       const containers = document.querySelectorAll('.mermaid-container');
       for (let i = 0; i < containers.length; i++) {
         const container = containers[i];
-        const rawCode = decodeURIComponent(container.getAttribute('data-mermaid-code') || '');
+        const rawCode = decodeURIComponent(container.getAttribute('data-mermaid-code') || '').trim();
         if (!rawCode) continue;
 
-        const uniqueId = `mermaid-chart-${i}-${Date.now()}`;
+        // Decode any potential HTML entities
+        const decoder = document.createElement('textarea');
+        decoder.innerHTML = rawCode;
+        const cleanDiagramCode = decoder.value;
+
+        const uniqueId = `mermaid_svg_${i}_${Math.random().toString(36).substring(2, 8)}`;
         try {
-          const { svg } = await mermaid.render(uniqueId, rawCode);
-          container.innerHTML = svg;
+          const { svg } = await mermaid.render(uniqueId, cleanDiagramCode);
+          container.innerHTML = `<div class="mermaid-rendered w-full flex justify-center items-center">${svg}</div>`;
         } catch (err) {
-          console.error('Mermaid render error:', err);
+          console.error('Mermaid render error for chart', i, err);
           container.innerHTML = `
             <div class="w-full p-4 rounded-xl bg-rose-50 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400 text-xs">
               <span class="font-bold">Diagram Render Error:</span> ${err.message || 'Invalid diagram syntax'}

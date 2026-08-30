@@ -6,6 +6,15 @@
   <title>Article | Pascal Riester</title>
   <meta name="description" content="Technical article on Microsoft Entra ID, Cloud Security, and Zero Trust Architecture.">
   
+  <!-- Anti-FOUC Theme Initialization -->
+  <script>
+    if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  </script>
+
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -44,7 +53,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-yaml.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markdown.min.js"></script>
   
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>☁️</text></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛡️</text></svg>">
 </head>
 <body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-200">
 
@@ -60,7 +69,7 @@
              onerror="this.onerror=null; this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 fill=%22%232563eb%22/><text x=%2250%%22 y=%2255%%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-size=%2245%22 fill=%22white%22 font-family=%22sans-serif%22 font-weight=%22bold%22>PR</text></svg>'">
         <div class="flex flex-col">
           <span class="font-bold text-base tracking-tight text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">Pascal Riester</span>
-          <span class="text-[10px] uppercase font-semibold tracking-wider text-slate-500 dark:text-slate-400 -mt-1">Cloud & Identity Security</span>
+          <span class="text-[10px] uppercase font-semibold tracking-wider text-slate-500 dark:text-slate-400 -mt-1">Microsoft Entra & Cloud Security</span>
         </div>
       </a>
 
@@ -143,11 +152,11 @@
                  alt="Pascal Riester" 
                  class="w-14 h-14 rounded-2xl object-cover ring-2 ring-blue-500/20 shrink-0">
             <div>
-              <div class="text-sm font-bold text-slate-900 dark:text-white">Pascal Riester</div>
-              <div class="text-xs text-slate-500 dark:text-slate-400">Identity & Access Administrator • Medium Author <a href="https://medium.com/@riesterpascal" target="_blank" class="text-blue-600 dark:text-blue-400 underline">@riesterpascal</a></div>
+              <div class="text-base font-bold text-slate-900 dark:text-white">Pascal Riester</div>
+              <div class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Author on Medium • <a href="https://medium.com/@riesterpascal" target="_blank" class="text-blue-600 dark:text-blue-400 underline">@riesterpascal</a></div>
             </div>
           </div>
-          <a href="https://medium.com/@riesterpascal" target="_blank" rel="noopener noreferrer" class="px-4 py-2 rounded-xl text-xs font-semibold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all">
+          <a href="https://medium.com/@riesterpascal" target="_blank" rel="noopener noreferrer" class="px-4 py-2 rounded-xl text-xs font-semibold bg-slate-900 text-white dark:bg-white dark:text-slate-900 hover:bg-slate-800 dark:hover:bg-slate-100 transition-all shadow-sm">
             Follow on Medium ↗
           </a>
         </div>
@@ -181,11 +190,19 @@
   <!-- Footer -->
   <footer class="border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 py-10 mt-auto">
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500 dark:text-slate-400">
-      <div>© <span id="current-year">2026</span> Pascal Riester. Published under MIT.</div>
-      <div class="flex items-center space-x-4">
-        <a href="index.html" class="hover:text-blue-600 dark:hover:text-blue-400">All Articles</a>
-        <a href="https://medium.com/@riesterpascal" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600 dark:hover:text-blue-400">Medium</a>
-        <a href="https://github.com/cloudbypascal" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600 dark:hover:text-blue-400">GitHub</a>
+      <div class="flex items-center gap-2">
+        <span class="font-bold text-slate-800 dark:text-slate-200">Pascal Riester</span>
+        <span>•</span>
+        <span>Microsoft Entra ID & Identity Security</span>
+      </div>
+      <div>
+        <p>© <span id="current-year">2026</span> Pascal Riester. All rights reserved.</p>
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="index.html" class="text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400">All Articles</a>
+        <a href="https://medium.com/@riesterpascal" target="_blank" rel="noopener noreferrer" class="text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400">Medium</a>
+        <a href="https://github.com/cloudbypascal" target="_blank" rel="noopener noreferrer" class="text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400">GitHub</a>
+        <a href="#top" class="text-blue-600 dark:text-blue-400 hover:underline">Top ↑</a>
       </div>
     </div>
   </footer>

@@ -1,66 +1,31 @@
 ---
-title: Welcome to My Developer Blog
-date: 2026-08-30
-author: Pascal
-category: Announcement
-tags: [WebDev, GitHubPages, Engineering]
-summary: An introduction to this new developer platform, engineering thoughts, and what to expect from future posts.
+title: "Welcome to My Engineering & Cloud Identity Blog"
+date: "2026-08-30"
+author: "Pascal Riester"
+category: "Announcement"
+tags: [EntraID, CloudSecurity, Microsoft365, Identity]
+summary: "An introduction to this personal blog, cross-publishing from Medium (@riesterpascal), and our focus on Cloud Security and Identity Architecture."
 ---
 
-# Welcome to My Developer Blog & Engineering Journal
+# Welcome to My Engineering & Cloud Identity Blog
 
-Welcome! I built this space to share deep dives into software engineering, web architectures, distributed systems, and open-source tooling.
+Welcome to my personal blog! I write about **Identity & Access Management (IAM)**, **Microsoft Entra ID**, **Cloud Security**, and **Microsoft 365 Architecture**.
 
-Whether you are here to browse tutorials, explore system design concepts, or inspect the codebase documentation, I hope you find these resources practical and inspiring.
-
----
-
-## Why Pure Static Architecture?
-
-In an era of overly complex server configurations and heavy hydration runtimes, building with **clean static assets** offers undeniable advantages:
-
-1. **Instant TTFB (Time to First Byte):** Edge-cached across global CDNs with sub-millisecond response times.
-2. **Zero Maintenance Overhead:** No database vulnerabilities, security patches, or server crashes.
-3. **Effortless Scalability:** Handles millions of page views with zero cost on GitHub Pages.
-4. **Offline First & Future Proof:** Standard web standards (HTML5, modern CSS, ES6+) work everywhere.
-
-> *"Simplicity is a prerequisite for reliability."* — Edsger W. Dijkstra
+I have been publishing deep-dive architectural articles on [Medium (@riesterpascal)](https://medium.com/@riesterpascal) and created this dedicated site on GitHub Pages to host my engineering writings, technical blueprints, and zero-trust framework guides in an open, searchable format.
 
 ---
 
-## Sample Code Example
+## What I Write About
 
-Here is a quick TypeScript snippet demonstrating a simple async caching decorator:
-
-```typescript
-type AsyncFunction<T> = (...args: any[]) => Promise<T>;
-
-export function memoizeAsync<T>(fn: AsyncFunction<T>, ttlMs: number = 60000): AsyncFunction<T> {
-  const cache = new Map<string, { timestamp: number; value: T }>();
-
-  return async (...args: any[]): Promise<T> => {
-    const key = JSON.stringify(args);
-    const cached = cache.get(key);
-    const now = Date.now();
-
-    if (cached && (now - cached.timestamp < ttlMs)) {
-      return cached.value;
-    }
-
-    const result = await fn(...args);
-    cache.set(key, { timestamp: now, value: result });
-    return result;
-  };
-}
-```
+- **Microsoft Entra ID & Conditional Access:** Building resilient, zero-trust access frameworks and location-based policies.
+- **Privileged Identity Management (PIM):** Just-in-Time (JIT) access, time-bound group assignments, and governance.
+- **M365 & Security Operations:** Integrating Microsoft Sentinel, Log Analytics, Continuous Access Evaluation (CAE), and secure enterprise automation.
+- **DevOps & Infrastructure as Code:** Automating deployments, policy lifecycles, and cloud governance.
 
 ---
 
-## What's Next?
+## Featured Read
 
-In upcoming articles, I will be covering:
-- Building high-performance edge APIs with TypeScript and WebAssembly
-- CI/CD automation patterns using GitHub Actions
-- Modern CSS layout tricks and fluid typography
+Check out my in-depth breakdown on **[An Approach to Handling Travelling Users within Entra ID](post.html?file=an-approach-to-handling-travelling-users-within-entra-id.md)**, where I walk through designing a layered deny-by-default location architecture with PIM.
 
-Feel free to connect on GitHub or check out the [Documentation](/docs.html) to explore project blueprints!
+Feel free to connect with me on [Medium](https://medium.com/@riesterpascal) or [GitHub](https://github.com/cloudbypascal)!

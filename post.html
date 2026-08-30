@@ -223,6 +223,13 @@
             mediumBtn.href = meta.canonical;
             mediumBtn.classList.remove('hidden');
           }
+          let canonicalLink = document.querySelector('link[rel="canonical"]');
+          if (!canonicalLink) {
+            canonicalLink = document.createElement('link');
+            canonicalLink.rel = 'canonical';
+            document.head.appendChild(canonicalLink);
+          }
+          canonicalLink.href = meta.canonical;
         }
 
         if (meta.tags && Array.isArray(meta.tags)) {

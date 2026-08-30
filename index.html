@@ -113,8 +113,8 @@
   <!-- Main Feed -->
   <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 flex-grow w-full">
     
-    <!-- Search & Filter Controls -->
-    <div class="mb-10 space-y-4">
+    <!-- Search & Filter Controls (hidden if no posts) -->
+    <div id="filter-section" class="mb-10 space-y-4 hidden">
       <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
         <!-- Search Input -->
         <div class="relative flex-grow max-w-md">
@@ -136,48 +136,6 @@
         <button class="filter-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all" data-category="Entra ID">Entra ID</button>
         <button class="filter-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all" data-category="Conditional Access">Conditional Access</button>
         <button class="filter-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all" data-category="Identity Governance">Governance & PIM</button>
-        <button class="filter-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all" data-category="Announcement">Announcements</button>
-      </div>
-    </div>
-
-    <!-- Featured Post Hero Card (Top story) -->
-    <div id="featured-card" class="mb-10 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all group">
-      <div class="grid grid-cols-1 md:grid-cols-12 gap-0">
-        <div class="md:col-span-6 overflow-hidden">
-          <img src="https://cdn-images-1.medium.com/max/1024/1*FqL1IYlIlLAcLQ1gEolm9g.jpeg" 
-               alt="Travelling Users within Entra ID" 
-               class="w-full h-56 md:h-full object-cover group-hover:scale-105 transition-transform duration-500">
-        </div>
-        <div class="md:col-span-6 p-6 sm:p-8 flex flex-col justify-between">
-          <div>
-            <div class="flex items-center gap-2 mb-3 text-xs">
-              <span class="px-2.5 py-0.5 rounded-full font-bold bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-900">Featured Article</span>
-              <span class="text-slate-400">•</span>
-              <span class="text-slate-500 dark:text-slate-400">Aug 25, 2026</span>
-              <span class="text-slate-400">•</span>
-              <span class="text-slate-500 dark:text-slate-400">5 min read</span>
-            </div>
-            <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors mb-3 leading-snug">
-              <a href="post.html?file=an-approach-to-handling-travelling-users-within-entra-id.md">An Approach to Handling Travelling Users within Entra ID</a>
-            </h2>
-            <p class="text-sm text-slate-600 dark:text-slate-400 line-clamp-3 leading-relaxed mb-4">
-              A standardized Travel Access Framework using Microsoft Entra Conditional Access, Named Locations, and Privileged Identity Management (PIM) for secure time-based access.
-            </p>
-            <div class="flex flex-wrap gap-1.5 mb-6">
-              <span class="text-[11px] px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">#EntraID</span>
-              <span class="text-[11px] px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">#ConditionalAccess</span>
-              <span class="text-[11px] px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">#PIM</span>
-            </div>
-          </div>
-          <div class="flex items-center justify-between pt-4 border-t border-slate-100 dark:border-slate-800">
-            <a href="post.html?file=an-approach-to-handling-travelling-users-within-entra-id.md" class="text-xs font-bold text-blue-600 dark:text-blue-400 hover:underline">
-              Read Complete Article →
-            </a>
-            <a href="https://medium.com/@riesterpascal/an-approach-to-handling-travelling-users-within-entra-id-32c46d7fda7a" target="_blank" rel="noopener noreferrer" class="text-xs text-slate-500 hover:text-slate-800 dark:hover:text-slate-200">
-              View on Medium ↗
-            </a>
-          </div>
-        </div>
       </div>
     </div>
 
@@ -186,13 +144,20 @@
       <!-- Dynamic cards rendered by JS -->
     </div>
 
-    <!-- Empty State -->
-    <div id="no-results" class="hidden py-16 text-center">
-      <div class="inline-flex p-4 rounded-2xl bg-slate-100 dark:bg-slate-900 text-slate-400 mb-3">
-        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+    <!-- Empty State / Clean Coming Soon -->
+    <div id="no-results" class="py-20 text-center">
+      <div class="inline-flex p-5 rounded-3xl bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 border border-blue-100 dark:border-blue-900/50 mb-4 shadow-sm">
+        <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
       </div>
-      <h3 class="text-base font-semibold text-slate-800 dark:text-slate-200">No articles found</h3>
-      <p class="text-xs text-slate-500 mt-1">Try searching for terms like "Conditional Access", "PIM", or "Zero Trust".</p>
+      <h3 class="text-xl font-bold text-slate-900 dark:text-white">Articles Coming Soon</h3>
+      <p class="text-sm text-slate-600 dark:text-slate-400 max-w-md mx-auto mt-2 leading-relaxed">
+        I am preparing new deep dives and blueprints on Microsoft Entra ID, Conditional Access, and Identity Security.
+      </p>
+      <div class="mt-6">
+        <a href="https://medium.com/@riesterpascal" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold bg-slate-900 text-white dark:bg-white dark:text-slate-900 hover:bg-slate-800 dark:hover:bg-slate-100 shadow-sm transition-all">
+          <span>Read on Medium (@riesterpascal) ↗</span>
+        </a>
+      </div>
     </div>
 
     <!-- Medium Author Follow Box -->
@@ -224,7 +189,7 @@
         <span>Microsoft Identity & Access Management</span>
       </div>
       <div>
-        <p>© <span id="current-year">2026</span> Pascal Riester. Stories syndicated from <a href="https://medium.com/@riesterpascal" target="_blank" class="underline hover:text-blue-500">Medium</a>.</p>
+        <p>© <span id="current-year">2026</span> Pascal Riester. Follow on <a href="https://medium.com/@riesterpascal" target="_blank" class="underline hover:text-blue-500">Medium</a>.</p>
       </div>
       <div class="flex items-center gap-4">
         <a href="https://medium.com/@riesterpascal" target="_blank" class="text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400">Medium</a>
@@ -237,62 +202,29 @@
   <!-- Scripts -->
   <script src="assets/js/app.js"></script>
   <script>
-    // Blog Posts Data
-    const blogPosts = [
-      {
-        id: 'an-approach-to-handling-travelling-users-within-entra-id',
-        file: 'an-approach-to-handling-travelling-users-within-entra-id.md',
-        title: 'An Approach to Handling Travelling Users within Entra ID',
-        summary: 'A standardized Travel Access Framework using Microsoft Entra Conditional Access, Named Locations, and Privileged Identity Management (PIM) for secure time-based access.',
-        category: 'Entra ID',
-        tags: ['EntraID', 'ConditionalAccess', 'PIM', 'Security'],
-        date: 'Aug 25, 2026',
-        readTime: '5 min read',
-        mediumUrl: 'https://medium.com/@riesterpascal/an-approach-to-handling-travelling-users-within-entra-id-32c46d7fda7a'
-      },
-      {
-        id: 'designing-zero-trust-conditional-access-baselines',
-        file: 'designing-zero-trust-conditional-access-baselines.md',
-        title: 'Designing a Zero-Trust Conditional Access Baseline in Entra ID',
-        summary: 'A practical blueprint for structuring persona-based Conditional Access policies, break-glass exclusions, session controls, and device compliance across your Entra tenant.',
-        category: 'Conditional Access',
-        tags: ['ConditionalAccess', 'EntraID', 'ZeroTrust', 'M365Security'],
-        date: 'Aug 28, 2026',
-        readTime: '4 min read'
-      },
-      {
-        id: 'mastering-entra-pim-and-jit-access',
-        file: 'mastering-entra-pim-and-jit-access.md',
-        title: 'Mastering Entra Privileged Identity Management (PIM) & JIT Access',
-        summary: 'Eliminate standing administrative privileges using Just-in-Time (JIT) role activations, multi-stage approval workflows, and PIM for Groups in Microsoft Entra ID.',
-        category: 'Identity Governance',
-        tags: ['PIM', 'IdentityGovernance', 'LeastPrivilege', 'EntraID'],
-        date: 'Aug 22, 2026',
-        readTime: '4 min read'
-      },
-      {
-        id: 'welcome-to-my-blog',
-        file: 'welcome-to-my-blog.md',
-        title: 'Welcome to My Engineering & Cloud Identity Blog',
-        summary: 'An introduction to this personal blog, cross-publishing from Medium (@riesterpascal), and our focus on Cloud Security and Identity Architecture.',
-        category: 'Announcement',
-        tags: ['EntraID', 'CloudSecurity', 'Microsoft365'],
-        date: 'Aug 30, 2026',
-        readTime: '2 min read'
-      }
-    ];
+    // Blog Posts Data Array (Empty by default)
+    const blogPosts = [];
 
     const postsContainer = document.getElementById('posts-container');
     const searchInput = document.getElementById('search-input');
     const filterBtns = document.querySelectorAll('.filter-btn');
     const noResults = document.getElementById('no-results');
     const postsCount = document.getElementById('posts-count');
-    const featuredCard = document.getElementById('featured-card');
+    const filterSection = document.getElementById('filter-section');
 
     let currentCategory = 'all';
     let searchQuery = '';
 
     const renderPosts = () => {
+      if (blogPosts.length === 0) {
+        postsContainer.innerHTML = '';
+        noResults.classList.remove('hidden');
+        if (filterSection) filterSection.classList.add('hidden');
+        return;
+      }
+
+      if (filterSection) filterSection.classList.remove('hidden');
+
       const filtered = blogPosts.filter(post => {
         const matchesCategory = currentCategory === 'all' || post.category.toLowerCase() === currentCategory.toLowerCase();
         const matchesSearch = searchQuery === '' || 
@@ -305,15 +237,6 @@
 
       if (postsCount) {
         postsCount.textContent = `Showing ${filtered.length} of ${blogPosts.length} articles`;
-      }
-
-      // Hide or show featured banner when searching/filtering
-      if (featuredCard) {
-        if (searchQuery !== '' || currentCategory !== 'all') {
-          featuredCard.classList.add('hidden');
-        } else {
-          featuredCard.classList.remove('hidden');
-        }
       }
 
       if (filtered.length === 0) {
@@ -361,10 +284,12 @@
     });
 
     // Search events
-    searchInput.addEventListener('input', (e) => {
-      searchQuery = e.target.value.trim();
-      renderPosts();
-    });
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        searchQuery = e.target.value.trim();
+        renderPosts();
+      });
+    }
 
     // Initial render
     renderPosts();

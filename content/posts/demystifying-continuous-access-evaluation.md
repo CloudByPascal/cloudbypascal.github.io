@@ -53,10 +53,10 @@ CAE is a negotiated three-way handshake between the client application (e.g., Ou
 ```mermaid
 sequenceDiagram
     autonumber
-    actor User as User Endpoint
-    participant Client as CAE Client (Outlook/MSAL)
-    participant Entra as Microsoft Entra ID
-    participant RP as Resource Provider (Exchange/SharePoint)
+    actor User as "User Endpoint"
+    participant Client as "CAE Client (Outlook/MSAL)"
+    participant Entra as "Microsoft Entra ID"
+    participant RP as "Resource Provider (Exchange/SharePoint)"
 
     User->>Client: Open Application
     Client->>Entra: POST /oauth2/v2.0/token (declaring cp1)

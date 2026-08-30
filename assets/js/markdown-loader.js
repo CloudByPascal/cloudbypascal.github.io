@@ -150,11 +150,8 @@ class MarkdownLoader {
       if (language === 'mermaid') {
         const encodedCode = encodeURIComponent(code);
         return `
-          <div class="mermaid-container my-8 p-6 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col items-center justify-center overflow-x-auto min-h-[140px]" data-mermaid-code="${encodedCode}">
-            <div class="mermaid-loading flex items-center gap-2 text-xs text-slate-400 font-medium">
-              <div class="w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-              <span>Rendering diagram...</span>
-            </div>
+          <div class="my-8 p-6 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col items-center justify-center overflow-x-auto">
+            <div class="mermaid w-full flex justify-center items-center text-sm" data-original-mermaid="${encodedCode}">${code}</div>
           </div>
         `;
       }
@@ -223,7 +220,7 @@ class MarkdownLoader {
   async renderMermaid() {
     // Wait for Mermaid to be loaded if CDN script is still downloading
     if (!window.mermaid) {
-      for (let retry = 0; retry < 25; retry++) {
+      for (let retry = 0; retry < 30; retry++) {
         await new Promise(r => setTimeout(r, 100));
         if (window.mermaid) break;
       }
@@ -241,52 +238,24 @@ class MarkdownLoader {
         startOnLoad: false,
         theme: isDark ? 'dark' : 'default',
         securityLevel: 'loose',
-        fontFamily: 'Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-        themeVariables: isDark ? {
-          darkMode: true,
-          background: '#0f172a',
-          primaryColor: '#3b82f6',
-          primaryTextColor: '#f8fafc',
-          primaryBorderColor: '#60a5fa',
-          lineColor: '#94a3b8',
-          secondaryColor: '#1e293b',
-          tertiaryColor: '#0f172a'
-        } : {
-          darkMode: false,
-          background: '#ffffff',
-          primaryColor: '#3b82f6',
-          primaryTextColor: '#0f172a',
-          primaryBorderColor: '#2563eb',
-          lineColor: '#64748b',
-          secondaryColor: '#f1f5f9',
-          tertiaryColor: '#f8fafc'
+        fontFamily: 'Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
+      });
+
+      const mermaidEls = document.querySelectorAll('.mermaid');
+      if (mermaidEls.length === 0) return;
+
+      // Restore raw diagram content before running mermaid
+      mermaidEls.forEach(el => {
+        if (el.hasAttribute('data-original-mermaid')) {
+          el.textContent = decodeURIComponent(el.getAttribute('data-original-mermaid'));
+          el.removeAttribute('data-processed');
         }
       });
 
-      const containers = document.querySelectorAll('.mermaid-container');
-      for (let i = 0; i < containers.length; i++) {
-        const container = containers[i];
-        const rawCode = decodeURIComponent(container.getAttribute('data-mermaid-code') || '').trim();
-        if (!rawCode) continue;
-
-        // Decode any potential HTML entities
-        const decoder = document.createElement('textarea');
-        decoder.innerHTML = rawCode;
-        const cleanDiagramCode = decoder.value;
-
-        const uniqueId = `mermaid_svg_${i}_${Math.random().toString(36).substring(2, 8)}`;
-        try {
-          const { svg } = await mermaid.render(uniqueId, cleanDiagramCode);
-          container.innerHTML = `<div class="mermaid-rendered w-full flex justify-center items-center">${svg}</div>`;
-        } catch (err) {
-          console.error('Mermaid render error for chart', i, err);
-          container.innerHTML = `
-            <div class="w-full p-4 rounded-xl bg-rose-50 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400 text-xs">
-              <span class="font-bold">Diagram Render Error:</span> ${err.message || 'Invalid diagram syntax'}
-            </div>
-          `;
-        }
-      }
+      // Run mermaid on all nodes
+      await mermaid.run({
+        nodes: Array.from(mermaidEls)
+      });
     } catch (e) {
       console.error('Mermaid initialization error:', e);
     }

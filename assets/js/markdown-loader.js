@@ -60,7 +60,7 @@ class MarkdownLoader {
     try {
       const response = await fetch(filePath);
       if (!response.ok) {
-        throw new Error(`Failed to load markdown: ${response.status} ${response.statusText}`);
+        throw new Error(`Failed to load article (${response.status}: ${response.statusText})`);
       }
 
       const rawMarkdown = await response.text();
@@ -72,10 +72,10 @@ class MarkdownLoader {
       console.error(error);
       if (container) {
         container.innerHTML = `
-          <div class="p-6 rounded-xl border border-rose-200 dark:border-rose-900 bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300">
-            <h3 class="text-lg font-semibold mb-2">Error Loading Document</h3>
+          <div class="p-6 rounded-2xl border border-rose-200 dark:border-rose-900 bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300">
+            <h3 class="text-base font-bold mb-2">Error Loading Document</h3>
             <p class="text-sm">${error.message}</p>
-            <p class="text-xs text-rose-500 mt-3">File requested: <code>${filePath}</code></p>
+            <p class="text-xs text-rose-500 dark:text-rose-400 mt-3 font-mono">File requested: ${filePath}</p>
           </div>
         `;
       }
@@ -91,30 +91,57 @@ class MarkdownLoader {
     if (!container) return;
 
     this.headings = [];
+    const self = this;
 
     // Custom renderer for marked
     const renderer = new marked.Renderer();
 
-    // Custom heading renderer to capture TOC & add anchor IDs
-    renderer.heading = (text, level) => {
-      const cleanText = text.replace(/<[^>]*>/g, '');
+    // Universal heading handler (supporting both modern Marked v12+ token objects & legacy positional args)
+    renderer.heading = function (tokenOrText, levelMaybe, rawMaybe) {
+      let rawText = '';
+      let depth = 1;
+
+      if (tokenOrText && typeof tokenOrText === 'object') {
+        // Marked v12+ object signature: { tokens, depth, text, raw }
+        rawText = tokenOrText.text || tokenOrText.raw || '';
+        depth = tokenOrText.depth || 1;
+      } else {
+        // Legacy signature: heading(text, level, raw)
+        rawText = String(tokenOrText || '');
+        depth = levelMaybe || 1;
+      }
+
+      const cleanText = String(rawText).replace(/<[^>]*>/g, '').trim();
       const id = cleanText.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-');
       
-      if (level <= 3) {
-        this.headings.push({ text: cleanText, id, level });
+      if (depth <= 3 && cleanText) {
+        self.headings.push({ text: cleanText, id, level: depth });
       }
 
       return `
-        <h${level} id="${id}" class="group relative flex items-center">
-          <span class="mr-2">${text}</span>
+        <h${depth} id="${id}" class="group relative flex items-center">
+          <span class="mr-2">${cleanText}</span>
           <a href="#${id}" class="opacity-0 group-hover:opacity-100 transition-opacity text-blue-500 hover:text-blue-600 no-underline text-base ml-1" aria-label="Link to section">#</a>
-        </h${level}>
+        </h${depth}>
       `;
     };
 
-    // Custom code block renderer with copy button & language header
-    renderer.code = (code, lang) => {
-      const language = lang || 'text';
+    // Universal code block handler
+    renderer.code = function (tokenOrCode, langMaybe) {
+      let code = '';
+      let lang = 'text';
+
+      if (tokenOrCode && typeof tokenOrCode === 'object') {
+        // Marked v12+ object signature: { text, lang, escaped }
+        code = tokenOrCode.text || '';
+        lang = tokenOrCode.lang || 'text';
+      } else {
+        // Legacy signature: code(code, lang)
+        code = String(tokenOrCode || '');
+        lang = langMaybe || 'text';
+      }
+
+      const language = (lang || 'text').toLowerCase();
       const escapedCode = code.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
       
       return `
@@ -131,11 +158,35 @@ class MarkdownLoader {
       `;
     };
 
-    marked.setOptions({
-      renderer,
-      breaks: true,
-      gfm: true
-    });
+    // Universal image handler with lazy loading and captions
+    renderer.image = function (tokenOrHref, titleMaybe, textMaybe) {
+      let href = '';
+      let text = '';
+      let title = '';
+
+      if (tokenOrHref && typeof tokenOrHref === 'object') {
+        href = tokenOrHref.href || '';
+        text = tokenOrHref.text || '';
+        title = tokenOrHref.title || '';
+      } else {
+        href = String(tokenOrHref || '');
+        title = titleMaybe || '';
+        text = textMaybe || '';
+      }
+
+      return `
+        <figure class="my-8">
+          <img src="${href}" alt="${text}" title="${title}" loading="lazy" class="w-full rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm" />
+          ${text ? `<figcaption class="text-xs text-center text-slate-500 dark:text-slate-400 mt-2.5 italic">${text}</figcaption>` : ''}
+        </figure>
+      `;
+    };
+
+    if (typeof marked.use === 'function') {
+      marked.use({ renderer, breaks: true, gfm: true });
+    } else if (typeof marked.setOptions === 'function') {
+      marked.setOptions({ renderer, breaks: true, gfm: true });
+    }
 
     container.innerHTML = marked.parse(markdownString);
 
@@ -144,7 +195,7 @@ class MarkdownLoader {
       Prism.highlightAllUnder(container);
     }
 
-    // Build TOC
+    // Build Table of Contents
     this.buildTOC();
   }
 

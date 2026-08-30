@@ -1,22 +1,21 @@
-# ☁️ cloudbypascal — Engineering & Cloud Blog
+# 🛡️ Pascal Riester — Microsoft Entra ID & Identity Security Blog
 
-A fast, lightweight, and modern developer blog hosted on **GitHub Pages**. Designed with pure static web primitives (HTML5, Tailwind CSS, JavaScript ES6+, Marked.js, Prism.js) for zero local build overhead and instant edge performance.
+A fast, lightweight, and modern engineering blog hosted on **GitHub Pages**, dedicated to **Microsoft Entra ID (Azure AD)**, **Conditional Access**, **Privileged Identity Management (PIM)**, and **Identity & Access Management (IAM)** within the Microsoft Cloud.
+
+Cross-published and syndicated with [Medium (@riesterpascal)](https://medium.com/@riesterpascal).
 
 ![Platform](https://img.shields.io/badge/Platform-GitHub%20Pages-blue)
+![Focus](https://img.shields.io/badge/Focus-Microsoft%20Entra%20ID-0078D4)
 ![License](https://img.shields.io/badge/License-MIT-green)
-![Build](https://img.shields.io/badge/Dependencies-Zero%20Local%20Install-purple)
 
 ---
 
-## ✨ Features
+## 🎯 Core Topics & Focus Areas
 
-- **⚡ Zero Build Runtime Required:** No Node.js or npm toolchain needed locally. Edit Markdown files and push directly to GitHub.
-- **📝 Markdown-Powered Articles:** Write articles in standard Markdown with YAML frontmatter; auto-renders with syntax highlighting and reading time calculation.
-- **🔍 Instant Live Search & Category Filters:** Real-time client-side search across titles, summaries, and tags.
-- **🎨 Dark & Light Mode:** Seamless theme toggle with local storage persistence and system preference detection.
-- **💻 Prism.js Code Syntax Highlighting:** Clean code blocks with copy-to-clipboard buttons and language labels.
-- **📱 Responsive Design:** Optimized for mobile, tablet, and widescreen reading.
-- **🚀 Automated Deployment:** Includes GitHub Actions workflow (`deploy.yml`) for continuous zero-downtime publishing.
+- **Microsoft Entra ID & Conditional Access:** Tiered location strategies, persona-based policy frameworks, phishing-resistant MFA, and break-glass protection.
+- **Privileged Identity Management (PIM):** Just-in-Time (JIT) activations, PIM for Groups, and multi-stage approval governance.
+- **Identity Governance & Lifecycle Workflows:** Automating Joiner-Mover-Leaver processes, Access Packages, and recurring Access Reviews.
+- **Zero Trust Security:** Enforcing device compliance with Microsoft Intune, continuous access evaluation (CAE), and Microsoft Defender for Identity integrations.
 
 ---
 
@@ -25,73 +24,55 @@ A fast, lightweight, and modern developer blog hosted on **GitHub Pages**. Desig
 ```text
 ├── .github/
 │   └── workflows/
-│       └── deploy.yml          # Automated GitHub Pages CI/CD workflow
+│       └── deploy.yml                                            # Automated GitHub Pages CI/CD
 ├── assets/
-│   ├── css/
-│   │   └── custom.css          # Theme styling, typography, and code blocks
+│   ├── css/custom.css                                            # Theme styling, fonts, code blocks
 │   └── js/
-│       ├── app.js              # Theme manager, toast notifications
-│       └── markdown-loader.js   # Markdown parser, TOC generator, Prism highlighter
+│       ├── app.js                                                # Theme manager, toast alerts
+│       └── markdown-loader.js                                     # Markdown parser, TOC, Prism highlighter
 ├── content/
-│   └── posts/                  # Blog articles in Markdown (.md)
-│       ├── welcome-to-my-blog.md
-│       ├── building-modern-web-apps.md
-│       └── github-pages-workflow-guide.md
-├── index.html                  # Main Blog Homepage & Search Feed
-├── post.html                   # Dynamic Markdown Article Reader Template
-├── 404.html                    # Custom 404 error page
-├── .nojekyll                   # Disables Jekyll processing on GitHub Pages
-├── .gitignore                  # Git ignore rules
-└── README.md                   # Repository documentation
+│   └── posts/                                                    # Articles in Markdown (.md)
+│       ├── an-approach-to-handling-travelling-users-within-entra-id.md
+│       ├── designing-zero-trust-conditional-access-baselines.md
+│       ├── mastering-entra-pim-and-jit-access.md
+│       └── welcome-to-my-blog.md
+├── index.html                                                    # Blog Feed & Search Homepage
+├── post.html                                                     # Dynamic Markdown Article Reader
+├── 404.html                                                      # Custom 404 error page
+└── README.md
 ```
 
 ---
 
-## ✍️ How to Publish a New Blog Post
+## ✍️ How to Publish a New Entra ID Article
 
-1. Create a `.md` file in `content/posts/` (e.g. `content/posts/my-new-article.md`).
+1. Create a `.md` file in `content/posts/` (e.g. `content/posts/entra-verified-id-guide.md`).
 2. Add the frontmatter header:
    ```markdown
    ---
    title: "Your Article Title"
    date: 2026-09-01
-   author: "Pascal"
-   category: "Architecture"
-   tags: [Cloud, Architecture, DevOps]
-   summary: "A short 1-2 sentence summary of what this post covers."
+   author: "Pascal Riester"
+   category: "Entra ID"
+   tags: [EntraID, ConditionalAccess, ZeroTrust]
+   summary: "A concise summary of your article."
+   canonical: "https://medium.com/@riesterpascal/your-story-slug" # optional Medium link
    ---
 
    # Your Article Title
 
-   Write your content in standard Markdown here...
+   Your article content in standard Markdown...
    ```
-3. Add the post object to the `blogPosts` array in `index.html` so it appears in the searchable feed:
-   ```javascript
-   {
-     id: 'my-new-article',
-     file: 'my-new-article.md',
-     title: 'Your Article Title',
-     summary: 'A short 1-2 sentence summary of what this post covers.',
-     category: 'Architecture',
-     tags: ['Cloud', 'Architecture'],
-     date: 'Sep 01, 2026',
-     readTime: '4 min read'
-   }
-   ```
+3. Add the post object to the `blogPosts` array in `index.html`.
 4. Commit and push:
    ```bash
    git add .
-   git commit -m "feat: add new blog post"
+   git commit -m "feat: add new article on Entra ID"
    git push
    ```
 
 ---
 
 ## 🚀 Live Website
-Your blog is deployed and available at:
-👉 **[https://cloudbypascal.github.io](https://cloudbypascal.github.io)**
-
----
-
-## 📄 License
-MIT License © 2026 Pascal.
+👉 **[https://cloudbypascal.github.io](https://cloudbypascal.github.io)**  
+Medium: **[https://medium.com/@riesterpascal](https://medium.com/@riesterpascal)**

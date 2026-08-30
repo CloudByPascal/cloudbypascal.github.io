@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pascal Riester | Cloud Identity & Security Blog</title>
-  <meta name="description" content="Technical blog by Pascal Riester on Microsoft Entra ID, Cloud Security, Conditional Access, and M365 Architecture.">
+  <title>Pascal Riester | Microsoft Entra ID & Cloud Identity Blog</title>
+  <meta name="description" content="Technical blog by Pascal Riester specializing in Microsoft Entra ID, Conditional Access, Privileged Identity Management (PIM), and Microsoft Cloud Security.">
   
   <!-- Open Graph Meta -->
-  <meta property="og:title" content="Pascal Riester | Cloud Identity & Security Blog">
-  <meta property="og:description" content="Technical articles on Microsoft Entra ID, Cloud Security, and Zero Trust Architecture.">
+  <meta property="og:title" content="Pascal Riester | Microsoft Entra ID & Cloud Identity Blog">
+  <meta property="og:description" content="Deep dives into Microsoft Entra ID, Conditional Access, Identity Governance, and Zero Trust Security across the Microsoft Cloud.">
   <meta property="og:image" content="https://cdn-images-1.medium.com/fit/c/150/150/0*-vbxjphJ3sDZvDxj">
   <meta property="og:type" content="website">
 
@@ -33,7 +33,7 @@
   </script>
   
   <link rel="stylesheet" href="assets/css/custom.css">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>☁️</text></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛡️</text></svg>">
 </head>
 <body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-200">
 
@@ -45,11 +45,11 @@
       <a href="index.html" class="flex items-center gap-3 group">
         <img src="https://cdn-images-1.medium.com/fit/c/150/150/0*-vbxjphJ3sDZvDxj" 
              alt="Pascal Riester" 
-             class="w-10 h-10 rounded-full object-cover ring-2 ring-blue-500/30 group-hover:scale-105 transition-transform" 
+             class="w-10 h-10 rounded-full object-cover ring-2 ring-blue-500/30 group-hover:scale-105 transition-transform"
              onerror="this.onerror=null; this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 fill=%22%232563eb%22/><text x=%2250%%22 y=%2255%%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-size=%2245%22 fill=%22white%22 font-family=%22sans-serif%22 font-weight=%22bold%22>PR</text></svg>'">
         <div class="flex flex-col">
           <span class="font-bold text-base tracking-tight text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">Pascal Riester</span>
-          <span class="text-[10px] uppercase font-semibold tracking-wider text-slate-500 dark:text-slate-400 -mt-1">Cloud & Identity Security</span>
+          <span class="text-[10px] uppercase font-semibold tracking-wider text-slate-500 dark:text-slate-400 -mt-1">Microsoft Entra & IAM</span>
         </div>
       </a>
 
@@ -86,25 +86,26 @@
         <div>
           <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-300 mb-2">
             <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-            <span>Writing on Medium & GitHub</span>
+            <span>Microsoft Identity & Access Specialist</span>
           </div>
           <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white">Pascal Riester</h1>
           <p class="text-sm sm:text-base text-slate-600 dark:text-slate-400 mt-1 font-medium">
-            Identity & Access Administrator • Cloud Security & Entra ID Architect
+            Identity & Access Administrator • Microsoft Entra ID • Cloud Security Architect
           </p>
         </div>
       </div>
 
       <p class="text-base text-slate-700 dark:text-slate-300 max-w-3xl leading-relaxed">
-        Deep dives on <strong>Microsoft Entra ID</strong>, <strong>Conditional Access</strong>, <strong>Privileged Identity Management (PIM)</strong>, and zero-trust cloud architectures.
+        Specializing in <strong>Microsoft Entra ID (Azure AD)</strong>, <strong>Conditional Access</strong>, <strong>Privileged Identity Management (PIM)</strong>, <strong>Identity Governance</strong>, and Zero Trust access architecture within the Microsoft Cloud.
       </p>
 
       <!-- Topic Pills -->
       <div class="flex flex-wrap gap-2 mt-6">
         <span class="text-xs px-3 py-1 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 font-medium">🛡️ Microsoft Entra ID</span>
-        <span class="text-xs px-3 py-1 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 font-medium">🔐 Conditional Access</span>
+        <span class="text-xs px-3 py-1 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 font-medium">🔐 Conditional Access Frameworks</span>
         <span class="text-xs px-3 py-1 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 font-medium">⏳ Privileged Identity Management (PIM)</span>
-        <span class="text-xs px-3 py-1 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 font-medium">☁️ Microsoft 365 Architecture</span>
+        <span class="text-xs px-3 py-1 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 font-medium">📋 Entra ID Governance & JIT</span>
+        <span class="text-xs px-3 py-1 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 font-medium">☁️ Microsoft 365 Security</span>
       </div>
     </div>
   </section>
@@ -117,7 +118,7 @@
       <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
         <!-- Search Input -->
         <div class="relative flex-grow max-w-md">
-          <input type="text" id="search-input" placeholder="Search articles by topic, keyword, or tag..." 
+          <input type="text" id="search-input" placeholder="Search articles by Entra ID feature, topic, or tag..." 
                  class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 dark:text-slate-100 placeholder-slate-400 shadow-sm">
           <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
@@ -132,9 +133,10 @@
       <!-- Category Filter Chips -->
       <div class="flex flex-wrap items-center gap-1.5" id="category-filters">
         <button class="filter-btn active px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-blue-600 text-white transition-all shadow-sm" data-category="all">All Articles</button>
-        <button class="filter-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all" data-category="Entra ID">Entra ID & Security</button>
-        <button class="filter-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all" data-category="Architecture">Architecture</button>
-        <button class="filter-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all" data-category="DevOps">DevOps & CI/CD</button>
+        <button class="filter-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all" data-category="Entra ID">Entra ID</button>
+        <button class="filter-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all" data-category="Conditional Access">Conditional Access</button>
+        <button class="filter-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all" data-category="Identity Governance">Governance & PIM</button>
+        <button class="filter-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all" data-category="Announcement">Announcements</button>
       </div>
     </div>
 
@@ -190,7 +192,7 @@
         <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
       </div>
       <h3 class="text-base font-semibold text-slate-800 dark:text-slate-200">No articles found</h3>
-      <p class="text-xs text-slate-500 mt-1">Try refining your search keyword or selecting a different category.</p>
+      <p class="text-xs text-slate-500 mt-1">Try searching for terms like "Conditional Access", "PIM", or "Zero Trust".</p>
     </div>
 
     <!-- Medium Author Follow Box -->
@@ -219,7 +221,7 @@
       <div class="flex items-center gap-2">
         <span class="font-bold text-slate-800 dark:text-slate-200">Pascal Riester</span>
         <span>•</span>
-        <span>Hosted with GitHub Pages</span>
+        <span>Microsoft Identity & Access Management</span>
       </div>
       <div>
         <p>© <span id="current-year">2026</span> Pascal Riester. Stories syndicated from <a href="https://medium.com/@riesterpascal" target="_blank" class="underline hover:text-blue-500">Medium</a>.</p>
@@ -249,6 +251,26 @@
         mediumUrl: 'https://medium.com/@riesterpascal/an-approach-to-handling-travelling-users-within-entra-id-32c46d7fda7a'
       },
       {
+        id: 'designing-zero-trust-conditional-access-baselines',
+        file: 'designing-zero-trust-conditional-access-baselines.md',
+        title: 'Designing a Zero-Trust Conditional Access Baseline in Entra ID',
+        summary: 'A practical blueprint for structuring persona-based Conditional Access policies, break-glass exclusions, session controls, and device compliance across your Entra tenant.',
+        category: 'Conditional Access',
+        tags: ['ConditionalAccess', 'EntraID', 'ZeroTrust', 'M365Security'],
+        date: 'Aug 28, 2026',
+        readTime: '4 min read'
+      },
+      {
+        id: 'mastering-entra-pim-and-jit-access',
+        file: 'mastering-entra-pim-and-jit-access.md',
+        title: 'Mastering Entra Privileged Identity Management (PIM) & JIT Access',
+        summary: 'Eliminate standing administrative privileges using Just-in-Time (JIT) role activations, multi-stage approval workflows, and PIM for Groups in Microsoft Entra ID.',
+        category: 'Identity Governance',
+        tags: ['PIM', 'IdentityGovernance', 'LeastPrivilege', 'EntraID'],
+        date: 'Aug 22, 2026',
+        readTime: '4 min read'
+      },
+      {
         id: 'welcome-to-my-blog',
         file: 'welcome-to-my-blog.md',
         title: 'Welcome to My Engineering & Cloud Identity Blog',
@@ -257,26 +279,6 @@
         tags: ['EntraID', 'CloudSecurity', 'Microsoft365'],
         date: 'Aug 30, 2026',
         readTime: '2 min read'
-      },
-      {
-        id: 'github-pages-workflow-guide',
-        file: 'github-pages-workflow-guide.md',
-        title: 'Complete Guide to GitHub Pages & GitHub Actions',
-        summary: 'Learn how to set up zero-downtime automated static deployments to GitHub Pages using GitHub Actions.',
-        category: 'DevOps',
-        tags: ['DevOps', 'GitHubActions', 'CI/CD'],
-        date: 'Aug 20, 2026',
-        readTime: '3 min read'
-      },
-      {
-        id: 'building-modern-web-apps',
-        file: 'building-modern-web-apps.md',
-        title: 'Building Resilient Web Applications in 2026',
-        summary: 'Exploring fundamental principles for crafting blazing fast, resilient, and accessible web experiences.',
-        category: 'Architecture',
-        tags: ['Architecture', 'JavaScript', 'Performance'],
-        date: 'Aug 15, 2026',
-        readTime: '3 min read'
       }
     ];
 

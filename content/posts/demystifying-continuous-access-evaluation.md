@@ -1,4 +1,11 @@
-# Demystifying Continuous Access Evaluation (CAE) in Microsoft Entra ID: Claims Challenges, Strict Location & Real-World Gotchas (demystifying-continuous-access-evaluation.md)
+---
+title: "Demystifying Continuous Access Evaluation (CAE) in Entra ID"
+date: "2026-08-28"
+author: "Pascal Riester"
+category: "Conditional Access"
+tags: [EntraID, CAE, ContinuousAccessEvaluation, ConditionalAccess, ZeroTrust, M365Security]
+summary: "A technical deep dive into Continuous Access Evaluation (CAE) in Microsoft Entra ID: understanding real-time token revocation, claims challenges, standard vs. strict location enforcement, and practical operational gotchas."
+---
 
 ## Introduction
 

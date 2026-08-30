@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pascal | Developer, Engineer & Technical Writer</title>
+  <meta name="description" content="Personal developer portfolio, technical blog, and software documentation.">
+  
+  <!-- Open Graph / Meta -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Pascal | Developer & Technical Writer">
+  <meta property="og:description" content="Personal developer portfolio, technical blog, and software documentation.">
+  
+  <!-- Tailwind CSS & Lucide Icons -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#eff6ff',
+              500: '#3b82f6',
+              600: '#2563eb',
+              700: '#1d4ed8',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="assets/css/custom.css">
+  
+  <!-- Favicon icon placeholder -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💻</text></svg>">
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-200">
+
+  <!-- Header / Navigation -->
+  <header class="sticky top-0 z-40 border-b border-slate-200/80 dark:border-slate-800/80 bg-white/80 dark:bg-slate-950/80 glass-nav">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <!-- Logo / Brand -->
+      <a href="index.html" class="flex items-center gap-2.5 group">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white font-bold shadow-md shadow-blue-500/20 group-hover:scale-105 transition-transform">
+          P
+        </div>
+        <div class="flex flex-col">
+          <span class="font-bold tracking-tight text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">Pascal</span>
+          <span class="text-[10px] uppercase font-semibold tracking-wider text-slate-500 dark:text-slate-400 -mt-1">Dev & Docs</span>
+        </div>
+      </a>
+
+      <!-- Desktop Nav Links -->
+      <nav class="hidden md:flex items-center space-x-1">
+        <a href="index.html" class="nav-link px-3 py-1.5 rounded-lg text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-slate-100 dark:hover:bg-slate-900 transition-all">Home</a>
+        <a href="blog.html" class="nav-link px-3 py-1.5 rounded-lg text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-slate-100 dark:hover:bg-slate-900 transition-all">Blog</a>
+        <a href="docs.html" class="nav-link px-3 py-1.5 rounded-lg text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-slate-100 dark:hover:bg-slate-900 transition-all">Docs</a>
+        <a href="projects.html" class="nav-link px-3 py-1.5 rounded-lg text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-slate-100 dark:hover:bg-slate-900 transition-all">Projects</a>
+        <a href="about.html" class="nav-link px-3 py-1.5 rounded-lg text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-slate-100 dark:hover:bg-slate-900 transition-all">About</a>
+      </nav>
+
+      <!-- Right Actions: Theme Toggle & GitHub -->
+      <div class="flex items-center gap-2.5">
+        <!-- Theme Toggle Button -->
+        <button class="theme-toggle-btn p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all focus:outline-none" aria-label="Toggle theme">
+          <svg class="sun-icon w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+          <svg class="moon-icon w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+        </button>
+
+        <!-- GitHub Profile Link -->
+        <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="hidden sm:inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-slate-900 text-white dark:bg-white dark:text-slate-900 hover:bg-slate-800 dark:hover:bg-slate-100 transition-all shadow-sm">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"></path></svg>
+          <span>GitHub</span>
+        </a>
+
+        <!-- Mobile Menu Button -->
+        <button id="mobile-menu-btn" class="md:hidden p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 focus:outline-none" aria-label="Open mobile menu">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Dropdown Menu -->
+    <div id="mobile-menu" class="hidden md:hidden border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 px-4 pt-2 pb-4 space-y-1">
+      <a href="index.html" class="nav-link block px-3 py-2 rounded-lg text-base font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-900">Home</a>
+      <a href="blog.html" class="nav-link block px-3 py-2 rounded-lg text-base font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-900">Blog</a>
+      <a href="docs.html" class="nav-link block px-3 py-2 rounded-lg text-base font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-900">Docs</a>
+      <a href="projects.html" class="nav-link block px-3 py-2 rounded-lg text-base font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-900">Projects</a>
+      <a href="about.html" class="nav-link block px-3 py-2 rounded-lg text-base font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-900">About</a>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="flex-grow">
+    
+    <!-- Hero Section -->
+    <section class="relative overflow-hidden py-16 sm:py-24 border-b border-slate-200 dark:border-slate-800 bg-gradient-to-b from-white via-slate-50 to-slate-100 dark:from-slate-950 dark:via-slate-950 dark:to-slate-900">
+      <!-- Background glow effect -->
+      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[350px] bg-blue-500/10 dark:bg-blue-600/15 blur-3xl -z-10 rounded-full pointer-events-none"></div>
+
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-3xl">
+          <!-- Status Pill -->
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-300 mb-6">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span>Available for innovative projects & tech writing</span>
+          </div>
+
+          <!-- Hero Heading -->
+          <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-[1.15] mb-6">
+            Engineering thoughts, clean architecture & <span class="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">open docs.</span>
+          </h1>
+
+          <!-- Hero Bio -->
+          <p class="text-lg sm:text-xl text-slate-600 dark:text-slate-300 leading-relaxed mb-8">
+            I'm <strong class="font-semibold text-slate-900 dark:text-white">Pascal</strong> — a software developer crafting fast, accessible web systems, exploring distributed tooling, and documenting engineering lessons along the way.
+          </p>
+
+          <!-- Action Buttons -->
+          <div class="flex flex-wrap items-center gap-4">
+            <a href="blog.html" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm transition-all shadow-lg shadow-blue-500/25 hover:shadow-blue-500/35 hover:-translate-y-0.5">
+              <span>Read the Blog</span>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+            </a>
+            <a href="docs.html" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-200 font-semibold text-sm transition-all hover:-translate-y-0.5">
+              <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+              <span>Explore Docs</span>
+            </a>
+            <a href="projects.html" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-transparent hover:bg-slate-200/50 dark:hover:bg-slate-800/50 text-slate-700 dark:text-slate-300 font-semibold text-sm transition-all">
+              <span>View Projects</span>
+            </a>
+          </div>
+
+          <!-- Tech Stack Badges -->
+          <div class="mt-12 pt-8 border-t border-slate-200 dark:border-slate-800 flex flex-wrap items-center gap-2.5">
+            <span class="text-xs font-semibold uppercase tracking-wider text-slate-400 mr-2">Core Tech:</span>
+            <span class="px-2.5 py-1 rounded-md text-xs font-medium bg-slate-200/60 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300">TypeScript</span>
+            <span class="px-2.5 py-1 rounded-md text-xs font-medium bg-slate-200/60 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300">React</span>
+            <span class="px-2.5 py-1 rounded-md text-xs font-medium bg-slate-200/60 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300">Node.js</span>
+            <span class="px-2.5 py-1 rounded-md text-xs font-medium bg-slate-200/60 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300">Tailwind CSS</span>
+            <span class="px-2.5 py-1 rounded-md text-xs font-medium bg-slate-200/60 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300">GitHub Actions</span>
+            <span class="px-2.5 py-1 rounded-md text-xs font-medium bg-slate-200/60 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300">Linux / Bash</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured Blog Posts Section -->
+    <section class="py-16 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between mb-8">
+        <div>
+          <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white tracking-tight">Recent Articles</h2>
+          <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Deep dives and engineering walkthroughs.</p>
+        </div>
+        <a href="blog.html" class="inline-flex items-center gap-1.5 text-sm font-semibold text-blue-600 dark:text-blue-400 hover:underline">
+          <span>All posts</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+        </a>
+      </div>
+
+      <!-- Articles Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Post Card 1 -->
+        <article class="flex flex-col bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:shadow-lg hover:border-blue-500/40 dark:hover:border-blue-500/40 transition-all group">
+          <div class="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 mb-3">
+            <span class="px-2.5 py-0.5 rounded-full font-medium bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-900">Announcement</span>
+            <span>Aug 30, 2026</span>
+          </div>
+          <h3 class="text-lg font-bold text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors mb-2">
+            <a href="post.html?file=welcome-to-my-blog.md">Welcome to My Developer Blog & Engineering Journal</a>
+          </h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400 line-clamp-3 mb-6 flex-grow">
+            An introduction to this new developer platform, engineering thoughts, and what to expect from future posts.
+          </p>
+          <div class="pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs font-semibold text-blue-600 dark:text-blue-400">
+            <span>Read Article →</span>
+            <span class="text-slate-400 font-normal">2 min read</span>
+          </div>
+        </article>
+
+        <!-- Post Card 2 -->
+        <article class="flex flex-col bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:shadow-lg hover:border-blue-500/40 dark:hover:border-blue-500/40 transition-all group">
+          <div class="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 mb-3">
+            <span class="px-2.5 py-0.5 rounded-full font-medium bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-900">Architecture</span>
+            <span>Aug 25, 2026</span>
+          </div>
+          <h3 class="text-lg font-bold text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors mb-2">
+            <a href="post.html?file=building-modern-web-apps.md">Building Resilient Web Applications in 2026</a>
+          </h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400 line-clamp-3 mb-6 flex-grow">
+            Exploring fundamental principles for crafting blazing fast, resilient, and accessible web experiences.
+          </p>
+          <div class="pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs font-semibold text-blue-600 dark:text-blue-400">
+            <span>Read Article →</span>
+            <span class="text-slate-400 font-normal">3 min read</span>
+          </div>
+        </article>
+
+        <!-- Post Card 3 -->
+        <article class="flex flex-col bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:shadow-lg hover:border-blue-500/40 dark:hover:border-blue-500/40 transition-all group">
+          <div class="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 mb-3">
+            <span class="px-2.5 py-0.5 rounded-full font-medium bg-purple-50 dark:bg-purple-950/60 text-purple-600 dark:text-purple-400 border border-purple-200 dark:border-purple-900">DevOps</span>
+            <span>Aug 20, 2026</span>
+          </div>
+          <h3 class="text-lg font-bold text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors mb-2">
+            <a href="post.html?file=github-pages-workflow-guide.md">Complete Guide to GitHub Pages & GitHub Actions</a>
+          </h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400 line-clamp-3 mb-6 flex-grow">
+            Learn how to set up zero-downtime automated static deployments to GitHub Pages using GitHub Actions.
+          </p>
+          <div class="pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs font-semibold text-blue-600 dark:text-blue-400">
+            <span>Read Article →</span>
+            <span class="text-slate-400 font-normal">3 min read</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Docs Highlight Banner -->
+    <section class="py-12 bg-slate-100 dark:bg-slate-900/50 border-y border-slate-200 dark:border-slate-800">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="bg-gradient-to-r from-blue-900 to-indigo-950 text-white rounded-3xl p-8 sm:p-12 relative overflow-hidden shadow-xl">
+          <div class="absolute right-0 top-0 bottom-0 w-1/2 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-blue-500/20 to-transparent pointer-events-none"></div>
+          <div class="max-w-2xl relative z-10">
+            <span class="text-xs font-bold uppercase tracking-widest text-blue-300">Documentation & Blueprints</span>
+            <h2 class="text-2xl sm:text-4xl font-extrabold mt-2 mb-4 tracking-tight">Structured Guides & Technical References</h2>
+            <p class="text-blue-100/90 text-sm sm:text-base mb-6 leading-relaxed">
+              Explore step-by-step guides, deployment checklists, and architectural references formatted for fast reading and developer convenience.
+            </p>
+            <div class="flex flex-wrap items-center gap-3">
+              <a href="docs.html" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white text-slate-900 hover:bg-blue-50 font-semibold text-sm transition-all shadow">
+                <span>Browse Documentation</span>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+              </a>
+              <a href="docs.html?doc=content/docs/deployment-guide.md" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-blue-800/80 hover:bg-blue-800 text-white font-semibold text-sm border border-blue-700 transition-all">
+                <span>Deployment Guide</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 py-10">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500 dark:text-slate-400">
+      <div class="flex items-center gap-2">
+        <span class="font-bold text-slate-800 dark:text-slate-200">Pascal</span>
+        <span>•</span>
+        <span>Hosted with GitHub Pages</span>
+      </div>
+      <div>
+        <p>© <span id="current-year">2026</span> Pascal. Built with HTML5, Tailwind CSS & Markdown.</p>
+      </div>
+      <div class="flex items-center space-x-4">
+        <a href="blog.html" class="hover:text-blue-600 dark:hover:text-blue-400">Blog</a>
+        <a href="docs.html" class="hover:text-blue-600 dark:hover:text-blue-400">Docs</a>
+        <a href="projects.html" class="hover:text-blue-600 dark:hover:text-blue-400">Projects</a>
+        <a href="about.html" class="hover:text-blue-600 dark:hover:text-blue-400">About</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Main JavaScript -->
+  <script src="assets/js/app.js"></script>
+</body>
+</html>

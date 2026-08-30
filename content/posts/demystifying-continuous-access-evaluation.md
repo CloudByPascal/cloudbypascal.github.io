@@ -1,39 +1,4 @@
----
-type: Article
-title: "Demystifying Continuous Access Evaluation (CAE) in Microsoft Entra ID: Claims Challenges, Strict Location & Real-World Gotchas"
-description: "Technical deep-dive into Microsoft Entra Continuous Access Evaluation (CAE), OpenID CAEP, claims challenges, standard vs strict location enforcement, and production edge cases."
-tags: [blog, authentication, cae, continuous-access-evaluation, conditional-access, zero-trust, openid-caep, token-revocation]
-status: draft
-generated:
-  by: assistant/gemini-3.7-flash
-  at: "2026-08-26T23:44:00Z"
-sources:
-  - id: msft-cae-overview
-    resource: /raw/sources/Continuous access evaluation in Microsoft Entra - Microsoft Entra ID.md
-    title: Continuous access evaluation in Microsoft Entra - Microsoft Entra ID
-    author: "human:kenwith"
-  - id: msft-cae-strict
-    resource: /raw/sources/Continuous access evaluation strict location enforcement in Microsoft Entra ID - Microsoft Entra ID.md
-    title: Continuous access evaluation strict location enforcement in Microsoft Entra ID - Microsoft Entra ID
-    author: "human:kenwith"
-  - id: msft-cae-workload
-    resource: /raw/sources/Continuous access evaluation for workload identities in Microsoft Entra ID - Microsoft Entra ID.md
-    title: Continuous access evaluation for workload identities in Microsoft Entra ID - Microsoft Entra ID
-    author: "human:kenwith"
-  - id: msft-claims-challenges
-    resource: "/raw/sources/Claims challenges, claims requests and client capabilities - Microsoft identity platform.md"
-    title: "Claims challenges, claims requests and client capabilities - Microsoft identity platform"
-    author: "human:cilwerner"
----
 # Demystifying Continuous Access Evaluation (CAE) in Microsoft Entra ID: Claims Challenges, Strict Location & Real-World Gotchas (demystifying-continuous-access-evaluation.md)
-
-> **Author:** Identity & Cloud Security Engineering
-> 
-> **Target Audience:** Identity Architects, SecOps, Enterprise Cloud Engineers, and M365 Administrators
-> 
-> **Topics:** Microsoft Entra ID, OpenID CAEP, Zero Trust, Conditional Access, Token Lifecycle
-
----
 
 ## Introduction
 

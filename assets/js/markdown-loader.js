@@ -1,4 +1,4 @@
-// Markdown rendering & code block enhancement utility
+// Markdown rendering, Mermaid diagrams & Prism code block enhancement utility
 
 class MarkdownLoader {
   constructor(options = {}) {
@@ -6,6 +6,12 @@ class MarkdownLoader {
     this.tocContainerId = options.tocContainerId || 'toc-container';
     this.loadingId = options.loadingId || 'loading-indicator';
     this.headings = [];
+    this.currentRawMarkdown = '';
+
+    // Listen for theme toggle events to dynamically re-render Mermaid charts
+    window.addEventListener('themeChanged', () => {
+      this.renderMermaid();
+    });
   }
 
   // Parse YAML Frontmatter
@@ -66,7 +72,8 @@ class MarkdownLoader {
       const rawMarkdown = await response.text();
       const { data, content } = this.parseFrontmatter(rawMarkdown);
 
-      this.render(content, data);
+      this.currentRawMarkdown = content;
+      await this.render(content, data);
       return { success: true, metadata: data, raw: content };
     } catch (error) {
       console.error(error);
@@ -86,7 +93,7 @@ class MarkdownLoader {
   }
 
   // Render markdown string
-  render(markdownString, metadata = {}) {
+  async render(markdownString, metadata = {}) {
     const container = document.getElementById(this.containerId);
     if (!container) return;
 
@@ -96,17 +103,15 @@ class MarkdownLoader {
     // Custom renderer for marked
     const renderer = new marked.Renderer();
 
-    // Universal heading handler (supporting both modern Marked v12+ token objects & legacy positional args)
+    // Universal heading handler (supporting modern Marked v12+ token objects & legacy positional args)
     renderer.heading = function (tokenOrText, levelMaybe, rawMaybe) {
       let rawText = '';
       let depth = 1;
 
       if (tokenOrText && typeof tokenOrText === 'object') {
-        // Marked v12+ object signature: { tokens, depth, text, raw }
         rawText = tokenOrText.text || tokenOrText.raw || '';
         depth = tokenOrText.depth || 1;
       } else {
-        // Legacy signature: heading(text, level, raw)
         rawText = String(tokenOrText || '');
         depth = levelMaybe || 1;
       }
@@ -126,22 +131,31 @@ class MarkdownLoader {
       `;
     };
 
-    // Universal code block handler
+    // Universal code block & Mermaid handler
     renderer.code = function (tokenOrCode, langMaybe) {
       let code = '';
       let lang = 'text';
 
       if (tokenOrCode && typeof tokenOrCode === 'object') {
-        // Marked v12+ object signature: { text, lang, escaped }
         code = tokenOrCode.text || '';
         lang = tokenOrCode.lang || 'text';
       } else {
-        // Legacy signature: code(code, lang)
         code = String(tokenOrCode || '');
         lang = langMaybe || 'text';
       }
 
-      const language = (lang || 'text').toLowerCase();
+      const language = (lang || 'text').toLowerCase().trim();
+
+      // Special handling for Mermaid charts
+      if (language === 'mermaid') {
+        const encodedCode = encodeURIComponent(code);
+        return `
+          <div class="mermaid-container my-8 p-6 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col items-center justify-center overflow-x-auto min-h-[120px]" data-mermaid-code="${encodedCode}">
+            <div class="text-xs text-slate-400 animate-pulse">Rendering diagram...</div>
+          </div>
+        `;
+      }
+
       const escapedCode = code.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
       
       return `
@@ -195,8 +209,68 @@ class MarkdownLoader {
       Prism.highlightAllUnder(container);
     }
 
+    // Render Mermaid diagrams
+    await this.renderMermaid();
+
     // Build Table of Contents
     this.buildTOC();
+  }
+
+  // Render or Re-render Mermaid Diagrams
+  async renderMermaid() {
+    if (!window.mermaid) return;
+
+    const isDark = document.documentElement.classList.contains('dark');
+    
+    try {
+      mermaid.initialize({
+        startOnLoad: false,
+        theme: isDark ? 'dark' : 'default',
+        securityLevel: 'loose',
+        fontFamily: 'Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+        themeVariables: isDark ? {
+          darkMode: true,
+          background: '#0f172a',
+          primaryColor: '#3b82f6',
+          primaryTextColor: '#f8fafc',
+          primaryBorderColor: '#60a5fa',
+          lineColor: '#94a3b8',
+          secondaryColor: '#1e293b',
+          tertiaryColor: '#0f172a'
+        } : {
+          darkMode: false,
+          background: '#ffffff',
+          primaryColor: '#3b82f6',
+          primaryTextColor: '#0f172a',
+          primaryBorderColor: '#2563eb',
+          lineColor: '#64748b',
+          secondaryColor: '#f1f5f9',
+          tertiaryColor: '#f8fafc'
+        }
+      });
+
+      const containers = document.querySelectorAll('.mermaid-container');
+      for (let i = 0; i < containers.length; i++) {
+        const container = containers[i];
+        const rawCode = decodeURIComponent(container.getAttribute('data-mermaid-code') || '');
+        if (!rawCode) continue;
+
+        const uniqueId = `mermaid-chart-${i}-${Date.now()}`;
+        try {
+          const { svg } = await mermaid.render(uniqueId, rawCode);
+          container.innerHTML = svg;
+        } catch (err) {
+          console.error('Mermaid render error:', err);
+          container.innerHTML = `
+            <div class="w-full p-4 rounded-xl bg-rose-50 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400 text-xs">
+              <span class="font-bold">Diagram Render Error:</span> ${err.message || 'Invalid diagram syntax'}
+            </div>
+          `;
+        }
+      }
+    } catch (e) {
+      console.error('Mermaid initialization error:', e);
+    }
   }
 
   // Build Table of Contents

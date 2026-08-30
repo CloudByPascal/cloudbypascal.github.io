@@ -21,12 +21,20 @@ In this article, I want to demystify how CAE works under the hood, break down th
 
 Rather than issuing short-lived ephemeral tokens that flood authentication endpoints, CAE flips the model: Entra ID issues **long-lived tokens (up to 28 hours)** while maintaining a real-time backchannel event stream with Microsoft 365 services.
 
-```text
-Traditional OAuth 2.0 (1-Hour Token):
-[User Authenticates] ──> [1-Hour Token Issued] ──> [Admin Revokes Session] ──> [Wait up to 58 min for Token Expiry]
+```mermaid
+flowchart TD
+    subgraph Traditional ["Traditional OAuth 2.0 (1-Hour Fixed Token)"]
+        T1["User Authenticates"] --> T2["1-Hour Access Token Issued"]
+        T2 --> T3["Admin Revokes Session / Disables Account"]
+        T3 -->|"Security Gap: Up to 58 minutes"| T4["Token Finally Expires"]
+    end
 
-Continuous Access Evaluation (CAE):
-[User Authenticates (cp1)] ──> [28-Hour Token Issued] ──> [Critical Event / IP Change] ──> [Real-Time 401 Claims Challenge] ──> [Instant Re-Evaluation]
+    subgraph Modern ["Continuous Access Evaluation (CAE)"]
+        C1["User Authenticates (Client sends cp1)"] --> C2["28-Hour Long-Lived Token Issued"]
+        C2 --> C3["Critical Event / Location Change Detected"]
+        C3 -->|"Near Real-Time Backchannel Push"| C4["Resource Provider Rejects Token (401 Claims Challenge)"]
+        C4 --> C5["Client Forces Policy Re-Evaluation at Entra ID"]
+    end
 ```
 
 ### Why 28-Hour Tokens Are Actually More Secure
@@ -42,31 +50,29 @@ When administrators first see a 28-hour token duration, their initial reaction i
 
 CAE is a negotiated three-way handshake between the client application (e.g., Outlook, Teams, MSAL), the Identity Provider (Microsoft Entra ID), and the Resource Provider (Exchange, SharePoint, Graph).
 
-```text
-┌──────────────┐                 ┌───────────────────┐                 ┌──────────────────────┐
-│ CAE Client   │                 │ Microsoft Entra ID│                 │ Resource Provider    │
-│ (Outlook/WAM)│                 │ (Identity Engine) │                 │ (Exchange/SharePoint)│
-└──────┬───────┘                 └─────────┬─────────┘                 └──────────┬───────────┘
-       │ 1. Request Token (cp1)            │                                      │
-       ├──────────────────────────────────>│                                      │
-       │ 2. Issues 28-Hour CAE Token       │                                      │
-       │<──────────────────────────────────┤                                      │
-       │ 3. Access Resource (Bearer Token) │                                      │
-       ├─────────────────────────────────────────────────────────────────────────>│
-       │ 4. 200 OK (Data Returned)         │                                      │
-       │<─────────────────────────────────────────────────────────────────────────┤
-       │                                   │                                      │
-       │                        [User Disabled / IP Changed]                      │
-       │                                   │ 5. Push Event (CAEP Stream)          │
-       │                                   ├─────────────────────────────────────>│
-       │ 6. Access Resource (Cached Token) │                                      │
-       ├─────────────────────────────────────────────────────────────────────────>│
-       │ 7. 401 Unauthorized (Header: WWW-Authenticate error="insufficient_claims")│
-       │<─────────────────────────────────────────────────────────────────────────┤
-       │ 8. Force Re-Evaluation (Refresh Token + Claims Challenge)                │
-       ├──────────────────────────────────>│                                      │
-       │ 9. 400 Bad Request (Session Blocked / Interactive MFA Prompt)            │
-       │<──────────────────────────────────┤                                      │
+```mermaid
+sequenceDiagram
+    autonumber
+    actor User as User Endpoint
+    participant Client as CAE-Aware App (Outlook/MSAL)
+    participant Entra as Microsoft Entra ID
+    participant RP as Resource Provider (Exchange / SharePoint)
+
+    User->>Client: Open Application
+    Client->>Entra: POST /oauth2/v2.0/token (declaring cp1)
+    Entra-->>Client: 200 OK (28-Hour CAE Access Token)
+    Client->>RP: GET /messages (Bearer Token)
+    RP-->>Client: 200 OK (Data Returned)
+
+    Note over Entra, RP: SecOps disables user or user changes location
+    Entra-)RP: Push Event: UserSessionRevoked (OpenID CAEP Stream)
+
+    Client->>RP: GET /messages (Presents cached token)
+    RP-->>Client: 401 Unauthorized (WWW-Authenticate: error="insufficient_claims")
+
+    Note over Client: Client invalidates local token cache
+    Client->>Entra: POST /oauth2/v2.0/token (Refresh Token + Claims Challenge)
+    Entra-->>Client: 400 Bad Request (Session Blocked / Interactive MFA Prompt)
 ```
 
 ### Step 1: Declaring Client Capability (`cp1`)
@@ -113,10 +119,17 @@ CAE operates across two distinct evaluation channels:
 
 One of the most common operational challenges with CAE occurs in environments utilizing **split-tunneling VPNs, Cloud Proxies, SD-WAN, and egress gateways**.
 
-```text
-┌────────────────┐  Auth Traffic (login.microsoftonline.com) ──> Corporate Proxy Egress (1.1.1.1 - Trusted)
-│ User Endpoint  │
-└────────────────┘  Data Traffic (outlook.office.com)        ──> Local Split-Tunnel Egress (2.2.2.2 - Untrusted)
+```mermaid
+flowchart LR
+    User["Client Endpoint"]
+    Entra["Microsoft Entra ID (Auth)"]
+    M365["Exchange / SharePoint (Data)"]
+
+    User -->|"Corporate Proxy Egress (1.1.1.1 - Trusted)"| Entra
+    User -->|"Local Split-Tunnel Egress (2.2.2.2 - Untrusted)"| M365
+
+    M365 -.->|"Standard Mode: 1-Hour Fallback Token"| User
+    M365 -.->|"Strict Mode: Immediate 401 Block"| User
 ```
 
 If authentication traffic goes through corporate proxy IP `1.1.1.1` (trusted), but direct M365 data traffic routes through home ISP IP `2.2.2.2` (untrusted), an **IP mismatch** occurs:

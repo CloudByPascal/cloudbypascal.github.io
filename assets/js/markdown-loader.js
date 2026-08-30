@@ -44,6 +44,10 @@ class MarkdownLoader {
       }
     });
 
+    if (data.description && !data.summary) {
+      data.summary = data.description;
+    }
+
     return { data, content };
   }
 
@@ -64,7 +68,9 @@ class MarkdownLoader {
     if (container) container.innerHTML = '';
 
     try {
-      const response = await fetch(filePath);
+      // Append cache buster to always fetch the freshest markdown file
+      const fetchUrl = `${filePath}${filePath.includes('?') ? '&' : '?'}_t=${Date.now()}`;
+      const response = await fetch(fetchUrl, { cache: 'no-cache' });
       if (!response.ok) {
         throw new Error(`Failed to load article (${response.status}: ${response.statusText})`);
       }

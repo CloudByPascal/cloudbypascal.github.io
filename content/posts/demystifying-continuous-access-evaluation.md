@@ -1,38 +1,10 @@
 ---
-type: Article
-title: "Demystifying Continuous Access Evaluation (CAE) in Microsoft Entra ID: Claims Challenges, Strict Location & Real-World Gotchas"
-description: "Technical deep-dive into Microsoft Entra Continuous Access Evaluation (CAE), OpenID CAEP, claims challenges, standard vs strict location enforcement, and production edge cases."
-tags: [blog, authentication, cae, continuous-access-evaluation, conditional-access, zero-trust, openid-caep, token-revocation]
-status: draft
-generated:
-  by: assistant/gemini-3.7-flash
-  at: "2026-08-26T23:44:00Z"
-sources:
-  - id: msft-cae-overview
-    resource: /raw/sources/Continuous access evaluation in Microsoft Entra - Microsoft Entra ID.md
-    title: Continuous access evaluation in Microsoft Entra - Microsoft Entra ID
-    author: "human:kenwith"
-  - id: msft-cae-strict
-    resource: /raw/sources/Continuous access evaluation strict location enforcement in Microsoft Entra ID - Microsoft Entra ID.md
-    title: Continuous access evaluation strict location enforcement in Microsoft Entra ID - Microsoft Entra ID
-    author: "human:kenwith"
-  - id: msft-cae-workload
-    resource: /raw/sources/Continuous access evaluation for workload identities in Microsoft Entra ID - Microsoft Entra ID.md
-    title: Continuous access evaluation for workload identities in Microsoft Entra ID - Microsoft Entra ID
-    author: "human:kenwith"
-  - id: msft-claims-challenges
-    resource: "/raw/sources/Claims challenges, claims requests and client capabilities - Microsoft identity platform.md"
-    title: "Claims challenges, claims requests and client capabilities - Microsoft identity platform"
-    author: "human:cilwerner"
----
-# Demystifying Continuous Access Evaluation (CAE) in Microsoft Entra ID: Claims Challenges, Strict Location & Real-World Gotchas (demystifying-continuous-access-evaluation.md)
-
-> **Author:** Identity & Cloud Security Engineering
-> 
-> **Target Audience:** Identity Architects, SecOps, Enterprise Cloud Engineers, and M365 Administrators
-> 
-> **Topics:** Microsoft Entra ID, OpenID CAEP, Zero Trust, Conditional Access, Token Lifecycle
-
+title: "Demystifying Continuous Access Evaluation (CAE) in Entra ID"
+date: "2026-08-28"
+author: "Pascal Riester"
+category: "Conditional Access"
+tags: [EntraID, CAE, ContinuousAccessEvaluation, ConditionalAccess, ZeroTrust, M365Security]
+summary: "A technical deep dive into Continuous Access Evaluation (CAE) in Microsoft Entra ID: understanding real-time token revocation, claims challenges, standard vs. strict location enforcement, and practical operational gotchas."
 ---
 
 ## Introduction
@@ -354,23 +326,3 @@ Revoke-MgUserSignInSession -UserId "alex.wilber@contoso.com"
 - [ ] Use the **Continuous Access Evaluation Insights** Azure Workbook to review IP mismatches between authentication endpoints and resource providers.
 - [ ] If considering **Strict Location Enforcement**, verify all split-tunnel VPN and branch egress routes are mapped in Named Locations.
 - [ ] Educate Helpdesk/SOC on the 15–40 minute delay when re-enabling previously disabled users.
-
----
-
-## Related Knowledge Base References
-
-- [Continuous Access Evaluation Concept](/authentication/continuous-access-evaluation.md) — Canonical architectural concept, token lifetime specs, and OpenID CAEP details.
-- [Conditional Access Policy Engine](/authentication/conditional-access.md) — Zero Trust signal evaluation, session lifetime policies, and named location bindings.
-- [Conditional Access Baseline Framework (36 Policies)](/playbooks/conditional-access-baseline-framework.md) — Production policy blueprints implementing persona-tiered access controls.
-- [Workload Identities & Non-Human IAM](/identities/workload-identities.md) — Non-human CAE implementation and `cp1` token requests for service principals.
-- [Microsoft Entra ID Protection & Risk Telemetry](/protection/entra-id-protection.md) — High-risk detections and automated threat triggers feeding CAE.
-
----
-
-## Footnotes
-
-1. Continuous access evaluation in Microsoft Entra - Microsoft Entra ID (/raw/sources/Continuous access evaluation in Microsoft Entra - Microsoft Entra ID.md) [↩](#user-content-fnref-msft-cae-overview) [↩2](#user-content-fnref-msft-cae-overview-2) [↩3](#user-content-fnref-msft-cae-overview-3) [↩4](#user-content-fnref-msft-cae-overview-4) [↩5](#user-content-fnref-msft-cae-overview-5) [↩6](#user-content-fnref-msft-cae-overview-6) [↩7](#user-content-fnref-msft-cae-overview-7) [↩8](#user-content-fnref-msft-cae-overview-8) [↩9](#user-content-fnref-msft-cae-overview-9) [↩10](#user-content-fnref-msft-cae-overview-10) [↩11](#user-content-fnref-msft-cae-overview-11) [↩12](#user-content-fnref-msft-cae-overview-12) [↩13](#user-content-fnref-msft-cae-overview-13) [↩14](#user-content-fnref-msft-cae-overview-14) [↩15](#user-content-fnref-msft-cae-overview-15) [↩16](#user-content-fnref-msft-cae-overview-16) [↩17](#user-content-fnref-msft-cae-overview-17) [↩18](#user-content-fnref-msft-cae-overview-18) [↩19](#user-content-fnref-msft-cae-overview-19) [↩20](#user-content-fnref-msft-cae-overview-20) [↩21](#user-content-fnref-msft-cae-overview-21) [↩22](#user-content-fnref-msft-cae-overview-22) [↩23](#user-content-fnref-msft-cae-overview-23) [↩24](#user-content-fnref-msft-cae-overview-24) [↩25](#user-content-fnref-msft-cae-overview-25) [↩26](#user-content-fnref-msft-cae-overview-26) [↩27](#user-content-fnref-msft-cae-overview-27) [↩28](#user-content-fnref-msft-cae-overview-28)
-2. Continuous access evaluation for workload identities in Microsoft Entra ID - Microsoft Entra ID (/raw/sources/Continuous access evaluation for workload identities in Microsoft Entra ID - Microsoft Entra ID.md) [↩](#user-content-fnref-msft-cae-workload) [↩2](#user-content-fnref-msft-cae-workload-2) [↩3](#user-content-fnref-msft-cae-workload-3) [↩4](#user-content-fnref-msft-cae-workload-4) [↩5](#user-content-fnref-msft-cae-workload-5) [↩6](#user-content-fnref-msft-cae-workload-6) [↩7](#user-content-fnref-msft-cae-workload-7) [↩8](#user-content-fnref-msft-cae-workload-8) [↩9](#user-content-fnref-msft-cae-workload-9)
-3. Continuous access evaluation strict location enforcement in Microsoft Entra ID - Microsoft Entra ID (/raw/sources/Continuous access evaluation strict location enforcement in Microsoft Entra ID - Microsoft Entra ID.md) [↩](#user-content-fnref-msft-cae-strict) [↩2](#user-content-fnref-msft-cae-strict-2) [↩3](#user-content-fnref-msft-cae-strict-3) [↩4](#user-content-fnref-msft-cae-strict-4) [↩5](#user-content-fnref-msft-cae-strict-5) [↩6](#user-content-fnref-msft-cae-strict-6) [↩7](#user-content-fnref-msft-cae-strict-7) [↩8](#user-content-fnref-msft-cae-strict-8) [↩9](#user-content-fnref-msft-cae-strict-9) [↩10](#user-content-fnref-msft-cae-strict-10) [↩11](#user-content-fnref-msft-cae-strict-11) [↩12](#user-content-fnref-msft-cae-strict-12) [↩13](#user-content-fnref-msft-cae-strict-13)
-4. Claims challenges, claims requests and client capabilities - Microsoft identity platform (/raw/sources/Claims challenges, claims requests and client capabilities - Microsoft identity platform.md)
-

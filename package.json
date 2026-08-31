@@ -3,11 +3,11 @@
   "type": "module",
   "version": "1.0.0",
   "scripts": {
-    "dev": "astro dev",
-    "start": "astro dev",
-    "build": "astro build",
-    "preview": "astro preview",
-    "astro": "astro"
+    "dev": "node --import \"data:text/javascript,import fs from 'node:fs'; if (process.platform==='win32') try { process.chdir(fs.realpathSync.native ? fs.realpathSync.native(process.cwd()) : fs.realpathSync(process.cwd())); } catch {}\" ./node_modules/astro/astro.js dev",
+    "start": "node --import \"data:text/javascript,import fs from 'node:fs'; if (process.platform==='win32') try { process.chdir(fs.realpathSync.native ? fs.realpathSync.native(process.cwd()) : fs.realpathSync(process.cwd())); } catch {}\" ./node_modules/astro/astro.js dev",
+    "build": "node --import \"data:text/javascript,import fs from 'node:fs'; if (process.platform==='win32') try { process.chdir(fs.realpathSync.native ? fs.realpathSync.native(process.cwd()) : fs.realpathSync(process.cwd())); } catch {}\" ./node_modules/astro/astro.js build",
+    "preview": "node --import \"data:text/javascript,import fs from 'node:fs'; if (process.platform==='win32') try { process.chdir(fs.realpathSync.native ? fs.realpathSync.native(process.cwd()) : fs.realpathSync(process.cwd())); } catch {}\" ./node_modules/astro/astro.js preview",
+    "astro": "node --import \"data:text/javascript,import fs from 'node:fs'; if (process.platform==='win32') try { process.chdir(fs.realpathSync.native ? fs.realpathSync.native(process.cwd()) : fs.realpathSync(process.cwd())); } catch {}\" ./node_modules/astro/astro.js"
   },
   "dependencies": {
     "@astrojs/tailwind": "^5.1.5",

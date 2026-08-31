@@ -5,6 +5,7 @@ author: "Pascal Riester"
 category: "Entra ID"
 tags: [EntraID, MFA, Authentication, ZeroTrust, Passkey, SMS, Voice, GraphAPI]
 summary: "A comprehensive technical and architectural guide to Microsoft's retirement of native SMS and voice MFA, the passkey dynamic migration nudge, Graph API opt-out mechanics, and customer-managed telephony."
+cover: "/assets/img/sms-voice-retirement-timeline.png"
 ---
 
 ## Introduction
@@ -306,3 +307,4 @@ Once telemetry indicates that over 95% of active users have adopted passkeys or 
 The retirement of SMS and Voice as MFA methods represents one of the most critical security milestones in Microsoft Entra ID's history. Telephony was a necessary stepping stone in the early days of cloud computing, but in an era of industrialized AitM phishing kits and AI-driven social engineering, it provides a false sense of security.
 
 By understanding the milestone timeline, leveraging the Microsoft Graph API `passkeyDynamicMigration` opt-out for structured change management, and proactively deploying FIDO2 passkeys and Windows Hello for Business, identity architects can transform this deprecation from an operational disruption into an enterprise-wide triumph for Zero Trust security.
+

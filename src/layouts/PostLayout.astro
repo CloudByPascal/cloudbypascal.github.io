@@ -198,8 +198,9 @@ const mediumLink = mediumUrl || canonical || 'https://medium.com/@riesterpascal'
     // Enhance Code Blocks with Copy Button and Header
     function enhanceCodeBlocks() {
       document.querySelectorAll('#markdown-container pre').forEach(pre => {
-        if (pre.parentElement.classList.contains('code-block-wrapper')) return;
+        if (pre.parentElement && pre.parentElement.classList.contains('code-block-wrapper')) return;
 
+        const codeEl = pre.querySelector('code');
         // Skip mermaid pre tags
         const isMermaid = pre.getAttribute('data-language') === 'mermaid' || (codeEl && (codeEl.classList.contains('language-mermaid') || codeEl.classList.contains('mermaid')));
         if (isMermaid) {

@@ -5,7 +5,7 @@ import tailwind from '@astrojs/tailwind';
 export default defineConfig({
   site: 'https://entraidfieldnotes.com',
   output: 'static',
-  integrations: [tailwind({ applyBaseStyles: false })],
+  integrations: [tailwind()],
   markdown: {
     shikiConfig: {
       theme: 'github-dark-dimmed',

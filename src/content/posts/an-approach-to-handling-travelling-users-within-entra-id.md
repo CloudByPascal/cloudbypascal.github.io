@@ -11,6 +11,8 @@ canonical: "https://medium.com/@riesterpascal/an-approach-to-handling-travelling
 
 ![Travel Access Framework](https://cdn-images-1.medium.com/max/1024/1*FqL1IYlIlLAcLQ1gEolm9g.jpeg)
 
+## Introduction
+
 While working as an Identity and Access Administrator for an MSP, we were always feeling like we traded security for convenience whenever a user wanted to access their work resources (like Outlook, Teams, and other M365 services) while travelling.
 
 For some time now, we worked with two Microsoft Entra Conditional Access Policies and multiple Named Locations to allow users to travel while still restricting access from countries we deem risky. Over time, we realized that relying on only two Conditional Access policies and a handful of Named Locations was not enough. The model worked, but it created friction for users and required constant manual adjustments whenever someone travelled to a new country.

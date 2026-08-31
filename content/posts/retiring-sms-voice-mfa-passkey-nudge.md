@@ -3,7 +3,7 @@ title: "The Sunset of SMS & Voice MFA in Microsoft Entra ID: Navigating the 2026
 date: "2026-08-31"
 author: "Pascal Riester"
 category: "Entra ID"
-tags: [EntraID, ConditionalAccess, ZeroTrust]
+tags: [EntraID, MFA, Authentication, ZeroTrust, Passkey, SMS, Voice, GraphAPI]
 summary: "A comprehensive technical and architectural guide to Microsoft's retirement of native SMS and voice MFA, the passkey dynamic migration nudge, Graph API opt-out mechanics, and customer-managed telephony."
 ---
 

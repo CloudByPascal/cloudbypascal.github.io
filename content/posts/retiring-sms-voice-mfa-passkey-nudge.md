@@ -1,11 +1,11 @@
-   ---
-   title: "The Sunset of SMS & Voice MFA in Microsoft Entra ID: Navigating the 2026/2027 Telephony Retirement, Passkey Dynamic Nudges, and the Graph API Opt-Out"
-   date: "2026-08-31"
-   author: "Pascal Riester"
-   category: "Entra ID"
-   tags: [EntraID, ConditionalAccess, ZeroTrust]
-   summary: "A comprehensive technical and architectural guide to Microsoft's retirement of native SMS and voice MFA, the passkey dynamic migration nudge, Graph API opt-out mechanics, and customer-managed telephony."
-   ---
+---
+title: "The Sunset of SMS & Voice MFA in Microsoft Entra ID: Navigating the 2026/2027 Telephony Retirement, Passkey Dynamic Nudges, and the Graph API Opt-Out"
+date: "2026-08-31"
+author: "Pascal Riester"
+category: "Entra ID"
+tags: [EntraID, ConditionalAccess, ZeroTrust]
+summary: "A comprehensive technical and architectural guide to Microsoft's retirement of native SMS and voice MFA, the passkey dynamic migration nudge, Graph API opt-out mechanics, and customer-managed telephony."
+---
 
 ## Introduction
 
@@ -51,7 +51,7 @@ Telemetry from real-world Entra ID deployments illustrates the vast operational 
 
 Microsoft is executing the retirement across four distinct phases:
 
-![Microsoft Entra ID: SMS & Voice MFA Retirement Roadmap](/blog/assets/sms-voice-retirement-timeline.png)
+![Microsoft Entra ID: SMS & Voice MFA Retirement Roadmap](/assets/img/sms-voice-retirement-timeline.png)
 
 ### Phase 1: Passkey Default & Dynamic Migration (September 1, 2026)
 * **Default Posture:** Passkeys become the default authentication method in Microsoft Entra ID.
@@ -78,7 +78,7 @@ Microsoft is executing the retirement across four distinct phases:
 
 To accelerate passwordless adoption without requiring administrators to manually configure tenant-wide registration campaigns, Entra ID introduces **Dynamic Migration Nudges**.
 
-![Passkey Nudge and Opt-Out Evaluation Flow](/blog/assets/passkey-nudge-and-optout-flow.png)
+![Passkey Nudge and Opt-Out Evaluation Flow](/assets/img/passkey-nudge-and-optout-flow.png)
 
 ### 3.1 The In-Line Sign-In Experience
 When an end user signs in:
@@ -176,7 +176,7 @@ $currentPolicy.OptOutSettings.PasskeyDynamicMigration
 
 As organizations plan their decommission of native SMS and voice MFA, they must choose between two distinct transition paths:
 
-![Telephony to Passkey Migration Architecture](/blog/assets/telephony-to-passkey-architecture.png)
+![Telephony to Passkey Migration Architecture](/assets/img/telephony-to-passkey-architecture.png)
 
 ### Path A: Phishing-Resistant MFA & Passwordless (The Strategic Standard)
 

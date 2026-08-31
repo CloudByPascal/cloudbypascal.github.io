@@ -404,14 +404,16 @@
     };
 
     // Filter events
+    const activeClasses = ['active', 'bg-blue-600', 'text-white', 'shadow-sm'];
+    const inactiveClasses = ['bg-white', 'dark:bg-slate-900', 'border', 'border-slate-200', 'dark:border-slate-800', 'text-slate-700', 'dark:text-slate-300'];
+
     filterBtns.forEach(btn => {
       btn.addEventListener('click', () => {
         filterBtns.forEach(b => {
-          b.classList.remove('active', 'bg-blue-600', 'text-white', 'shadow-sm');
-          b.classList.add('bg-white', 'dark:bg-slate-900', 'border', 'border-slate-200', 'dark:border-slate-800', 'text-slate-700', 'dark:text-slate-300');
+          const isActive = b === btn;
+          activeClasses.forEach(c => b.classList.toggle(c, isActive));
+          inactiveClasses.forEach(c => b.classList.toggle(c, !isActive));
         });
-        btn.classList.add('active', 'bg-blue-600', 'text-white', 'shadow-sm');
-        btn.classList.remove('bg-white', 'dark:bg-slate-900', 'border', 'border-slate-200', 'dark:border-slate-800', 'text-slate-700', 'dark:text-slate-300');
         currentCategory = btn.dataset.category;
         renderPosts();
       });

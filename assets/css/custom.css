@@ -48,18 +48,6 @@ code, kbd, samp, pre {
   -webkit-backdrop-filter: blur(12px);
 }
 
-/* Code block enhancements */
-pre[class*="language-"] {
-  position: relative;
-  border-radius: 0.75rem;
-  margin: 1.5rem 0;
-  border: 1px solid rgba(229, 231, 235, 0.8);
-}
-
-.dark pre[class*="language-"] {
-  border: 1px solid rgba(55, 65, 81, 0.7);
-}
-
 .code-block-wrapper {
   position: relative;
   margin-top: 1.25rem;
@@ -236,73 +224,3 @@ pre[class*="language-"] {
   color: #38bdf8;
 }
 
-/* Callout alerts */
-.callout {
-  padding: 1rem 1.25rem;
-  border-radius: 0.5rem;
-  margin: 1.25rem 0;
-  display: flex;
-  gap: 0.75rem;
-  align-items: flex-start;
-}
-
-.callout-info {
-  background-color: #eff6ff;
-  border: 1px solid #bfdbfe;
-  color: #1e40af;
-}
-
-.dark .callout-info {
-  background-color: rgba(30, 58, 138, 0.25);
-  border-color: #1e3a8a;
-  color: #93c5fd;
-}
-
-.callout-tip {
-  background-color: #ecfdf5;
-  border: 1px solid #a7f3d0;
-  color: #065f46;
-}
-
-.dark .callout-tip {
-  background-color: rgba(6, 78, 59, 0.25);
-  border-color: #064e3b;
-  color: #6ee7b7;
-}
-
-.callout-warning {
-  background-color: #fffbeb;
-  border: 1px solid #fde68a;
-  color: #92400e;
-}
-
-.dark .callout-warning {
-  background-color: rgba(120, 53, 15, 0.25);
-  border-color: #78350f;
-  color: #fcd34d;
-}
-
-/* Active navigation link */
-.nav-link.active {
-  color: #3b82f6;
-  font-weight: 600;
-}
-
-.dark .nav-link.active {
-  color: #60a5fa;
-}
-
-/* Mermaid Diagram Styling */
-.mermaid {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  background: transparent !important;
-  font-family: var(--font-sans) !important;
-}
-
-.mermaid svg {
-  max-width: 100%;
-  height: auto;
-}

@@ -6,57 +6,35 @@ class MarkdownLoader {
     this.tocContainerId = options.tocContainerId || 'toc-container';
     this.loadingId = options.loadingId || 'loading-indicator';
     this.headings = [];
-    this.currentRawMarkdown = '';
 
-    // Listen for theme toggle events to dynamically re-render Mermaid charts
-    window.addEventListener('themeChanged', () => {
-      this.renderMermaid();
-    });
+    window.addEventListener('themeChanged', () => this.renderMermaid());
   }
 
   // Parse YAML Frontmatter
   parseFrontmatter(markdown) {
-    const frontmatterRegex = /^---\r?\n([\s\S]*?)\r?\n---\r?\n/;
-    const match = markdown.match(frontmatterRegex);
-    
-    if (!match) {
-      return { data: {}, content: markdown };
-    }
+    const match = markdown.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n/);
+    if (!match) return { data: {}, content: markdown };
 
-    const yamlBlock = match[1];
-    const content = markdown.slice(match[0].length);
     const data = {};
-
-    yamlBlock.split('\n').forEach(line => {
-      const colonIdx = line.indexOf(':');
-      if (colonIdx !== -1) {
-        const key = line.slice(0, colonIdx).trim();
-        let value = line.slice(colonIdx + 1).trim();
-        // Remove quotes if present
-        if ((value.startsWith('"') && value.endsWith('"')) || (value.startsWith("'") && value.endsWith("'"))) {
-          value = value.slice(1, -1);
+    match[1].split('\n').forEach(line => {
+      const idx = line.indexOf(':');
+      if (idx !== -1) {
+        const key = line.slice(0, idx).trim();
+        let val = line.slice(idx + 1).trim().replace(/^['"]|['"]$/g, '');
+        if (val.startsWith('[') && val.endsWith(']')) {
+          val = val.slice(1, -1).split(',').map(s => s.trim().replace(/^['"]|['"]$/g, ''));
         }
-        // Parse array if tags: [tag1, tag2]
-        if (value.startsWith('[') && value.endsWith(']')) {
-          value = value.slice(1, -1).split(',').map(s => s.trim().replace(/^['"]|['"]$/g, ''));
-        }
-        data[key] = value;
+        data[key] = val;
       }
     });
 
-    if (data.description && !data.summary) {
-      data.summary = data.description;
-    }
-
-    return { data, content };
+    if (data.description && !data.summary) data.summary = data.description;
+    return { data, content: markdown.slice(match[0].length) };
   }
 
   // Calculate reading time
   calculateReadingTime(text) {
-    const wordsPerMinute = 200;
-    const words = text.trim().split(/\s+/).length;
-    const minutes = Math.ceil(words / wordsPerMinute);
-    return `${minutes} min read`;
+    return `${Math.ceil(text.trim().split(/\s+/).length / 200)} min read`;
   }
 
   // Load and render markdown file
@@ -68,18 +46,14 @@ class MarkdownLoader {
     if (container) container.innerHTML = '';
 
     try {
-      // Append cache buster to always fetch the freshest markdown file
       const fetchUrl = `${filePath}${filePath.includes('?') ? '&' : '?'}_t=${Date.now()}`;
       const response = await fetch(fetchUrl, { cache: 'no-cache' });
-      if (!response.ok) {
-        throw new Error(`Failed to load article (${response.status}: ${response.statusText})`);
-      }
+      if (!response.ok) throw new Error(`Failed to load article (${response.status}: ${response.statusText})`);
 
       const rawMarkdown = await response.text();
       const { data, content } = this.parseFrontmatter(rawMarkdown);
 
-      this.currentRawMarkdown = content;
-      await this.render(content, data);
+      await this.render(content);
       return { success: true, metadata: data, raw: content };
     } catch (error) {
       console.error(error);
@@ -99,35 +73,21 @@ class MarkdownLoader {
   }
 
   // Render markdown string
-  async render(markdownString, metadata = {}) {
+  async render(markdownString) {
     const container = document.getElementById(this.containerId);
     if (!container) return;
 
     this.headings = [];
     const self = this;
-
-    // Custom renderer for marked
     const renderer = new marked.Renderer();
 
-    // Universal heading handler
-    renderer.heading = function (tokenOrText, levelMaybe, rawMaybe) {
-      let rawText = '';
-      let depth = 1;
-
-      if (tokenOrText && typeof tokenOrText === 'object') {
-        rawText = tokenOrText.text || tokenOrText.raw || '';
-        depth = tokenOrText.depth || 1;
-      } else {
-        rawText = String(tokenOrText || '');
-        depth = levelMaybe || 1;
-      }
-
+    renderer.heading = function (tokenOrText, levelMaybe) {
+      const rawText = (typeof tokenOrText === 'object' ? tokenOrText.text || tokenOrText.raw : tokenOrText) || '';
+      const depth = (typeof tokenOrText === 'object' ? tokenOrText.depth : levelMaybe) || 1;
       const cleanText = String(rawText).replace(/<[^>]*>/g, '').trim();
       const id = cleanText.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-');
-      
-      if (depth <= 3 && cleanText) {
-        self.headings.push({ text: cleanText, id, level: depth });
-      }
+
+      if (depth <= 3 && cleanText) self.headings.push({ text: cleanText, id, level: depth });
 
       return `
         <h${depth} id="${id}" class="group relative flex items-center">
@@ -137,62 +97,37 @@ class MarkdownLoader {
       `;
     };
 
-    // Universal code block & Mermaid handler
     renderer.code = function (tokenOrCode, langMaybe) {
-      let code = '';
-      let lang = 'text';
+      const code = (typeof tokenOrCode === 'object' ? tokenOrCode.text : tokenOrCode) || '';
+      const lang = ((typeof tokenOrCode === 'object' ? tokenOrCode.lang : langMaybe) || 'text').toLowerCase().trim();
 
-      if (tokenOrCode && typeof tokenOrCode === 'object') {
-        code = tokenOrCode.text || '';
-        lang = tokenOrCode.lang || 'text';
-      } else {
-        code = String(tokenOrCode || '');
-        lang = langMaybe || 'text';
-      }
-
-      const language = (lang || 'text').toLowerCase().trim();
-
-      // Special handling for Mermaid diagrams
-      if (language === 'mermaid') {
-        const encodedCode = encodeURIComponent(code.trim());
+      if (lang === 'mermaid') {
         return `
-          <div class="mermaid-container my-8 p-6 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col items-center justify-center overflow-x-auto min-h-[140px]" data-mermaid-code="${encodedCode}">
+          <div class="mermaid-container my-8 p-6 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col items-center justify-center overflow-x-auto min-h-[140px]" data-mermaid-code="${encodeURIComponent(code.trim())}">
             <div class="text-xs text-slate-400 font-medium animate-pulse">Rendering diagram...</div>
           </div>
         `;
       }
 
       const escapedCode = code.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-      
       return `
         <div class="code-block-wrapper my-6">
           <div class="code-header">
-            <span>${language.toUpperCase()}</span>
-            <button class="copy-btn" onclick="navigator.clipboard.writeText(decodeURIComponent('${encodeURIComponent(code)}')).then(() => showToast('Code copied to clipboard!', 'success'))">
+            <span>${lang.toUpperCase()}</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.closest('.code-block-wrapper').querySelector('code').innerText).then(() => showToast('Code copied to clipboard!', 'success'))">
               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
               <span>Copy</span>
             </button>
           </div>
-          <pre class="!m-0 !p-4 !bg-slate-900 text-slate-100 text-sm overflow-x-auto"><code class="language-${language}">${escapedCode}</code></pre>
+          <pre class="!m-0 !p-4 !bg-slate-900 text-slate-100 text-sm overflow-x-auto"><code class="language-${lang}">${escapedCode}</code></pre>
         </div>
       `;
     };
 
-    // Universal image handler with lazy loading and captions
     renderer.image = function (tokenOrHref, titleMaybe, textMaybe) {
-      let href = '';
-      let text = '';
-      let title = '';
-
-      if (tokenOrHref && typeof tokenOrHref === 'object') {
-        href = tokenOrHref.href || '';
-        text = tokenOrHref.text || '';
-        title = tokenOrHref.title || '';
-      } else {
-        href = String(tokenOrHref || '');
-        title = titleMaybe || '';
-        text = textMaybe || '';
-      }
+      const href = (typeof tokenOrHref === 'object' ? tokenOrHref.href : tokenOrHref) || '';
+      const text = (typeof tokenOrHref === 'object' ? tokenOrHref.text : textMaybe) || '';
+      const title = (typeof tokenOrHref === 'object' ? tokenOrHref.title : titleMaybe) || '';
 
       return `
         <figure class="my-8">
@@ -202,43 +137,19 @@ class MarkdownLoader {
       `;
     };
 
-    if (typeof marked.use === 'function') {
-      marked.use({ renderer, breaks: true, gfm: true });
-    } else if (typeof marked.setOptions === 'function') {
-      marked.setOptions({ renderer, breaks: true, gfm: true });
-    }
-
+    marked.use({ renderer, breaks: true, gfm: true });
     container.innerHTML = marked.parse(markdownString);
 
-    // Apply Prism syntax highlighting if available
-    if (window.Prism) {
-      Prism.highlightAllUnder(container);
-    }
-
-    // Render Mermaid diagrams
+    if (window.Prism) Prism.highlightAllUnder(container);
     await this.renderMermaid();
-
-    // Build Table of Contents
     this.buildTOC();
   }
 
   // Render or Re-render Mermaid Diagrams
   async renderMermaid() {
-    // Wait for Mermaid to be loaded if CDN script is still downloading
-    if (!window.mermaid) {
-      for (let retry = 0; retry < 30; retry++) {
-        await new Promise(r => setTimeout(r, 100));
-        if (window.mermaid) break;
-      }
-    }
-
-    if (!window.mermaid) {
-      console.warn('Mermaid.js library not available.');
-      return;
-    }
+    if (!window.mermaid) return;
 
     const isDark = document.documentElement.classList.contains('dark');
-    
     try {
       mermaid.initialize({
         startOnLoad: false,
@@ -277,7 +188,7 @@ class MarkdownLoader {
           const { svg } = await mermaid.render(uniqueId, rawCode);
           container.innerHTML = `<div class="mermaid-svg-wrapper w-full flex justify-center items-center">${svg}</div>`;
         } catch (err) {
-          console.error('Mermaid render error for chart', i, err);
+          console.error('Mermaid render error:', err);
           container.innerHTML = `
             <div class="w-full p-4 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900 text-amber-800 dark:text-amber-200 text-xs">
               <span class="font-bold">Diagram Render Error:</span> ${err.message || 'Syntax error'}
@@ -310,7 +221,7 @@ class MarkdownLoader {
       `;
     });
     tocHtml += '</ul>';
-
     tocContainer.innerHTML = tocHtml;
   }
 }
+

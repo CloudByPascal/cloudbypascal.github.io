@@ -1,0 +1,319 @@
+---
+import BaseLayout from './BaseLayout.astro';
+
+interface Heading {
+  depth: number;
+  slug: string;
+  text: string;
+}
+
+interface Props {
+  post: {
+    slug: string;
+    data: {
+      title: string;
+      date: string;
+      author?: string;
+      category: string;
+      tags: string[];
+      summary: string;
+      description?: string;
+      cover?: string;
+      canonical?: string;
+      mediumUrl?: string;
+    };
+    body: string;
+  };
+  headings: Heading[];
+}
+
+const { post, headings } = Astro.props;
+const { title, date, author = 'Pascal Riester', category, tags = [], summary, description, cover, canonical, mediumUrl } = post.data;
+
+// Calculate estimated reading time
+const wordCount = post.body ? post.body.trim().split(/\s+/).length : 500;
+const readingTime = `${Math.ceil(wordCount / 200)} min read`;
+
+// Filter headings for TOC (h2 and h3)
+const tocHeadings = headings.filter(h => h.depth >= 2 && h.depth <= 3);
+
+// Canonical & Medium URLs
+const mediumLink = mediumUrl || canonical || 'https://medium.com/@riesterpascal';
+---
+
+<BaseLayout
+  title={title}
+  description={summary || description}
+  image={cover || '/assets/img/pascal-riester.png'}
+  articleDate={date}
+  articleTags={tags}
+  type="article"
+>
+  <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex-grow w-full">
+
+    <!-- Breadcrumb & Share Actions -->
+    <div class="flex items-center justify-between pb-6 mb-8 border-b border-slate-200 dark:border-slate-800">
+      <a href="/" class="inline-flex items-center gap-2 text-xs font-semibold text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+        </svg>
+        <span>Back to All Articles</span>
+      </a>
+
+      <div class="flex items-center gap-2">
+        {mediumLink && (
+          <a href={mediumLink} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all shadow-sm">
+            <span>Read on Medium ↗</span>
+          </a>
+        )}
+
+        <button id="share-btn" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all shadow-sm">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path>
+          </svg>
+          <span>Share</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+
+      <!-- Article Content (Span 8) -->
+      <article class="lg:col-span-8">
+
+        <!-- Post Header Metadata -->
+        <div class="mb-8">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-900">{category}</span>
+            <span class="text-xs text-slate-400">•</span>
+            <span class="text-xs text-slate-500 dark:text-slate-400">{date}</span>
+            <span class="text-xs text-slate-400">•</span>
+            <span class="text-xs text-slate-500 dark:text-slate-400">{readingTime}</span>
+          </div>
+          <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-tight">
+            {title}
+          </h1>
+          {summary && (
+            <p class="text-base sm:text-lg text-slate-600 dark:text-slate-300 mt-3 leading-relaxed">
+              {summary}
+            </p>
+          )}
+          {tags.length > 0 && (
+            <div class="flex flex-wrap gap-1.5 mt-4">
+              {tags.map((tag: string) => (
+                <span class="text-xs px-2.5 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 font-mono">
+                  #{tag}
+                </span>
+              ))}
+            </div>
+          )}
+          <hr class="my-6 border-slate-200 dark:border-slate-800">
+        </div>
+
+        <!-- Markdown Render Container -->
+        <div id="markdown-container" class="markdown-content text-slate-800 dark:text-slate-200">
+          <slot />
+        </div>
+
+        <!-- Author / Medium Footer Box -->
+        <div class="mt-14 p-6 sm:p-8 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-6">
+          <div class="flex items-center gap-4">
+            <img src="/assets/img/pascal-riester.png" alt="Pascal Riester"
+              class="w-14 h-14 rounded-2xl object-cover object-top ring-2 ring-blue-500/20 shrink-0">
+            <div>
+              <div class="text-base font-bold text-slate-900 dark:text-white">Pascal Riester</div>
+              <div class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Author on Medium • <a href="https://medium.com/@riesterpascal" target="_blank" class="text-blue-600 dark:text-blue-400 underline">@riesterpascal</a></div>
+            </div>
+          </div>
+          <a href="https://medium.com/@riesterpascal" target="_blank" rel="noopener noreferrer" class="px-4 py-2 rounded-xl text-xs font-semibold bg-slate-900 text-white dark:bg-white dark:text-slate-900 hover:bg-slate-800 dark:hover:bg-slate-100 transition-all shadow-sm">
+            Follow on Medium ↗
+          </a>
+        </div>
+      </article>
+
+      <!-- Table of Contents Sidebar (Span 4) -->
+      <aside class="lg:col-span-4 hidden lg:block">
+        <div class="sticky top-24 space-y-6">
+          <div class="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
+            <h2 class="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-4 flex items-center gap-2">
+              <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"></path>
+              </svg>
+              <span>Table of Contents</span>
+            </h2>
+            <nav id="toc-nav" class="space-y-1 text-xs">
+              {tocHeadings.length > 0 ? (
+                tocHeadings.map(h => (
+                  <a
+                    href={`#${h.slug}`}
+                    class={`block py-1.5 rounded-lg transition-colors leading-relaxed hover:text-blue-600 dark:hover:text-blue-400 ${
+                      h.depth === 3
+                        ? 'pl-6 text-slate-500 dark:text-slate-400'
+                        : 'pl-2 text-slate-700 dark:text-slate-300 font-medium'
+                    }`}
+                  >
+                    {h.text}
+                  </a>
+                ))
+              ) : (
+                <p class="text-xs text-slate-400 py-2">No sections available.</p>
+              )}
+            </nav>
+          </div>
+        </div>
+      </aside>
+
+    </div>
+  </main>
+
+  <!-- Mermaid.js Engine -->
+  <script is:inline src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js"></script>
+
+  <!-- Post Interactive Scripts: Code block enhancements, Mermaid diagram render, Share, TOC Spy -->
+  <script is:inline>
+    // Share Button Handling
+    document.getElementById('share-btn')?.addEventListener('click', async () => {
+      if (navigator.share) {
+        try {
+          await navigator.share({
+            title: document.title,
+            url: window.location.href,
+          });
+        } catch (err) {
+          if (err.name !== 'AbortError') {
+            copyToClipboard(window.location.href, 'Link copied to clipboard!');
+          }
+        }
+      } else {
+        copyToClipboard(window.location.href, 'Link copied to clipboard!');
+      }
+    });
+
+    function copyToClipboard(text, message = 'Copied!') {
+      navigator.clipboard.writeText(text).then(() => {
+        if (window.showToast) window.showToast(message, 'success');
+      });
+    }
+
+    // Enhance Code Blocks with Copy Button and Header
+    function enhanceCodeBlocks() {
+      document.querySelectorAll('#markdown-container pre').forEach(pre => {
+        if (pre.parentElement.classList.contains('code-block-wrapper')) return;
+
+        // Skip mermaid pre tags
+        const isMermaid = pre.getAttribute('data-language') === 'mermaid' || (codeEl && (codeEl.classList.contains('language-mermaid') || codeEl.classList.contains('mermaid')));
+        if (isMermaid) {
+          return;
+        }
+
+        const wrapper = document.createElement('div');
+        wrapper.className = 'code-block-wrapper my-6';
+
+        const header = document.createElement('div');
+        header.className = 'code-header';
+
+        const langMatch = pre.getAttribute('data-language') || (codeEl ? codeEl.className.match(/language-([a-zA-Z0-9_-]+)/)?.[1] : null);
+        const langName = (langMatch ? langMatch.toUpperCase() : 'CODE');
+
+        header.innerHTML = `
+          <span>${langName}</span>
+          <button class="copy-btn">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+            </svg>
+            <span>Copy</span>
+          </button>
+        `;
+
+        header.querySelector('.copy-btn').addEventListener('click', () => {
+          const text = codeEl ? codeEl.innerText : pre.innerText;
+          copyToClipboard(text, 'Code copied to clipboard!');
+        });
+
+        pre.parentNode.insertBefore(wrapper, pre);
+        wrapper.appendChild(header);
+        wrapper.appendChild(pre);
+      });
+    }
+
+    // Mermaid Diagram Handling
+    function renderMermaidDiagrams() {
+      const isDark = document.documentElement.classList.contains('dark');
+      if (typeof mermaid !== 'undefined') {
+        mermaid.initialize({
+          startOnLoad: false,
+          theme: isDark ? 'dark' : 'default',
+          themeVariables: {
+            fontFamily: 'Inter, sans-serif',
+            primaryColor: isDark ? '#1e293b' : '#eff6ff',
+            primaryTextColor: isDark ? '#f8fafc' : '#0f172a',
+            primaryBorderColor: isDark ? '#3b82f6' : '#2563eb',
+            lineColor: isDark ? '#60a5fa' : '#2563eb',
+            secondaryColor: isDark ? '#0f172a' : '#f8fafc',
+            tertiaryColor: isDark ? '#1e293b' : '#ffffff'
+          }
+        });
+
+        document.querySelectorAll('#markdown-container pre[data-language="mermaid"], #markdown-container pre code.language-mermaid, #markdown-container .mermaid, #markdown-container pre.mermaid').forEach(async (el) => {
+          const rawCode = el.dataset.rawMermaid || el.textContent;
+          el.dataset.rawMermaid = rawCode;
+
+          const container = el.classList.contains('mermaid-container') ? el : (el.closest('.mermaid-container') || document.createElement('div'));
+          container.className = 'mermaid-container my-8 p-6 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col items-center justify-center overflow-x-auto min-h-[140px]';
+          container.dataset.rawMermaid = rawCode;
+
+          try {
+            const id = 'mermaid-svg-' + Math.random().toString(36).substring(2, 9);
+            const { svg } = await mermaid.render(id, rawCode.trim());
+            container.innerHTML = svg;
+            if (!el.classList.contains('mermaid-container') && !el.closest('.mermaid-container')) {
+              el.replaceWith(container);
+            }
+          } catch (e) {
+            console.error('Mermaid render error:', e);
+          }
+        });
+      }
+    }
+
+    // Scroll spy for TOC
+    function initScrollSpy() {
+      const headings = Array.from(document.querySelectorAll('#markdown-container h2, #markdown-container h3'));
+      const tocLinks = Array.from(document.querySelectorAll('#toc-nav a'));
+
+      if (headings.length === 0 || tocLinks.length === 0) return;
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const id = entry.target.getAttribute('id');
+            tocLinks.forEach(link => {
+              const isMatch = link.getAttribute('href') === `#${id}`;
+              link.classList.toggle('text-blue-600', isMatch);
+              link.classList.toggle('dark:text-blue-400', isMatch);
+              link.classList.toggle('font-bold', isMatch);
+            });
+          }
+        });
+      }, { rootMargin: '0px 0px -70% 0px' });
+
+      headings.forEach(h => observer.observe(h));
+    }
+
+    // Initialize on load & reactivity
+    document.addEventListener('DOMContentLoaded', () => {
+      enhanceCodeBlocks();
+      renderMermaidDiagrams();
+      initScrollSpy();
+    });
+
+    window.addEventListener('themeChanged', () => {
+      renderMermaidDiagrams();
+    });
+
+    // Run enhancements immediately in case DOM is already parsed
+    enhanceCodeBlocks();
+    renderMermaidDiagrams();
+    initScrollSpy();
+  </script>
+</BaseLayout>

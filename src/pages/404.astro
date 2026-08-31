@@ -1,0 +1,29 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="404 - Page Not Found" description="The requested page could not be found.">
+  <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20 flex-grow flex items-center justify-center w-full">
+    <div class="text-center max-w-lg">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800 text-rose-700 dark:text-rose-300 mb-6">
+        <span>404 Error</span>
+      </div>
+      <h1 class="text-6xl sm:text-7xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-4">404</h1>
+      <h2 class="text-xl sm:text-2xl font-bold text-slate-800 dark:text-slate-200 mb-3">Page Not Found</h2>
+      <p class="text-sm text-slate-600 dark:text-slate-400 mb-8 leading-relaxed">
+        The article or page you are looking for might have been moved, renamed, or is temporarily unavailable.
+      </p>
+      <div class="flex items-center justify-center gap-3">
+        <a
+          href="/"
+          class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-semibold bg-slate-900 text-white dark:bg-white dark:text-slate-900 hover:bg-slate-800 dark:hover:bg-slate-100 transition-all shadow-sm"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          <span>Back to Homepage</span>
+        </a>
+      </div>
+    </div>
+  </main>
+</BaseLayout>

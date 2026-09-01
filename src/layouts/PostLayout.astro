@@ -166,6 +166,18 @@ const mediumLink = mediumUrl || canonical || 'https://medium.com/@riesterpascal'
     </div>
   </main>
 
+
+  <!-- Image Lightbox Modal -->
+  <dialog id="image-lightbox" class="p-0 bg-transparent border-0 outline-none max-w-6xl w-auto overflow-visible focus:outline-none">
+    <button id="lightbox-close" class="fixed top-4 right-4 sm:top-6 sm:right-6 z-50 p-2.5 rounded-full bg-slate-900/80 hover:bg-slate-800 text-slate-200 hover:text-white border border-slate-700/80 shadow-2xl backdrop-blur-md transition-all hover:scale-110 focus:outline-none" aria-label="Close image">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+    </button>
+    <div class="relative p-2 sm:p-4 flex flex-col items-center max-w-full">
+      <img id="lightbox-img" src="" alt="" class="max-h-[85vh] max-w-[92vw] object-contain rounded-2xl shadow-2xl border border-slate-800 bg-slate-950/90 cursor-zoom-out" />
+      <p id="lightbox-caption" class="mt-3 text-xs sm:text-sm text-slate-300 text-center font-medium max-w-2xl px-4 py-1.5 bg-slate-900/90 border border-slate-800 rounded-xl shadow-lg hidden"></p>
+    </div>
+  </dialog>
+
   <!-- Mermaid.js Engine -->
   <script is:inline src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js"></script>
 
@@ -277,6 +289,42 @@ const mediumLink = mediumUrl || canonical || 'https://medium.com/@riesterpascal'
       }
     }
 
+
+    // Image Lightbox Handling
+    function initImageLightbox() {
+      const dialog = document.getElementById('image-lightbox');
+      const lightboxImg = document.getElementById('lightbox-img');
+      const lightboxCaption = document.getElementById('lightbox-caption');
+      if (!dialog || !lightboxImg) return;
+
+      document.querySelectorAll('#markdown-container img').forEach(img => {
+        if (!img.title && img.alt) {
+          img.title = `Click to expand: ${img.alt}`;
+        }
+
+        img.addEventListener('click', () => {
+          lightboxImg.src = img.currentSrc || img.src;
+          lightboxImg.alt = img.alt || '';
+          if (lightboxCaption) {
+            if (img.alt && img.alt.trim()) {
+              lightboxCaption.textContent = img.alt;
+              lightboxCaption.classList.remove('hidden');
+            } else {
+              lightboxCaption.textContent = '';
+              lightboxCaption.classList.add('hidden');
+            }
+          }
+          dialog.showModal();
+        });
+      });
+
+      dialog.addEventListener('click', (e) => {
+        if (e.target === dialog || e.target.closest('#lightbox-close') || e.target === lightboxImg) {
+          dialog.close();
+        }
+      });
+    }
+
     // Scroll spy for TOC
     function initScrollSpy() {
       const headings = Array.from(document.querySelectorAll('#markdown-container h2, #markdown-container h3'));
@@ -306,6 +354,7 @@ const mediumLink = mediumUrl || canonical || 'https://medium.com/@riesterpascal'
       enhanceCodeBlocks();
       renderMermaidDiagrams();
       initScrollSpy();
+      initImageLightbox();
     });
 
     window.addEventListener('themeChanged', () => {
@@ -316,5 +365,6 @@ const mediumLink = mediumUrl || canonical || 'https://medium.com/@riesterpascal'
     enhanceCodeBlocks();
     renderMermaidDiagrams();
     initScrollSpy();
+    initImageLightbox();
   </script>
 </BaseLayout>

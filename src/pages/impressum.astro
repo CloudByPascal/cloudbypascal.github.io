@@ -1,0 +1,147 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Impressum"
+  description="Rechtliche Anbieterkennzeichnung und Angaben gemäß § 5 Digitale-Dienste-Gesetz (DDG) und § 18 Abs. 2 Medienstaatsvertrag (MStV)."
+>
+  <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 flex-grow w-full">
+    <!-- Zurück zur Startseite -->
+    <div class="mb-8">
+      <a
+        href="/"
+        class="inline-flex items-center gap-2 text-xs font-semibold text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors group"
+      >
+        <svg class="w-4 h-4 transition-transform group-hover:-translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+        </svg>
+        <span>Zurück zur Übersicht</span>
+      </a>
+    </div>
+
+    <!-- Header-Bereich -->
+    <header class="mb-10 pb-8 border-b border-slate-200 dark:border-slate-800">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-300 mb-4">
+        <span>Rechtliche Hinweise</span>
+      </div>
+      <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white mb-3">
+        Impressum
+      </h1>
+      <p class="text-sm sm:text-base text-slate-600 dark:text-slate-400 max-w-2xl leading-relaxed">
+        Anbieterkennzeichnung gemäß § 5 Digitale-Dienste-Gesetz (DDG) und inhaltlich verantwortlich gemäß § 18 Abs. 2 Medienstaatsvertrag (MStV).
+      </p>
+    </header>
+
+    <div class="space-y-8">
+      <!-- Angaben gemäß § 5 DDG & Kontakt Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Diensteanbieter -->
+        <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-8 h-8 rounded-xl bg-blue-50 dark:bg-blue-950/80 border border-blue-200 dark:border-blue-800 flex items-center justify-center text-blue-600 dark:text-blue-400">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+              </svg>
+            </div>
+            <h2 class="text-base font-bold text-slate-900 dark:text-white">Angaben gemäß § 5 DDG</h2>
+          </div>
+          <div class="text-sm text-slate-700 dark:text-slate-300 space-y-1">
+            <p class="font-semibold text-slate-900 dark:text-white">Pascal Riester</p>
+            <p class="text-slate-600 dark:text-slate-400">Albstraße 10</p>
+            <p class="text-slate-600 dark:text-slate-400">72658 Bempflingen</p>
+            <p class="text-slate-600 dark:text-slate-400">Deutschland</p>
+          </div>
+        </div>
+
+        <!-- Kontakt -->
+        <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-8 h-8 rounded-xl bg-blue-50 dark:bg-blue-950/80 border border-blue-200 dark:border-blue-800 flex items-center justify-center text-blue-600 dark:text-blue-400">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+              </svg>
+            </div>
+            <h2 class="text-base font-bold text-slate-900 dark:text-white">Kontakt</h2>
+          </div>
+          <div class="text-sm text-slate-700 dark:text-slate-300 space-y-3">
+            <div>
+              <span class="text-slate-500 dark:text-slate-400 block text-xs uppercase font-medium">E-Mail</span>
+              <a href="mailto:info@entraidfieldnotes.com" class="font-medium text-blue-600 dark:text-blue-400 hover:underline">
+                info@entraidfieldnotes.com
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Redaktionelle Verantwortung -->
+      <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
+        <h2 class="text-base font-bold text-slate-900 dark:text-white mb-2">
+          Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV
+        </h2>
+        <div class="text-sm text-slate-700 dark:text-slate-300 space-y-1">
+          <p class="font-medium text-slate-900 dark:text-white">Pascal Riester</p>
+          <p class="text-slate-600 dark:text-slate-400">Albstraße 10</p>
+          <p class="text-slate-600 dark:text-slate-400">72658 Bempflingen</p>
+          <p class="text-slate-600 dark:text-slate-400">Deutschland</p>
+        </div>
+      </div>
+
+      <!-- Haftung für Inhalte, Links und Urheberrecht -->
+      <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-6">
+        <div>
+          <h3 class="text-base font-bold text-slate-900 dark:text-white mb-2">Haftung für Inhalte</h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+            Als Diensteanbieter sind wir gemäß § 7 Abs. 1 DDG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 DDG sind wir als Diensteanbieter jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen. Verpflichtungen zur Entfernung oder Sperrung der Nutzung von Informationen nach den allgemeinen Gesetzen bleiben hiervon unberührt. Eine diesbezügliche Haftung ist jedoch erst ab dem Zeitpunkt der Kenntnis einer konkreten Rechtsverletzung möglich. Bei Bekanntwerden von entsprechenden Rechtsverletzungen werden wir diese Inhalte umgehend entfernen.
+          </p>
+        </div>
+
+        <div class="border-t border-slate-100 dark:border-slate-800/80 pt-6">
+          <h3 class="text-base font-bold text-slate-900 dark:text-white mb-2">Haftung für Links</h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+            Unser Angebot enthält Links zu externen Websites Dritter, auf deren Inhalte wir keinen Einfluss haben. Deshalb können wir für diese fremden Inhalte auch keine Gewähr übernehmen. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der Seiten verantwortlich. Die verlinkten Seiten wurden zum Zeitpunkt der Verlinkung auf mögliche Rechtsverstöße überprüft. Rechtswidrige Inhalte waren zum Zeitpunkt der Verlinkung nicht erkennbar. Eine permanente inhaltliche Kontrolle der verlinkten Seiten ist jedoch ohne konkrete Anhaltspunkte einer Rechtsverletzung nicht zumutbar. Bei Bekanntwerden von Rechtsverletzungen werden wir derartige Links umgehend entfernen.
+          </p>
+        </div>
+
+        <div class="border-t border-slate-100 dark:border-slate-800/80 pt-6">
+          <h3 class="text-base font-bold text-slate-900 dark:text-white mb-2">Urheberrecht</h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+            Die durch den Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem deutschen Urheberrecht. Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der Grenzen des Urheberrechtes bedürfen der schriftlichen Zustimmung des jeweiligen Autors bzw. Erstellers. Downloads und Kopien dieser Seite sind nur für den privaten, nicht kommerziellen Gebrauch gestattet. Soweit die Inhalte auf dieser Seite nicht vom Betreiber erstellt wurden, werden die Urheberrechte Dritter beachtet. Insbesondere werden Inhalte Dritter als solche gekennzeichnet. Sollten Sie trotzdem auf eine Urheberrechtsverletzung aufmerksam werden, bitten wir um einen entsprechenden Hinweis. Bei Bekanntwerden von Rechtsverletzungen werden wir derartige Inhalte umgehend entfernen.
+          </p>
+        </div>
+      </div>
+
+      <!-- Verbraucherstreitbeilegung -->
+      <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
+        <h2 class="text-base font-bold text-slate-900 dark:text-white mb-2">
+          Verbraucherstreitbeilegung / Universalschlichtungsstelle
+        </h2>
+        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-3">
+          Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit:
+          <a
+            href="https://ec.europa.eu/consumers/odr"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-blue-600 dark:text-blue-400 hover:underline font-medium"
+          >
+            https://ec.europa.eu/consumers/odr
+          </a>.
+        </p>
+        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+          Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.
+        </p>
+      </div>
+
+      <!-- Markenrechte und Unabhängigkeit -->
+      <div class="p-6 rounded-2xl bg-slate-100/70 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-800 text-xs text-slate-500 dark:text-slate-400 space-y-2">
+        <p class="font-semibold text-slate-700 dark:text-slate-300">
+          Hinweis zu Markennamen & Unabhängigkeit:
+        </p>
+        <p class="leading-relaxed">
+          Microsoft, Microsoft Entra, Azure, Office 365 sowie weitere erwähnte Produkt- und Markennamen sind Marken oder eingetragene Marken der Microsoft Corporation in den Vereinigten Staaten und/oder anderen Ländern. Dieser Blog ist ein privates und unabhängiges Fachportal von Pascal Riester und steht in keiner geschäftlichen oder offiziellen Verbindung zur Microsoft Corporation. Alle Analysen und Beiträge spiegeln ausschließlich die persönlichen Erfahrungen und Meinungen des Autors wider.
+        </p>
+      </div>
+    </div>
+  </main>
+</BaseLayout>

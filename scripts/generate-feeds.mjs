@@ -8,6 +8,19 @@ const rootDir = path.resolve(__dirname, '..');
 const postsDir = path.join(rootDir, 'src', 'content', 'posts');
 const publicDir = path.join(rootDir, 'public');
 
+function escapeXml(value) {
+  return String(value)
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&apos;');
+}
+
+function toCdata(value) {
+  return `<![CDATA[${String(value).replaceAll(']]>', ']]]]><![CDATA[>')}]]>`;
+}
+
 function parseFrontmatter(content) {
   const match = content.match(/^---\r?\n([\s\S]*?)\r?\n---/);
   if (!match) return {};
@@ -60,7 +73,7 @@ const sitemapPages = [
 const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${sitemapPages.map(p => `  <url>
-    <loc>${p.loc}</loc>${p.lastmod ? `\n    <lastmod>${p.lastmod}</lastmod>` : ''}
+    <loc>${escapeXml(p.loc)}</loc>${p.lastmod ? `\n    <lastmod>${escapeXml(p.lastmod)}</lastmod>` : ''}
     <changefreq>${p.changefreq}</changefreq>
     <priority>${p.priority}</priority>
   </url>`).join('\n')}
@@ -74,19 +87,19 @@ console.log(`[generate-feeds] Successfully wrote sitemap.xml with ${sitemapPages
 const rssXml = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Pascal Riester | Entra ID Field Notes</title>
-    <description>Technical blog by Pascal Riester specializing in Microsoft Entra ID, Conditional Access, Privileged Identity Management (PIM), and Microsoft Cloud Security.</description>
-    <link>${siteUrl}/</link>
-    <atom:link href="${siteUrl}/rss.xml" rel="self" type="application/rss+xml"/>
+    <title>${escapeXml('Pascal Riester | Entra ID Field Notes')}</title>
+    <description>${escapeXml('Technical blog by Pascal Riester specializing in Microsoft Entra ID, Conditional Access, Privileged Identity Management (PIM), and Microsoft Cloud Security.')}</description>
+    <link>${escapeXml(`${siteUrl}/`)}</link>
+    <atom:link href="${escapeXml(`${siteUrl}/rss.xml`)}" rel="self" type="application/rss+xml"/>
     <language>en-us</language>
-    <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
+    <lastBuildDate>${escapeXml(new Date().toUTCString())}</lastBuildDate>
 ${posts.map(p => `    <item>
-      <title><![CDATA[${p.title}]]></title>
-      <link>${siteUrl}/${p.slug}/</link>
-      <guid isPermaLink="true">${siteUrl}/${p.slug}/</guid>
-      <pubDate>${new Date(p.date).toUTCString()}</pubDate>
-      <description><![CDATA[${p.summary}]]></description>
-      <category>${p.category}</category>
+      <title>${toCdata(p.title)}</title>
+      <link>${escapeXml(`${siteUrl}/${p.slug}/`)}</link>
+      <guid isPermaLink="true">${escapeXml(`${siteUrl}/${p.slug}/`)}</guid>
+      <pubDate>${escapeXml(new Date(p.date).toUTCString())}</pubDate>
+      <description>${toCdata(p.summary)}</description>
+      <category>${escapeXml(p.category)}</category>
     </item>`).join('\n')}
   </channel>
 </rss>

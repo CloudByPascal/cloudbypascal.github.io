@@ -72,17 +72,17 @@ const websiteSchema = {
     <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 pb-8 border-b border-slate-200 dark:border-slate-800">
       
       <!-- Category Filters -->
-      <div class="flex flex-wrap items-center gap-1.5" id="category-filters" role="tablist" aria-label="Article categories">
+      <div class="flex flex-wrap items-center gap-1.5" id="category-filters" aria-label="Article categories">
         {categories.map((cat, idx) => (
           <button
-            class={`category-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all ${
+            class={`category-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-950 ${
               idx === 0
                 ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-900 shadow-sm active-filter'
                 : 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700'
             }`}
             data-category={cat}
             aria-pressed={idx === 0 ? 'true' : 'false'}
-            role="button"
+            type="button"
           >
             {cat}
           </button>
@@ -142,7 +142,7 @@ const websiteSchema = {
 
               <!-- Title -->
               <h2 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors leading-tight">
-                <a href={postUrl} class="focus:outline-none">
+                <a href={postUrl} class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-950 rounded-md">
                   {post.data.title}
                 </a>
               </h2>
@@ -231,11 +231,11 @@ const websiteSchema = {
     filterButtons.forEach(btn => {
       btn.addEventListener('click', () => {
         filterButtons.forEach(b => {
-          b.className = 'category-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700';
+          b.className = 'category-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-950 bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700';
           b.setAttribute('aria-pressed', 'false');
         });
 
-        btn.className = 'category-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all bg-slate-900 text-white dark:bg-white dark:text-slate-900 shadow-sm active-filter';
+        btn.className = 'category-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-950 bg-slate-900 text-white dark:bg-white dark:text-slate-900 shadow-sm active-filter';
         btn.setAttribute('aria-pressed', 'true');
         activeCategory = btn.getAttribute('data-category') || 'All';
         applyFilter();

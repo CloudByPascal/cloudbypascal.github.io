@@ -99,7 +99,7 @@ const jsonLd = {
           </a>
         )}
 
-        <button id="share-btn" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all shadow-sm">
+        <button id="share-btn" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-950">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path>
           </svg>
@@ -233,10 +233,32 @@ const jsonLd = {
       }
     });
 
-    function copyToClipboard(text, message = 'Copied!') {
-      navigator.clipboard.writeText(text).then(() => {
+    async function copyToClipboard(text, message = 'Copied!') {
+      try {
+        if (navigator.clipboard?.writeText) {
+          await navigator.clipboard.writeText(text);
+        } else {
+          const textarea = document.createElement('textarea');
+          textarea.value = text;
+          textarea.setAttribute('readonly', '');
+          textarea.style.position = 'fixed';
+          textarea.style.top = '-9999px';
+          document.body.appendChild(textarea);
+          textarea.focus();
+          textarea.select();
+          const copied = document.execCommand('copy');
+          textarea.remove();
+          if (!copied) {
+            throw new Error('copy-command-failed');
+          }
+        }
         if (window.showToast) window.showToast(message, 'success');
-      });
+        return true;
+      } catch (error) {
+        console.error('Clipboard copy failed:', error);
+        if (window.showToast) window.showToast('Unable to copy automatically. Please copy manually.', 'error');
+        return false;
+      }
     }
 
     // Enhance Code Blocks with Copy Button and Header
@@ -282,9 +304,12 @@ const jsonLd = {
     }
 
     // Mermaid Diagram Handling
-    function renderMermaidDiagrams() {
+    let mermaidRenderNonce = 0;
+
+    async function renderMermaidDiagrams() {
       const isDark = document.documentElement.classList.contains('dark');
       if (typeof mermaid !== 'undefined') {
+        const renderNonce = ++mermaidRenderNonce;
         mermaid.initialize({
           startOnLoad: false,
           theme: isDark ? 'dark' : 'default',
@@ -299,8 +324,10 @@ const jsonLd = {
           }
         });
 
-        document.querySelectorAll('#markdown-container pre[data-language="mermaid"], #markdown-container pre code.language-mermaid, #markdown-container .mermaid, #markdown-container pre.mermaid').forEach(async (el) => {
+        const elements = Array.from(document.querySelectorAll('#markdown-container pre[data-language="mermaid"], #markdown-container pre code.language-mermaid, #markdown-container .mermaid, #markdown-container pre.mermaid, #markdown-container .mermaid-container'));
+        await Promise.all(elements.map(async (el) => {
           const rawCode = el.dataset.rawMermaid || el.textContent;
+          if (!rawCode) return;
           el.dataset.rawMermaid = rawCode;
 
           const container = el.classList.contains('mermaid-container') ? el : (el.closest('.mermaid-container') || document.createElement('div'));
@@ -310,6 +337,7 @@ const jsonLd = {
           try {
             const id = 'mermaid-svg-' + Math.random().toString(36).substring(2, 9);
             const { svg } = await mermaid.render(id, rawCode.trim());
+            if (renderNonce !== mermaidRenderNonce) return;
             container.innerHTML = svg;
             if (!el.classList.contains('mermaid-container') && !el.closest('.mermaid-container')) {
               el.replaceWith(container);
@@ -317,7 +345,7 @@ const jsonLd = {
           } catch (e) {
             console.error('Mermaid render error:', e);
           }
-        });
+        }));
       }
     }
 
@@ -334,6 +362,8 @@ const jsonLd = {
           img.title = `Click to expand: ${img.alt}`;
         }
 
+        if (img.dataset.lightboxBound === 'true') return;
+
         img.addEventListener('click', () => {
           lightboxImg.src = img.currentSrc || img.src;
           lightboxImg.alt = img.alt || '';
@@ -348,23 +378,33 @@ const jsonLd = {
           }
           dialog.showModal();
         });
+        img.dataset.lightboxBound = 'true';
       });
 
-      dialog.addEventListener('click', (e) => {
-        if (e.target === dialog || e.target.closest('#lightbox-close') || e.target === lightboxImg) {
-          dialog.close();
-        }
-      });
+      if (dialog.dataset.lightboxInitialized !== 'true') {
+        dialog.addEventListener('click', (e) => {
+          if (e.target === dialog || e.target.closest('#lightbox-close') || e.target === lightboxImg) {
+            dialog.close();
+          }
+        });
+        dialog.dataset.lightboxInitialized = 'true';
+      }
     }
 
     // Scroll spy for TOC
+    let tocObserver;
+
     function initScrollSpy() {
       const headings = Array.from(document.querySelectorAll('#markdown-container h2, #markdown-container h3'));
       const tocLinks = Array.from(document.querySelectorAll('#toc-nav a'));
 
+      if (tocObserver) {
+        tocObserver.disconnect();
+      }
+
       if (headings.length === 0 || tocLinks.length === 0) return;
 
-      const observer = new IntersectionObserver((entries) => {
+      tocObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
             const id = entry.target.getAttribute('id');
@@ -378,25 +418,29 @@ const jsonLd = {
         });
       }, { rootMargin: '0px 0px -70% 0px' });
 
-      headings.forEach(h => observer.observe(h));
+      headings.forEach(h => tocObserver.observe(h));
     }
 
-    // Initialize on load & reactivity
-    document.addEventListener('DOMContentLoaded', () => {
+    let postInteractionsInitialized = false;
+
+    function initPostInteractions() {
+      if (postInteractionsInitialized) return;
       enhanceCodeBlocks();
       renderMermaidDiagrams();
       initScrollSpy();
       initImageLightbox();
-    });
+      postInteractionsInitialized = true;
+    }
+
+    // Initialize on load & reactivity
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initPostInteractions, { once: true });
+    } else {
+      initPostInteractions();
+    }
 
     window.addEventListener('themeChanged', () => {
       renderMermaidDiagrams();
     });
-
-    // Run enhancements immediately in case DOM is already parsed
-    enhanceCodeBlocks();
-    renderMermaidDiagrams();
-    initScrollSpy();
-    initImageLightbox();
   </script>
 </BaseLayout>

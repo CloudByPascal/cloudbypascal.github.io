@@ -1,19 +1,28 @@
 ---
 import { getCollection } from 'astro:content';
-import PostLayout from '../../layouts/PostLayout.astro';
 
 export async function getStaticPaths() {
   const posts = await getCollection('posts');
   return posts.map(post => ({
     params: { slug: post.slug },
-    props: { post },
+    props: { slug: post.slug },
   }));
 }
 
-const { post } = Astro.props;
-const { Content, headings } = await post.render();
+const { slug } = Astro.props;
+const destination = `/${slug}/`;
+const canonical = `https://entraidfieldnotes.com${destination}`;
 ---
-
-<PostLayout post={post} headings={headings}>
-  <Content />
-</PostLayout>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="refresh" content={`0;url=${destination}`}>
+  <link rel="canonical" href={canonical}>
+  <meta name="robots" content="noindex, follow">
+  <title>Redirecting to {destination}...</title>
+</head>
+<body style="font-family: system-ui, sans-serif; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; background: #0f172a; color: #f8fafc;">
+  <p>Redirecting to <a href={destination} style="color: #60a5fa;">{destination}</a>...</p>
+</body>
+</html>

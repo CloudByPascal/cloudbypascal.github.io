@@ -38,18 +38,50 @@ const readingTime = `${Math.ceil(wordCount / 200)} min read`;
 const tocHeadings = headings.filter(h => h.depth >= 2 && h.depth <= 3);
 
 // Canonical & Medium URLs
+const canonicalUrl = canonical || new URL(`/${post.slug}/`, Astro.site || 'https://entraidfieldnotes.com').href;
 const mediumLink = mediumUrl || canonical || 'https://medium.com/@riesterpascal';
+const postImage = cover || '/assets/img/pascal-riester.png';
+const postImageUrl = postImage.startsWith('http') ? postImage : new URL(postImage, Astro.site || 'https://entraidfieldnotes.com').href;
+
+// BlogPosting JSON-LD Schema
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: title,
+  description: summary || description,
+  datePublished: date,
+  dateModified: date,
+  author: {
+    '@type': 'Person',
+    name: author,
+    url: 'https://entraidfieldnotes.com'
+  },
+  publisher: {
+    '@type': 'Person',
+    name: 'Pascal Riester',
+    url: 'https://entraidfieldnotes.com'
+  },
+  mainEntityOfPage: {
+    '@type': 'WebPage',
+    '@id': canonicalUrl
+  },
+  image: postImageUrl,
+  keywords: tags.join(', ')
+};
 ---
 
 <BaseLayout
   title={title}
   description={summary || description}
-  image={cover || '/assets/img/pascal-riester.png'}
+  image={postImage}
   articleDate={date}
   articleTags={tags}
+  canonicalUrl={canonicalUrl}
   type="article"
 >
-  <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex-grow w-full">
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} is:inline />
+
+  <main id="main-content" class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex-grow w-full">
 
     <!-- Breadcrumb & Share Actions -->
     <div class="flex items-center justify-between pb-6 mb-8 border-b border-slate-200 dark:border-slate-800">
@@ -85,9 +117,9 @@ const mediumLink = mediumUrl || canonical || 'https://medium.com/@riesterpascal'
         <div class="mb-8">
           <div class="flex items-center gap-2 mb-3">
             <span class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-900">{category}</span>
-            <span class="text-xs text-slate-400">•</span>
+            <span class="text-xs text-slate-500 dark:text-slate-400">•</span>
             <span class="text-xs text-slate-500 dark:text-slate-400">{date}</span>
-            <span class="text-xs text-slate-400">•</span>
+            <span class="text-xs text-slate-500 dark:text-slate-400">•</span>
             <span class="text-xs text-slate-500 dark:text-slate-400">{readingTime}</span>
           </div>
           <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-tight">
@@ -118,7 +150,7 @@ const mediumLink = mediumUrl || canonical || 'https://medium.com/@riesterpascal'
         <!-- Author / Medium Footer Box -->
         <div class="mt-14 p-6 sm:p-8 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-6">
           <div class="flex items-center gap-4">
-            <img src="/assets/img/pascal-riester.png" alt="Pascal Riester"
+            <img src="/assets/img/pascal-riester.png" alt="Pascal Riester" width="56" height="56" loading="lazy" decoding="async"
               class="w-14 h-14 rounded-2xl object-cover object-top ring-2 ring-blue-500/20 shrink-0">
             <div>
               <div class="text-base font-bold text-slate-900 dark:text-white">Pascal Riester</div>

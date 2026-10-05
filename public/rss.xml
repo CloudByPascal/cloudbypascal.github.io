@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Pascal Riester | Entra ID Field Notes</title>
+    <description>Technical blog by Pascal Riester specializing in Microsoft Entra ID, Conditional Access, Privileged Identity Management (PIM), and Microsoft Cloud Security.</description>
+    <link>https://entraidfieldnotes.com/</link>
+    <atom:link href="https://entraidfieldnotes.com/rss.xml" rel="self" type="application/rss+xml"/>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 05 Oct 2026 21:05:00 GMT</lastBuildDate>
+    <item>
+      <title><![CDATA[The Sunset of SMS & Voice MFA in Microsoft Entra ID: Navigating the 2026/2027 Telephony Retirement, Passkey Dynamic Nudges, and the Graph API Opt-Out]]></title>
+      <link>https://entraidfieldnotes.com/retiring-sms-voice-mfa-passkey-nudge/</link>
+      <guid isPermaLink="true">https://entraidfieldnotes.com/retiring-sms-voice-mfa-passkey-nudge/</guid>
+      <pubDate>Mon, 31 Aug 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[A comprehensive technical and architectural guide to Microsoft's retirement of native SMS and voice MFA, the passkey dynamic migration nudge, Graph API opt-out mechanics, and customer-managed telephony.]]></description>
+      <category>Entra ID</category>
+    </item>
+    <item>
+      <title><![CDATA[Demystifying Continuous Access Evaluation (CAE) in Entra ID]]></title>
+      <link>https://entraidfieldnotes.com/demystifying-continuous-access-evaluation/</link>
+      <guid isPermaLink="true">https://entraidfieldnotes.com/demystifying-continuous-access-evaluation/</guid>
+      <pubDate>Fri, 28 Aug 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[A technical deep dive into Continuous Access Evaluation (CAE) in Microsoft Entra ID: understanding real-time token revocation, claims challenges, standard vs. strict location enforcement, and practical operational gotchas.]]></description>
+      <category>Conditional Access</category>
+    </item>
+    <item>
+      <title><![CDATA[An Approach to Handling Travelling Users within Entra ID]]></title>
+      <link>https://entraidfieldnotes.com/an-approach-to-handling-travelling-users-within-entra-id/</link>
+      <guid isPermaLink="true">https://entraidfieldnotes.com/an-approach-to-handling-travelling-users-within-entra-id/</guid>
+      <pubDate>Tue, 25 Aug 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[A standardized Travel Access Framework using Microsoft Entra Conditional Access, Named Locations, and Privileged Identity Management (PIM) for secure time-based access.]]></description>
+      <category>Conditional Access</category>
+    </item>
+  </channel>
+</rss>

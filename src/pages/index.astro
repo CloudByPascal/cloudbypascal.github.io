@@ -7,19 +7,37 @@ const allPosts = (await getCollection('posts')).sort(
 );
 
 const categories = ['All', ...Array.from(new Set(allPosts.map(p => p.data.category)))];
+
+const websiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Blog',
+  name: 'Pascal Riester - Entra ID Field Notes',
+  url: 'https://entraidfieldnotes.com/',
+  description: 'Technical blog by Pascal Riester specializing in Microsoft Entra ID, Conditional Access, Privileged Identity Management (PIM), and Microsoft Cloud Security.',
+  author: {
+    '@type': 'Person',
+    name: 'Pascal Riester',
+    jobTitle: 'Identity & Access Administrator',
+    sameAs: [
+      'https://medium.com/@riesterpascal',
+      'https://github.com/cloudbypascal'
+    ]
+  }
+};
 ---
 
 <BaseLayout>
+  <script type="application/ld+json" set:html={JSON.stringify(websiteSchema)} is:inline />
+
   <!-- Author Hero Header -->
   <section class="border-b border-slate-200 dark:border-slate-800 bg-gradient-to-b from-white via-slate-50 to-slate-100 dark:from-slate-950 dark:via-slate-950 dark:to-slate-900 py-14 sm:py-18">
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex flex-col sm:flex-row items-start sm:items-center gap-6 mb-6">
-        <img src="/assets/img/pascal-riester.png" alt="Pascal Riester"
+        <img src="/assets/img/pascal-riester.png" alt="Pascal Riester" width="96" height="96" loading="eager" decoding="async"
           class="w-20 h-20 sm:w-24 sm:h-24 rounded-3xl object-cover object-top ring-4 ring-blue-500/20 shadow-xl shadow-blue-500/10 shrink-0"
           onerror="this.onerror=null; this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 fill=%22%232563eb%22/><text x=%2250%%22 y=%2255%%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-size=%2245%22 fill=%22white%22 font-family=%22sans-serif%22 font-weight=%22bold%22>PR</text></svg>'">
         <div>
           <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-300 mb-2">
-            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
             <span>Microsoft Identity & Access Specialist</span>
           </div>
           <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white">Pascal Riester</h1>
@@ -48,13 +66,13 @@ const categories = ['All', ...Array.from(new Set(allPosts.map(p => p.data.catego
   </section>
 
   <!-- Main Article Section -->
-  <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 flex-grow w-full">
+  <main id="main-content" class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 flex-grow w-full">
     
     <!-- Controls: Search & Category Filters -->
     <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 pb-8 border-b border-slate-200 dark:border-slate-800">
       
       <!-- Category Filters -->
-      <div class="flex flex-wrap items-center gap-1.5" id="category-filters">
+      <div class="flex flex-wrap items-center gap-1.5" id="category-filters" role="tablist" aria-label="Article categories">
         {categories.map((cat, idx) => (
           <button
             class={`category-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all ${
@@ -63,6 +81,8 @@ const categories = ['All', ...Array.from(new Set(allPosts.map(p => p.data.catego
                 : 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700'
             }`}
             data-category={cat}
+            aria-pressed={idx === 0 ? 'true' : 'false'}
+            role="button"
           >
             {cat}
           </button>
@@ -71,12 +91,14 @@ const categories = ['All', ...Array.from(new Set(allPosts.map(p => p.data.catego
 
       <!-- Search Input -->
       <div class="relative min-w-[240px]">
-        <svg class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <label for="search-input" class="sr-only">Search articles and tags</label>
+        <svg class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
         </svg>
         <input
-          type="text"
+          type="search"
           id="search-input"
+          aria-label="Search articles and tags"
           placeholder="Search articles & tags..."
           class="w-full pl-9 pr-4 py-1.5 text-xs rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
         />
@@ -86,7 +108,7 @@ const categories = ['All', ...Array.from(new Set(allPosts.map(p => p.data.catego
 
     <!-- Stats Bar -->
     <div class="flex items-center justify-between py-4 text-xs text-slate-500 dark:text-slate-400">
-      <div id="articles-count">Showing <span class="font-bold text-slate-900 dark:text-white" id="count-number">{allPosts.length}</span> articles</div>
+      <div id="articles-count" role="status" aria-live="polite">Showing <span class="font-bold text-slate-900 dark:text-white" id="count-number">{allPosts.length}</span> articles</div>
       <div>Curated technical write-ups</div>
     </div>
 
@@ -111,7 +133,7 @@ const categories = ['All', ...Array.from(new Set(allPosts.map(p => p.data.catego
                 <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-900">
                   {post.data.category}
                 </span>
-                <div class="flex items-center gap-2 text-xs text-slate-400">
+                <div class="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
                   <span>{post.data.date}</span>
                   <span>•</span>
                   <span>{readingTime}</span>
@@ -160,7 +182,7 @@ const categories = ['All', ...Array.from(new Set(allPosts.map(p => p.data.catego
     </div>
 
     <!-- No Results Placeholder -->
-    <div id="no-results" class="hidden py-16 text-center">
+    <div id="no-results" role="status" aria-live="polite" class="hidden py-16 text-center">
       <div class="w-12 h-12 mx-auto rounded-2xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-400 mb-3">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
@@ -210,9 +232,11 @@ const categories = ['All', ...Array.from(new Set(allPosts.map(p => p.data.catego
       btn.addEventListener('click', () => {
         filterButtons.forEach(b => {
           b.className = 'category-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700';
+          b.setAttribute('aria-pressed', 'false');
         });
 
         btn.className = 'category-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all bg-slate-900 text-white dark:bg-white dark:text-slate-900 shadow-sm active-filter';
+        btn.setAttribute('aria-pressed', 'true');
         activeCategory = btn.getAttribute('data-category') || 'All';
         applyFilter();
       });

@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import { spawn } from 'node:child_process';
 
 // Windows path casing fix for Vite/Astro
 if (process.platform === 'win32') {
@@ -7,5 +8,19 @@ if (process.platform === 'win32') {
   } catch {}
 }
 
-const { cli } = await import('astro/dist/cli/index.js');
-await cli(process.argv);
+const args = process.argv.slice(2);
+const astroCommand = process.platform === 'win32' ? 'astro.cmd' : 'astro';
+
+const child = spawn(astroCommand, args, {
+  stdio: 'inherit',
+  shell: process.platform === 'win32',
+});
+
+child.on('exit', (code) => {
+  process.exit(code ?? 1);
+});
+
+child.on('error', (error) => {
+  console.error('[astro-wrapper] Failed to launch Astro CLI:', error);
+  process.exit(1);
+});

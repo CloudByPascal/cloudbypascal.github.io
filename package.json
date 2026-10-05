@@ -8,11 +8,19 @@
     "build": "node ./scripts/generate-feeds.mjs && node ./scripts/astro.mjs build",
     "preview": "node ./scripts/astro.mjs preview",
     "generate-feeds": "node ./scripts/generate-feeds.mjs",
+    "validate:feeds": "node ./scripts/generate-feeds.mjs && node ./scripts/validate-feeds.mjs",
+    "check": "node ./scripts/astro.mjs check",
+    "validate": "npm run validate:feeds && npm run check",
     "astro": "node ./scripts/astro.mjs"
   },
   "dependencies": {
     "@astrojs/tailwind": "^5.1.5",
     "astro": "^4.16.18",
+    "fast-xml-parser": "^5.11.2",
     "tailwindcss": "^3.4.17"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "typescript": "^5.9.3"
   }
 }

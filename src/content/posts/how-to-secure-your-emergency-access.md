@@ -81,18 +81,57 @@ You can either create the user by using the Entra ID Portal, or by using PowerSh
    - **Display name**: Choose a display name that blends in with standard user or service accounts.
    - **Role**: Select **Global Administrator**.
    - **Password**: Use the default temporary password provided by Entra ID to log in for the first time.
+
+![Creating a break-glass user in Entra ID](/assets/img/entra-id-new-user-break-glass.png)
+
 4. Click on **Create**.
 
 ### Using PowerShell
 
 ```powershell
-# Create a new user with password set
+# Install the required modules once
+Install-Module Microsoft.Graph.Users -Scope CurrentUser
+Install-Module Microsoft.Graph.Identity.Governance -Scope CurrentUser
 
-New-MgUser `
-   -DisplayName "<User Name>" `
-   -MailNickname "<Mail Nickname>" `
-   -UserPrincipalName "<User Principal Name>" `
-   -AccountEnabled $true `
-   -PasswordProfile @{ Password = "<Password>" } `
-   -UsageLocation "<Usage Location>"
+# Connect to Microsoft Graph
+Connect-MgGraph -Scopes @(
+    "User.ReadWrite.All"
+    "RoleManagement.ReadWrite.Directory"
+)
+
+# Define the initial password
+$PasswordProfile = @{
+    Password                      = "TemporaryPassword123!"
+    ForceChangePasswordNextSignIn = $true
+}
+
+# Create the user
+$User = New-MgUser `
+    -AccountEnabled `
+    -DisplayName "Max Mustermann" `
+    -GivenName "Max" `
+    -Surname "Mustermann" `
+    -UserPrincipalName "max.mustermann@contoso.com" `
+    -MailNickname "max.mustermann" `
+    -UsageLocation "DE" `
+    -Department "IT" `
+    -JobTitle "Systems Engineer" `
+    -PasswordProfile $PasswordProfile
+
+# Global Administrator role definition ID
+$GlobalAdminRoleId = "62e90394-69f5-4237-9190-012177145e10"
+
+# Assign Global Administrator tenant-wide
+$RoleAssignment = @{
+    "@odata.type"    = "#microsoft.graph.unifiedRoleAssignment"
+    PrincipalId      = $User.Id
+    RoleDefinitionId = $GlobalAdminRoleId
+    DirectoryScopeId = "/"
+}
+
+New-MgRoleManagementDirectoryRoleAssignment `
+    -BodyParameter $RoleAssignment
+
+# Display the result
+$User | Select-Object Id, DisplayName, UserPrincipalName
 ```

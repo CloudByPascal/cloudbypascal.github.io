@@ -39,7 +39,6 @@ Microsoft's baseline guidance for break-glass accounts has evolved significantly
         param (
             [int]$Length = 64
         )
-        # Single quotes prevent backtick escaping; spaces omitted to avoid leading/trailing whitespace errors
         $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-_=+[]{};:,.<>/?\|~'
         $rng = [System.Security.Cryptography.RandomNumberGenerator]::Create()
         $bytes = New-Object byte[] $Length
@@ -163,3 +162,13 @@ Now you still need to tackle the issue that at the moment nobody can change user
 ![Add user admin to emergency access account ](assets/img/entra-id-admin-unit-useradmin.png)
 
 ![Add privileged authentication admin to emergency access account ](assets/img/entra-id-admin-unit-privauthadmin.png)
+
+### How to store the credentials of your emergency access account?
+
+Since the only access to your break glass account should be a physical media like a FIDO2-Passkey or a Passkey in Microsoft Authenticator on a dedicated device, you need to store the credentials of your emergency access account in a safe place. This should be a physical safe in your office or another location. As a MSP you should also store the credentials in a safe place in your office. If you sold 24x7 support to your customers, make sure that your employees can access the credentials in a reasonable time in case of an emergency.
+
+## Final words
+
+If you are a MSP partner like me, you can use this blog post as a basis for your own break glass documentation. You can either use it as-is or modify it to fit your needs. If you do not have a break glass strategy yet, I recommend you to create one as soon as possible.
+
+If you have any questions, feel free to leave a comment below or reach out to me on [LinkedIn](https://www.linkedin.com/in/pascalriester/) or via [email](mailto:[info@entraidfieldnotes.com]).

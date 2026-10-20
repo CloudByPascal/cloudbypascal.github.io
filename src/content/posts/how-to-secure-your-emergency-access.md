@@ -171,4 +171,4 @@ Since the only access to your break glass account should be a physical media lik
 
 If you are a MSP partner like me, you can use this blog post as a basis for your own break glass documentation. You can either use it as-is or modify it to fit your needs. If you do not have a break glass strategy yet, I recommend you to create one as soon as possible.
 
-If you have any questions, feel free to leave a comment below or reach out to me on [LinkedIn](https://www.linkedin.com/in/pascalriester/) or via [email](mailto:[info@entraidfieldnotes.com]).
+If you have any questions, feel free to leave a comment below or reach out to me on [LinkedIn](https://www.linkedin.com/in/pascal-riester/) or via [email](mailto:[info@entraidfieldnotes.com]).

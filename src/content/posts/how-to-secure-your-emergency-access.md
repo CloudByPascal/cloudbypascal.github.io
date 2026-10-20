@@ -137,11 +137,11 @@ $User | Select-Object Id, DisplayName, UserPrincipalName
 ### How can I restrict management access to your emergency account?
 It is quite simple to restrict the ablity to reset passwords or manage MFA-methods of your emergency access account by using [Microsoft Entra Restricted Administrative units](https://learn.microsoft.com/en-us/entra/identity/role-based-access-control/admin-units-restricted-management).
 
-![Setup Entra ID administrative Units](assets/img/entra-id-admin-unit-setup.png)
+![Setup Entra ID administrative Units](/assets/img/entra-id-admin-unit-setup.png)
 
 To add your break glass account to the admin unit, you simply select add in the GUI and select your break glass user and click on select.
 
-![Add break glass users to Entra ID administrative Units](assets/img/entra-id-admin-unit-users.png)
+![Add break glass users to Entra ID administrative Units](/assets/img/entra-id-admin-unit-users.png)
 
 You can also use PowerShell to add your break glass account to the admin unit:
 
@@ -159,7 +159,7 @@ New-MgDirectoryAdministrativeUnitMember -AdministrativeUnitId $adminUnit.Id -Id 
 
 Now you still need to tackle the issue that at the moment nobody can change user attributes or authentication methods of your break glass users. By default, any global administrator can manage the role assignments within the restricted administrative unit but not the attributes or authentication methods of the users within the restricted administrative unit. You can however assign the role of [Privileged Authentication Administrator](https://learn.microsoft.com/en-us/entra/identity/role-based-access-control/microsoft-entra-roles#privileged-authentication-administrator) to both emergency accounts to allow them to reset the passwords of users within the restricted administrative unit. To manage user attributes like name, job title, etc. you need to assign the role of [User Administrator](https://learn.microsoft.com/en-us/entra/identity/role-based-access-control/microsoft-entra-roles#user-administrator) to both emergency accounts.
 
-![Add user admin to emergency access account ](assets/img/entra-id-admin-unit-useradmin.png)
+![Add user admin to emergency access account ](/assets/img/entra-id-admin-unit-useradmin.png)
 
 ![Add privileged authentication admin to emergency access account ](assets/img/entra-id-admin-unit-privauthadmin.png)
 

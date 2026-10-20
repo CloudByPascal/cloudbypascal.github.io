@@ -161,7 +161,7 @@ Now you still need to tackle the issue that at the moment nobody can change user
 
 ![Add user admin to emergency access account ](/assets/img/entra-id-admin-unit-useradmin.png)
 
-![Add privileged authentication admin to emergency access account ](assets/img/entra-id-admin-unit-privauthadmin.png)
+![Add privileged authentication admin to emergency access account ](/assets/img/entra-id-admin-unit-privauthadmin.png)
 
 ### How to store the credentials of your emergency access account?
 

@@ -1,5 +1,6 @@
 ---
 import BaseLayout from './BaseLayout.astro';
+import Comments from '../components/Comments.astro';
 
 interface Heading {
   depth: number;
@@ -161,6 +162,9 @@ const jsonLd = {
             Follow on Medium ↗
           </a>
         </div>
+
+        <!-- Comments Section -->
+        <Comments />
       </article>
 
       <!-- Table of Contents Sidebar (Span 4) -->

@@ -1,0 +1,87 @@
+---
+// src/components/Comments.astro
+// Giscus comments integration backed by GitHub Discussions
+---
+
+<section class="mt-12 p-6 sm:p-8 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm" aria-labelledby="comments-heading">
+  <div class="flex items-center justify-between pb-6 mb-6 border-b border-slate-200 dark:border-slate-800">
+    <div class="flex items-center gap-3">
+      <div class="p-2.5 rounded-xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-900/50">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+        </svg>
+      </div>
+      <div>
+        <h2 id="comments-heading" class="text-base sm:text-lg font-bold text-slate-900 dark:text-white">Discussion & Feedback</h2>
+        <p class="text-xs text-slate-500 dark:text-slate-400">Powered by GitHub Discussions • Sign in with GitHub to participate</p>
+      </div>
+    </div>
+
+    <a
+      href="https://github.com/CloudByPascal/cloudbypascal.github.io/discussions/categories/general"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 text-slate-800 dark:bg-slate-800 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all border border-slate-200 dark:border-slate-700"
+    >
+      <span>Open in GitHub ↗</span>
+    </a>
+  </div>
+
+  <div id="giscus-container" class="min-h-[160px]">
+    <div class="flex items-center justify-center py-10 text-xs text-slate-400 dark:text-slate-500 gap-2">
+      <svg class="w-4 h-4 animate-spin text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+      </svg>
+      <span>Loading comments...</span>
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+  function loadGiscusComments() {
+    const isDark = document.documentElement.classList.contains('dark');
+    const theme = isDark ? 'dark' : 'light';
+
+    const script = document.createElement('script');
+    script.src = 'https://giscus.app/client.js';
+    script.setAttribute('data-repo', 'CloudByPascal/cloudbypascal.github.io');
+    script.setAttribute('data-repo-id', 'R_kgDOUJIzig');
+    script.setAttribute('data-category', 'General');
+    script.setAttribute('data-category-id', 'DIC_kwDOUJIzis4DJNDe');
+    script.setAttribute('data-mapping', 'pathname');
+    script.setAttribute('data-strict', '0');
+    script.setAttribute('data-reactions-enabled', '1');
+    script.setAttribute('data-emit-metadata', '0');
+    script.setAttribute('data-input-position', 'bottom');
+    script.setAttribute('data-theme', theme);
+    script.setAttribute('data-lang', 'en');
+    script.setAttribute('crossorigin', 'anonymous');
+    script.async = true;
+
+    const container = document.getElementById('giscus-container');
+    if (container) {
+      container.innerHTML = '';
+      container.appendChild(script);
+    }
+  }
+
+  // Update theme dynamically when user toggles light/dark mode
+  window.addEventListener('themeChanged', (e) => {
+    const isDark = e.detail?.isDark ?? document.documentElement.classList.contains('dark');
+    const theme = isDark ? 'dark' : 'light';
+    const iframe = document.querySelector('iframe.giscus-frame');
+    if (iframe && iframe.contentWindow) {
+      iframe.contentWindow.postMessage(
+        { giscus: { setConfig: { theme } } },
+        'https://giscus.app'
+      );
+    }
+  });
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', loadGiscusComments, { once: true });
+  } else {
+    loadGiscusComments();
+  }
+</script>

@@ -66,6 +66,7 @@ const latestDate = posts[0]?.date;
 const sitemapPages = [
   { loc: `${siteUrl}/`, lastmod: latestDate, changefreq: 'daily', priority: '1.0' },
   { loc: `${siteUrl}/impressum/`, changefreq: 'monthly', priority: '0.3' },
+  { loc: `${siteUrl}/datenschutz/`, changefreq: 'monthly', priority: '0.3' },
   ...posts.map(p => ({
     loc: `${siteUrl}/${p.slug}/`,
     lastmod: p.date,

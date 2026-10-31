@@ -1,0 +1,260 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Datenschutzerklärung"
+  description="Datenschutzerklärung für Pascal Riesters Blog über Microsoft Entra ID und Cloud Security gemäß Datenschutz-Grundverordnung (DSGVO)."
+>
+  <main id="main-content" class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 flex-grow w-full">
+    <!-- Zurück zur Startseite -->
+    <div class="mb-8">
+      <a
+        href="/"
+        class="inline-flex items-center gap-2 text-xs font-semibold text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors group"
+      >
+        <svg class="w-4 h-4 transition-transform group-hover:-translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+        </svg>
+        <span>Zurück zur Übersicht</span>
+      </a>
+    </div>
+
+    <!-- Header-Bereich -->
+    <header class="mb-10 pb-8 border-b border-slate-200 dark:border-slate-800">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-300 mb-4">
+        <span>Datenschutz & Privatsphäre</span>
+      </div>
+      <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white mb-3">
+        Datenschutzerklärung
+      </h1>
+      <p class="text-sm sm:text-base text-slate-600 dark:text-slate-400 max-w-2xl leading-relaxed">
+        Informationen über die Art, den Umfang und den Zweck der Verarbeitung personenbezogener Daten auf dieser Website gemäß Art. 12, 13 und 14 der Datenschutz-Grundverordnung (DSGVO). Angaben zum Dienstanbieter finden Sie im <a href="/impressum/" class="text-blue-600 dark:text-blue-400 hover:underline font-medium">Impressum</a>.
+      </p>
+    </header>
+
+    <div class="space-y-8">
+      <!-- 1. Datenschutz auf einen Blick -->
+      <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-xl bg-blue-50 dark:bg-blue-950/80 border border-blue-200 dark:border-blue-800 flex items-center justify-center text-blue-600 dark:text-blue-400">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+            </svg>
+          </div>
+          <h2 class="text-lg font-bold text-slate-900 dark:text-white">1. Datenschutz auf einen Blick</h2>
+        </div>
+
+        <div class="text-sm text-slate-600 dark:text-slate-400 space-y-3 leading-relaxed">
+          <p>
+            Der Schutz Ihrer persönlichen Daten ist uns ein wichtiges Anliegen. Wir behandeln Ihre personenbezogenen Daten vertraulich und entsprechend den gesetzlichen Datenschutzvorschriften sowie dieser Datenschutzerklärung.
+          </p>
+          <p>
+            Diese Website ist von Grund auf datenschutzfreundlich konzipiert: Wir verzichten auf Marketing-Tracker, Profiling, Werbenetzwerke und nicht notwendige Cookies. Nachfolgend geben wir Ihnen einen Überblick darüber, was mit Ihren personenbezogenen Daten passiert, wenn Sie diese Website besuchen.
+          </p>
+        </div>
+      </div>
+
+      <!-- 2. Verantwortliche Stelle & Kontakt -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-8 h-8 rounded-xl bg-blue-50 dark:bg-blue-950/80 border border-blue-200 dark:border-blue-800 flex items-center justify-center text-blue-600 dark:text-blue-400">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+              </svg>
+            </div>
+            <h2 class="text-base font-bold text-slate-900 dark:text-white">2. Verantwortliche Stelle</h2>
+          </div>
+          <div class="text-sm text-slate-700 dark:text-slate-300 space-y-1">
+            <p class="font-semibold text-slate-900 dark:text-white">Pascal Riester</p>
+            <p class="text-slate-600 dark:text-slate-400">Albstraße 10</p>
+            <p class="text-slate-600 dark:text-slate-400">72658 Bempflingen</p>
+            <p class="text-slate-600 dark:text-slate-400">Deutschland</p>
+          </div>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mt-4 leading-relaxed">
+            Verantwortliche Stelle ist die natürliche Person, die allein über die Zwecke und Mittel der Verarbeitung von personenbezogenen Daten entscheidet.
+          </p>
+        </div>
+
+        <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-8 h-8 rounded-xl bg-blue-50 dark:bg-blue-950/80 border border-blue-200 dark:border-blue-800 flex items-center justify-center text-blue-600 dark:text-blue-400">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+              </svg>
+            </div>
+            <h2 class="text-base font-bold text-slate-900 dark:text-white">Kontakt zum Datenschutz</h2>
+          </div>
+          <div class="text-sm text-slate-700 dark:text-slate-300 space-y-3">
+            <div>
+              <span class="text-slate-500 dark:text-slate-400 block text-xs uppercase font-medium">E-Mail für Anfragen</span>
+              <a href="mailto:info@entraidfieldnotes.com" class="font-medium text-blue-600 dark:text-blue-400 hover:underline">
+                info@entraidfieldnotes.com
+              </a>
+            </div>
+            <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+              Sie können sich bei allen Fragen rund um Ihre personenbezogenen Daten und die Ausübung Ihrer Rechte jederzeit an die oben angegebene E-Mail-Adresse wenden.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Hosting & Content Delivery Network (Cloudflare) -->
+      <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-xl bg-blue-50 dark:bg-blue-950/80 border border-blue-200 dark:border-blue-800 flex items-center justify-center text-blue-600 dark:text-blue-400">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 00-9.78 2.096A4.001 4.001 0 003 15z"></path>
+            </svg>
+          </div>
+          <h2 class="text-lg font-bold text-slate-900 dark:text-white">3. Content Delivery Network & Sicherheitsdienste (Cloudflare)</h2>
+        </div>
+
+        <div class="text-sm text-slate-600 dark:text-slate-400 space-y-4 leading-relaxed">
+          <p>
+            Wir nutzen zur Bereitstellung, Absicherung und Beschleunigung unseres Onlineangebots die Dienste des Content Delivery Networks (CDN) sowie die Web Application Firewall (WAF) von <strong>Cloudflare</strong>.
+          </p>
+
+          <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/60 space-y-2">
+            <p class="font-semibold text-slate-900 dark:text-white">Diensteanbieter:</p>
+            <p>Cloudflare, Inc., 101 Townsend St., San Francisco, CA 94107, USA</p>
+            <p>Website: <a href="https://www.cloudflare.com" target="_blank" rel="noopener noreferrer" class="text-blue-600 dark:text-blue-400 hover:underline">https://www.cloudflare.com</a></p>
+            <p>Datenschutzerklärung von Cloudflare: <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener noreferrer" class="text-blue-600 dark:text-blue-400 hover:underline">https://www.cloudflare.com/privacypolicy/</a></p>
+          </div>
+
+          <div>
+            <h3 class="font-semibold text-slate-900 dark:text-white mb-1">Funktionsweise & Datenverarbeitung</h3>
+            <p>
+              Ein Content Delivery Network ist ein weltweites Netz verteilter Server. Wenn Sie unsere Seiten aufrufen, werden Anfragen über das globale Netzwerk von Cloudflare geroutet und statische Ressourcen (wie Stylesheets, Skripte und Bilder) vom geografisch nächstgelegenen Server an Ihren Browser ausgeliefert. Dies verkürzt die Ladezeiten erheblich.
+            </p>
+            <p class="mt-2">
+              Gleichzeitig fungiert Cloudflare als sogenannter Reverse Proxy und Sicherheitsfilter: Es schützt unsere Website vor Cyber-Bedrohungen wie Distributed-Denial-of-Service-Angriffen (DDoS), Bot-Netzwerken und unbefugten Zugriffen. Hierbei erfasst und verarbeitet Cloudflare technisch bedingt Verbindungsdaten zwischen Ihrem Browser und unserer Website (u. a. IP-Adresse, Datum und Uhrzeit des Zugriffs, übertragene Datenmenge, Typ und Version des Webbrowsers sowie Systeminformationen und Sicherheits-Tokens wie die Cloudflare Ray-ID).
+            </p>
+          </div>
+
+          <div>
+            <h3 class="font-semibold text-slate-900 dark:text-white mb-1">Rechtsgrundlage</h3>
+            <p>
+              Der Einsatz von Cloudflare erfolgt auf Grundlage unseres berechtigten Interesses an einer möglichst sicheren, stabilen, fehlerfreien und performanten Bereitstellung unseres Onlineangebots gemäß <strong>Art. 6 Abs. 1 lit. f DSGVO</strong>.
+            </p>
+          </div>
+
+          <div>
+            <h3 class="font-semibold text-slate-900 dark:text-white mb-1">Datenübermittlung in Drittländer (USA) & Data Privacy Framework</h3>
+            <p>
+              Cloudflare, Inc. hat ihren Hauptsitz in den USA. Die Datenübertragung in die USA wird auf das <strong>EU-U.S. Data Privacy Framework (DPF)</strong> gestützt, für welches die Europäische Kommission einen Angemessenheitsbeschluss gemäß Art. 45 DSGVO erlassen hat. Cloudflare ist nach dem EU-U.S. Data Privacy Framework zertifiziert. Ergänzend stützen wir die Datenverarbeitung auf die Standardvertragsklauseln (Standard Contractual Clauses – SCCs) der Europäischen Kommission.
+            </p>
+          </div>
+
+          <div>
+            <h3 class="font-semibold text-slate-900 dark:text-white mb-1">Auftragsverarbeitung (Data Processing Addendum)</h3>
+            <p>
+              Wir haben mit Cloudflare einen Vertrag über die Auftragsverarbeitung (Data Processing Addendum, DPA) abgeschlossen, in dem sich Cloudflare verpflichtet, die Daten der Besucher dieser Website gemäß den europäischen Datenschutzstandards zu schützen und nicht für eigene Zwecke an Dritte weiterzugeben.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. Datenerfassung auf dieser Website (Logs, Cookies, Tools) -->
+      <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-6">
+        <div>
+          <h2 class="text-lg font-bold text-slate-900 dark:text-white mb-2">
+            4. Datenerfassung auf dieser Website
+          </h2>
+        </div>
+
+        <div>
+          <h3 class="text-base font-bold text-slate-900 dark:text-white mb-2">Server-Log-Dateien</h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-3">
+            Der Provider bzw. das CDN erhebt und speichert automatisch Informationen in so genannten Server-Log-Dateien, die Ihr Browser automatisch an uns übermittelt. Dies sind:
+          </p>
+          <ul class="list-disc list-inside text-sm text-slate-600 dark:text-slate-400 space-y-1 mb-3">
+            <li>Browsertyp und Browserversion</li>
+            <li>Verwendetes Betriebssystem</li>
+            <li>Referrer URL (die zuvor besuchte Seite)</li>
+            <li>Hostname des zugreifenden Rechners / IP-Adresse</li>
+            <li>Uhrzeit und Datum der Serveranfrage</li>
+            <li>HTTP-Statuscode und übertragene Datenmenge</li>
+          </ul>
+          <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+            Eine Zusammenführung dieser Daten mit anderen Datenquellen wird nicht vorgenommen. Die Erfassung dieser Daten erfolgt auf Grundlage von <strong>Art. 6 Abs. 1 lit. f DSGVO</strong>. Der Websitebetreiber hat ein berechtigtes Interesse an der technisch fehlerfreien Darstellung, Stabilität und der Optimierung seiner Website.
+          </p>
+        </div>
+
+        <div class="border-t border-slate-100 dark:border-slate-800/80 pt-6">
+          <h3 class="text-base font-bold text-slate-900 dark:text-white mb-2">Hinweis zur Google Search Console</h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+            Wir nutzen zur technischen und suchmaschinenspezifischen Analyse unseres Webangebots die <strong>Google Search Console</strong> der Google Ireland Limited. Bei der Google Search Console handelt es sich um ein reines Webmaster- und Administrations-Tool, das die Auffindbarkeit und den Indexierungsstatus unserer Webseiten in der Google-Suche überwacht.
+          </p>
+          <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mt-2">
+            Über die Google Search Console werden <strong>keine</strong> clientseitigen Tracking-Skripte oder Cookies auf Ihrem Endgerät ausgeführt. Es werden zu diesem Zweck keine personenbezogenen Verhaltensdaten der Besucher unserer Website erfasst oder an Google übermittelt.
+          </p>
+        </div>
+
+        <div class="border-t border-slate-100 dark:border-slate-800/80 pt-6">
+          <h3 class="text-base font-bold text-slate-900 dark:text-white mb-2">Cookies und lokaler Speicher (Local Storage)</h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+            Unsere Website verwendet <strong>keine Tracking- oder Werbe-Cookies</strong>. Zur Speicherung Ihrer persönlichen Darstellungseinstellungen (z. B. die Auswahl zwischen dem hellen und dem dunklen Farbschema / Dark Mode) nutzen wir den lokalen Speicher (Local Storage) Ihres Browsers (`theme`). Diese Angabe verbleibt lokal auf Ihrem Endgerät und wird nicht an unsere Server übertragen oder zur Profilbildung verwendet.
+          </p>
+        </div>
+
+        <div class="border-t border-slate-100 dark:border-slate-800/80 pt-6">
+          <h3 class="text-base font-bold text-slate-900 dark:text-white mb-2">Kontaktaufnahme per E-Mail</h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+            Wenn Sie uns per E-Mail Anfragen zukommen lassen, werden Ihre Angaben inklusive der von Ihnen dort angegebenen Kontaktdaten zwecks Bearbeitung der Anfrage und für den Fall von Anschlussfragen bei uns gespeichert. Diese Daten geben wir nicht ohne Ihre Einwilligung weiter.
+          </p>
+          <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mt-2">
+            Die Verarbeitung dieser Daten erfolgt auf Grundlage von <strong>Art. 6 Abs. 1 lit. b DSGVO</strong> (sofern Ihre Anfrage mit der Erfüllung eines Vertrags zusammenhängt) oder auf Grundlage unseres berechtigten Interesses an der effektiven Bearbeitung der an uns gerichteten Anfragen (<strong>Art. 6 Abs. 1 lit. f DSGVO</strong>).
+          </p>
+        </div>
+      </div>
+
+      <!-- 5. Allgemeine Hinweise & Sicherheitsstandards -->
+      <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
+        <h2 class="text-lg font-bold text-slate-900 dark:text-white">
+          5. Sicherheit & Verschlüsselung
+        </h2>
+        <div class="text-sm text-slate-600 dark:text-slate-400 space-y-3 leading-relaxed">
+          <p>
+            Diese Seite nutzt aus Sicherheitsgründen und zum Schutz der Übertragung vertraulicher Inhalte eine <strong>SSL- bzw. TLS-Verschlüsselung</strong>. Eine verschlüsselte Verbindung erkennen Sie daran, dass die Adresszeile des Browsers von „http://“ auf „https://“ wechselt und an dem Schloss-Symbol in Ihrer Browserzeile.
+          </p>
+          <p>
+            Wenn die SSL- bzw. TLS-Verschlüsselung aktiviert ist, können die Daten, die Sie an uns übermitteln, nicht von Dritten mitgelesen werden.
+          </p>
+        </div>
+      </div>
+
+      <!-- 6. Ihre Rechte als betroffene Person -->
+      <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
+        <h2 class="text-lg font-bold text-slate-900 dark:text-white">
+          6. Ihre Rechte als betroffene Person (DSGVO)
+        </h2>
+        <div class="text-sm text-slate-600 dark:text-slate-400 space-y-3 leading-relaxed">
+          <p>Sie haben im Rahmen der geltenden gesetzlichen Bestimmungen jederzeit das Recht auf:</p>
+          <ul class="list-disc list-inside space-y-1 pl-2">
+            <li><strong>Auskunft (Art. 15 DSGVO):</strong> Sie können unentgeltlich Auskunft über Ihre gespeicherten personenbezogenen Daten, deren Herkunft, Empfänger und den Zweck der Datenverarbeitung verlangen.</li>
+            <li><strong>Berichtigung (Art. 16 DSGVO):</strong> Sie haben das Recht, unverzüglich die Berichtigung unrichtiger oder Vervollständigung unvollständiger personenbezogener Daten zu verlangen.</li>
+            <li><strong>Löschung (Art. 17 DSGVO):</strong> Sie können die Löschung Ihrer bei uns gespeicherten Daten verlangen, sofern keine gesetzlichen Aufbewahrungspflichten entgegenstehen.</li>
+            <li><strong>Einschränkung der Verarbeitung (Art. 18 DSGVO):</strong> Unter bestimmten Voraussetzungen können Sie verlangen, dass die Verarbeitung Ihrer Daten eingeschränkt wird.</li>
+            <li><strong>Datenübertragbarkeit (Art. 20 DSGVO):</strong> Sie haben das Recht, Daten, die wir auf Grundlage Ihrer Einwilligung oder in Erfüllung eines Vertrags automatisiert verarbeiten, in einem gängigen, maschinenlesbaren Format zu erhalten.</li>
+            <li><strong>Widerspruchsrecht (Art. 21 DSGVO):</strong> Wenn die Datenverarbeitung auf Grundlage von Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse) erfolgt, haben Sie das Recht, aus Gründen, die sich aus Ihrer besonderen Situation ergeben, jederzeit Widerspruch gegen die Verarbeitung einzulegen.</li>
+          </ul>
+
+          <div class="pt-4 border-t border-slate-100 dark:border-slate-800/80">
+            <h3 class="font-semibold text-slate-900 dark:text-white mb-2">Beschwerderecht bei der zuständigen Aufsichtsbehörde</h3>
+            <p>
+              Im Falle datenschutzrechtlicher Verstöße steht Ihnen ein Beschwerderecht bei einer zuständigen Datenschutz-Aufsichtsbehörde zu (Art. 77 DSGVO). Die für den Betreiber dieser Website örtlich zuständige Aufsichtsbehörde ist:
+            </p>
+            <div class="mt-3 p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/60 text-xs text-slate-600 dark:text-slate-400 space-y-1">
+              <p class="font-bold text-slate-900 dark:text-white">Der Landesbeauftragte für den Datenschutz und die Informationsfreiheit Baden-Württemberg (LfDI BW)</p>
+              <p>Lautenschlagerstraße 20, 70173 Stuttgart</p>
+              <p>Postfach 10 29 32, 70025 Stuttgart</p>
+              <p>Website: <a href="https://www.baden-wuerttemberg.datenschutz.de" target="_blank" rel="noopener noreferrer" class="text-blue-600 dark:text-blue-400 hover:underline">https://www.baden-wuerttemberg.datenschutz.de</a></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</BaseLayout>

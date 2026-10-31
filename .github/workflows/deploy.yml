@@ -37,6 +37,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Validate content and feeds
+        run: npm run validate
+
       - name: Build with Astro
         run: npm run build
 

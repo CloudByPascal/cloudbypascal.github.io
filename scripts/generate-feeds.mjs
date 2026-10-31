@@ -18,6 +18,10 @@ function escapeXml(value) {
     .replaceAll("'", '&apos;');
 }
 
+function toCdata(value) {
+  return `<![CDATA[${String(value).replaceAll(']]>', ']]]]><![CDATA[>')}]]>`;
+}
+
 function parseFrontmatter(content) {
   const match = content.match(/^---\r?\n([\s\S]*?)\r?\n---/);
   if (!match) return {};
@@ -89,16 +93,16 @@ const rssXml = `<?xml version="1.0" encoding="UTF-8"?>
   <channel>
     <title>${escapeXml('Pascal Riester | Entra ID Field Notes')}</title>
     <description>${escapeXml('Technical blog by Pascal Riester specializing in Microsoft Entra ID, Conditional Access, Privileged Identity Management (PIM), and Microsoft Cloud Security.')}</description>
-    <link>${siteUrl}/</link>
-    <atom:link href="${siteUrl}/rss.xml" rel="self" type="application/rss+xml"/>
+    <link>${escapeXml(`${siteUrl}/`)}</link>
+    <atom:link href="${escapeXml(`${siteUrl}/rss.xml`)}" rel="self" type="application/rss+xml"/>
     <language>en-us</language>
-    <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
+    <lastBuildDate>${escapeXml(new Date().toUTCString())}</lastBuildDate>
 ${posts.map(p => `    <item>
-      <title><![CDATA[${p.title}]]></title>
-      <link>${siteUrl}/${p.slug}/</link>
-      <guid isPermaLink="true">${siteUrl}/${p.slug}/</guid>
-      <pubDate>${new Date(p.date).toUTCString()}</pubDate>
-      <description><![CDATA[${p.summary}]]></description>
+      <title>${toCdata(p.title)}</title>
+      <link>${escapeXml(`${siteUrl}/${p.slug}/`)}</link>
+      <guid isPermaLink="true">${escapeXml(`${siteUrl}/${p.slug}/`)}</guid>
+      <pubDate>${escapeXml(new Date(p.date).toUTCString())}</pubDate>
+      <description>${toCdata(p.summary)}</description>
       <category>${escapeXml(p.category)}</category>
     </item>`).join('\n')}
   </channel>
@@ -110,4 +114,3 @@ console.log(`[generate-feeds] Successfully wrote rss.xml with ${posts.length} ar
 
 assert(sitemapPages.every(p => p.loc.startsWith(`${siteUrl}/`) && p.loc.endsWith('/')), 'Invalid sitemap URL');
 assert(!posts.some(p => p.draft), 'Draft leaked into feeds');
-

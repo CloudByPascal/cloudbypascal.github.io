@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "node ./scripts/generate-feeds.mjs && node ./scripts/astro.mjs dev",
     "start": "node ./scripts/generate-feeds.mjs && node ./scripts/astro.mjs dev",
-    "build": "node ./scripts/generate-feeds.mjs && node ./scripts/astro.mjs build",
+    "build": "npm run validate && node ./scripts/astro.mjs build",
     "preview": "node ./scripts/astro.mjs preview",
     "generate-feeds": "node ./scripts/generate-feeds.mjs",
     "validate:feeds": "node ./scripts/generate-feeds.mjs && node ./scripts/validate-feeds.mjs",

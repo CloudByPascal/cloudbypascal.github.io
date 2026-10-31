@@ -9,7 +9,11 @@ interface Props {
   articleTags?: string[];
   canonicalUrl?: string;
   type?: 'website' | 'article';
+  robots?: string;
 }
+
+const siteOrigin = Astro.site || 'https://entraidfieldnotes.com';
+const normalizedPath = Astro.url.pathname.endsWith('/') ? Astro.url.pathname : `${Astro.url.pathname}/`;
 
 const {
   title = 'Pascal Riester | Microsoft Entra ID & Cloud Identity Blog',
@@ -17,12 +21,13 @@ const {
   image = '/assets/img/pascal-riester.png',
   articleDate,
   articleTags,
-  canonicalUrl = Astro.url.href,
+  canonicalUrl = new URL(normalizedPath, siteOrigin).href,
   type = 'website',
+  robots = 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1',
 } = Astro.props;
 
 const siteTitle = title.includes('Pascal Riester') ? title : `${title} | Pascal Riester`;
-const fullImageUrl = image.startsWith('http') ? image : new URL(image, Astro.site || 'https://entraidfieldnotes.com').href;
+const fullImageUrl = image.startsWith('http') ? image : new URL(image, siteOrigin).href;
 ---
 
 <!DOCTYPE html>
@@ -32,7 +37,10 @@ const fullImageUrl = image.startsWith('http') ? image : new URL(image, Astro.sit
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{siteTitle}</title>
   <meta name="description" content={description}>
+  <meta name="robots" content={robots}>
+  <meta name="author" content="Pascal Riester">
   <link rel="canonical" href={canonicalUrl}>
+  <link rel="sitemap" type="application/xml" href="/sitemap.xml">
 
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content={type}>
@@ -41,7 +49,7 @@ const fullImageUrl = image.startsWith('http') ? image : new URL(image, Astro.sit
   <meta property="og:description" content={description}>
   <meta property="og:image" content={fullImageUrl}>
   <meta property="og:site_name" content="Pascal Riester - Entra ID Field Notes">
-  {articleDate && <meta property="article:published_time" content={articleDate} />}
+  {articleDate && <meta property="article:published_time" content={articleDate.includes('T') ? articleDate : `${articleDate}T00:00:00Z`} />}
   {articleTags && articleTags.map(tag => <meta property="article:tag" content={tag} />)}
 
   <!-- Twitter -->
@@ -133,7 +141,7 @@ const fullImageUrl = image.startsWith('http') ? image : new URL(image, Astro.sit
       </div>
       <div class="flex items-center gap-4">
         <a href="/" class="text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400">All Articles</a>
-        <a href="/impressum" class="text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400">Impressum</a>
+        <a href="/impressum/" class="text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400">Impressum</a>
         <a href="/rss.xml" class="text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400">RSS</a>
         <a href="https://medium.com/@riesterpascal" target="_blank" rel="noopener noreferrer" class="text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400">Medium</a>
         <a href="https://github.com/cloudbypascal" target="_blank" rel="noopener noreferrer" class="text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400">GitHub</a>

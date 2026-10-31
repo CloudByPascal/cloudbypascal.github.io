@@ -4,6 +4,7 @@ import tailwind from '@astrojs/tailwind';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://entraidfieldnotes.com',
+  trailingSlash: 'always',
   output: 'static',
   integrations: [tailwind()],
   markdown: {

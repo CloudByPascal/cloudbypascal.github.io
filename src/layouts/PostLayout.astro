@@ -37,37 +37,58 @@ const readingTime = `${Math.ceil(wordCount / 200)} min read`;
 // Filter headings for TOC (h2 and h3)
 const tocHeadings = headings.filter(h => h.depth >= 2 && h.depth <= 3);
 
-// Canonical & Medium URLs
-const canonicalUrl = canonical || new URL(`/${post.slug}/`, Astro.site || 'https://entraidfieldnotes.com').href;
+// Canonical & Medium URLs (always self-canonicalize to site domain for Google indexing)
+const siteOrigin = String(Astro.site || 'https://entraidfieldnotes.com').replace(/\/$/, '');
+const canonicalUrl = canonical?.startsWith(siteOrigin)
+  ? canonical
+  : new URL(`/${post.slug}/`, siteOrigin).href;
 const mediumLink = mediumUrl || canonical || 'https://medium.com/@riesterpascal';
 const postImage = cover || '/assets/img/pascal-riester.png';
-const postImageUrl = postImage.startsWith('http') ? postImage : new URL(postImage, Astro.site || 'https://entraidfieldnotes.com').href;
+const postImageUrl = postImage.startsWith('http') ? postImage : new URL(postImage, siteOrigin).href;
 
-// BlogPosting JSON-LD Schema
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'BlogPosting',
-  headline: title,
-  description: summary || description,
-  datePublished: date,
-  dateModified: date,
-  author: {
-    '@type': 'Person',
-    name: author,
-    url: 'https://entraidfieldnotes.com'
+// BlogPosting & BreadcrumbList JSON-LD Schema
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    '@id': `${canonicalUrl}#article`,
+    headline: title,
+    description: summary || description,
+    datePublished: `${date}T00:00:00Z`,
+    dateModified: `${date}T00:00:00Z`,
+    inLanguage: 'en',
+    wordCount,
+    articleSection: category,
+    author: {
+      '@type': 'Person',
+      name: author,
+      url: `${siteOrigin}/`,
+      sameAs: [
+        'https://medium.com/@riesterpascal',
+        'https://github.com/cloudbypascal'
+      ]
+    },
+    publisher: {
+      '@type': 'Person',
+      name: 'Pascal Riester',
+      url: `${siteOrigin}/`
+    },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': canonicalUrl
+    },
+    image: postImageUrl,
+    keywords: tags.join(', ')
   },
-  publisher: {
-    '@type': 'Person',
-    name: 'Pascal Riester',
-    url: 'https://entraidfieldnotes.com'
-  },
-  mainEntityOfPage: {
-    '@type': 'WebPage',
-    '@id': canonicalUrl
-  },
-  image: postImageUrl,
-  keywords: tags.join(', ')
-};
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: `${siteOrigin}/` },
+      { '@type': 'ListItem', position: 2, name: title, item: canonicalUrl }
+    ]
+  }
+];
 ---
 
 <BaseLayout

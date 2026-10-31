@@ -6,7 +6,7 @@ category: "Conditional Access"
 tags: [EntraID, ConditionalAccess, PIM, Microsoft365, Cybersecurity]
 summary: "A standardized Travel Access Framework using Microsoft Entra Conditional Access, Named Locations, and Privileged Identity Management (PIM) for secure time-based access."
 cover: "https://cdn-images-1.medium.com/max/1024/1*FqL1IYlIlLAcLQ1gEolm9g.jpeg"
-canonical: "https://medium.com/@riesterpascal/an-approach-to-handling-travelling-users-within-entra-id-32c46d7fda7a"
+mediumUrl: "https://medium.com/@riesterpascal/an-approach-to-handling-travelling-users-within-entra-id-32c46d7fda7a"
 ---
 
 ![Travel Access Framework](https://cdn-images-1.medium.com/max/1024/1*FqL1IYlIlLAcLQ1gEolm9g.jpeg)

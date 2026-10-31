@@ -7,5 +7,5 @@ if (process.platform === 'win32') {
   } catch {}
 }
 
-const { cli } = await import('astro/dist/cli/index.js');
+const { cli } = await import('../node_modules/astro/dist/cli/index.js');
 await cli(process.argv);

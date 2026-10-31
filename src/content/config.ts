@@ -4,7 +4,7 @@ const postsCollection = defineCollection({
   type: 'content',
   schema: z.object({
     title: z.string(),
-    date: z.string(),
+    date: z.union([z.string(), z.date().transform(d => d.toISOString().split('T')[0])]),
     author: z.string().default('Pascal Riester'),
     category: z.string(),
     tags: z.array(z.string()).default([]),
@@ -13,6 +13,7 @@ const postsCollection = defineCollection({
     cover: z.string().optional(),
     canonical: z.string().optional(),
     mediumUrl: z.string().optional(),
+    draft: z.boolean().default(false),
   }),
 });
 

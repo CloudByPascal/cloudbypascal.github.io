@@ -6,10 +6,12 @@ interface Props {
   description?: string;
   image?: string;
   articleDate?: string;
+  articleModifiedDate?: string;
   articleTags?: string[];
   canonicalUrl?: string;
   type?: 'website' | 'article';
   robots?: string;
+  lang?: 'en' | 'de';
 }
 
 const siteOrigin = Astro.site || 'https://entraidfieldnotes.com';
@@ -20,10 +22,12 @@ const {
   description = 'Technical blog by Pascal Riester specializing in Microsoft Entra ID, Conditional Access, Privileged Identity Management (PIM), and Microsoft Cloud Security.',
   image = '/assets/img/pascal-riester.png',
   articleDate,
+  articleModifiedDate,
   articleTags,
   canonicalUrl = new URL(normalizedPath, siteOrigin).href,
   type = 'website',
   robots = 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1',
+  lang = 'en',
 } = Astro.props;
 
 const siteTitle = title.includes('Pascal Riester') ? title : `${title} | Pascal Riester`;
@@ -36,7 +40,7 @@ const isDatenschutz = normalizedPath === '/datenschutz/';
 ---
 
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang={lang} class="scroll-smooth">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -55,6 +59,7 @@ const isDatenschutz = normalizedPath === '/datenschutz/';
   <meta property="og:image" content={fullImageUrl}>
   <meta property="og:site_name" content="Pascal Riester - Entra ID Field Notes">
   {articleDate && <meta property="article:published_time" content={articleDate.includes('T') ? articleDate : `${articleDate}T00:00:00Z`} />}
+  {articleModifiedDate && <meta property="article:modified_time" content={articleModifiedDate.includes('T') ? articleModifiedDate : `${articleModifiedDate}T00:00:00Z`} />}
   {articleTags && articleTags.map(tag => <meta property="article:tag" content={tag} />)}
 
   <!-- Twitter -->

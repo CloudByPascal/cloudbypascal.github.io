@@ -49,10 +49,12 @@ const posts = postFiles
     const slug = file.replace(/\.md$/, '');
     const raw = fs.readFileSync(path.join(postsDir, file), 'utf-8');
     const data = parseFrontmatter(raw);
+    const pubDate = data.date || new Date().toISOString().split('T')[0];
     return {
       slug,
       title: data.title || slug,
-      date: data.date || new Date().toISOString().split('T')[0],
+      date: pubDate,
+      updatedDate: data.updatedDate || pubDate,
       summary: data.summary || '',
       category: data.category || 'General',
       draft: data.draft === 'true',
@@ -62,14 +64,16 @@ const posts = postFiles
   .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
 // 1. Generate Sitemap XML
-const latestDate = posts[0]?.date;
+const latestDate = posts
+  .map(p => p.updatedDate || p.date)
+  .sort((a, b) => new Date(b).getTime() - new Date(a).getTime())[0];
 const sitemapPages = [
   { loc: `${siteUrl}/`, lastmod: latestDate, changefreq: 'daily', priority: '1.0' },
   { loc: `${siteUrl}/impressum/`, changefreq: 'monthly', priority: '0.3' },
   { loc: `${siteUrl}/datenschutz/`, changefreq: 'monthly', priority: '0.3' },
   ...posts.map(p => ({
     loc: `${siteUrl}/${p.slug}/`,
-    lastmod: p.date,
+    lastmod: p.updatedDate || p.date,
     changefreq: 'monthly',
     priority: '0.9',
   }))

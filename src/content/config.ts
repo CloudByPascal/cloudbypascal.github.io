@@ -9,16 +9,20 @@ const isRealCalendarDate = (value: string) => {
   return date.getUTCFullYear() === year && date.getUTCMonth() === month - 1 && date.getUTCDate() === day;
 };
 
+const dateFieldSchema = z
+  .union([z.string(), z.date().transform(d => d.toISOString().split('T')[0])])
+  .pipe(
+    z.string()
+      .regex(dateFormatRegex, 'Date must use YYYY-MM-DD format')
+      .refine(isRealCalendarDate, 'Date must be a valid calendar date')
+  );
+
 const postsCollection = defineCollection({
   type: 'content',
   schema: z.object({
     title: z.string(),
-    date: z.union([z.string(), z.date().transform(d => d.toISOString().split('T')[0])])
-      .pipe(
-        z.string()
-          .regex(dateFormatRegex, 'Date must use YYYY-MM-DD format')
-          .refine(isRealCalendarDate, 'Date must be a valid calendar date')
-      ),
+    date: dateFieldSchema,
+    updatedDate: dateFieldSchema.optional(),
     author: z.string().default('Pascal Riester'),
     category: z.string(),
     tags: z.array(z.string()).default([]),

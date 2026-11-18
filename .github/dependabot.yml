@@ -9,9 +9,5 @@ updates:
     schedule:
       interval: "weekly"
     ignore:
-      - dependency-name: "astro"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "@astrojs/tailwind"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "tailwindcss"
+      - dependency-name: "typescript"
         update-types: ["version-update:semver-major"]

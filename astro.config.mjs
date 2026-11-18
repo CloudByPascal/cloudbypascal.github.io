@@ -1,12 +1,14 @@
 import { defineConfig } from 'astro/config';
-import tailwind from '@astrojs/tailwind';
+import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
 export default defineConfig({
   site: 'https://entraidfieldnotes.com',
   trailingSlash: 'always',
   output: 'static',
-  integrations: [tailwind()],
+  vite: {
+    plugins: [tailwindcss()]
+  },
   markdown: {
     shikiConfig: {
       theme: 'github-dark-dimmed',

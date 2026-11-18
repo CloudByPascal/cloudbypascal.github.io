@@ -3,24 +3,22 @@
   "type": "module",
   "version": "1.0.0",
   "scripts": {
-    "dev": "node ./scripts/generate-feeds.mjs && node ./scripts/astro.mjs dev",
-    "start": "node ./scripts/generate-feeds.mjs && node ./scripts/astro.mjs dev",
-    "build": "npm run validate && node ./scripts/astro.mjs build",
+    "dev": "node ./scripts/astro.mjs dev",
+    "start": "node ./scripts/astro.mjs dev",
+    "build": "node ./scripts/astro.mjs check && node ./scripts/astro.mjs build && node ./scripts/validate-feeds.mjs",
     "preview": "node ./scripts/astro.mjs preview",
-    "generate-feeds": "node ./scripts/generate-feeds.mjs",
-    "validate:feeds": "node ./scripts/generate-feeds.mjs && node ./scripts/validate-feeds.mjs",
     "check": "node ./scripts/astro.mjs check",
-    "validate": "npm run validate:feeds && npm run check",
+    "validate": "node ./scripts/astro.mjs check && node ./scripts/validate-feeds.mjs",
     "astro": "node ./scripts/astro.mjs"
   },
   "dependencies": {
-    "@astrojs/tailwind": "^5.1.5",
-    "astro": "^4.16.18",
-    "fast-xml-parser": "^5.11.2",
-    "tailwindcss": "^3.4.17"
+    "@tailwindcss/vite": "^4.3.5",
+    "astro": "^7.4.13",
+    "fast-xml-parser": "^5.12.0",
+    "tailwindcss": "^4.3.5"
   },
   "devDependencies": {
-    "@astrojs/check": "^0.9.10",
+    "@astrojs/check": "^0.9.12",
     "typescript": "^5.9.3"
   }
 }

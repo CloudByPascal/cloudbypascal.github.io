@@ -6,22 +6,12 @@ const allPosts = (await getCollection('posts', ({ data }) => !data.draft)).sort(
   (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
 );
 
-function stripMarkdownForSearch(markdown: string): string {
-  return markdown
-    .replace(/```[\s\S]*?```/g, ' ')
-    .replace(/[#>*_`~\[\]()!-]/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim()
-    .toLowerCase();
-}
-
 const postsWithMeta = allPosts.map(post => {
   const wordCount = post.body ? post.body.trim().split(/\s+/).length : 500;
   return {
     post,
     readingTime: `${Math.ceil(wordCount / 200)} min read`,
-    postUrl: `/${post.slug}/`,
-    searchContent: stripMarkdownForSearch(post.body || ''),
+    postUrl: `/${post.id}/`,
   };
 });
 
@@ -49,7 +39,7 @@ const websiteSchema = {
   <script type="application/ld+json" set:html={JSON.stringify(websiteSchema)} is:inline />
 
   <!-- Author Hero Header -->
-  <section class="border-b border-slate-200 dark:border-slate-800 bg-gradient-to-b from-white via-slate-50 to-slate-100 dark:from-slate-950 dark:via-slate-950 dark:to-slate-900 py-14 sm:py-18">
+  <section class="border-b border-slate-200 dark:border-slate-800 bg-gradient-to-b from-white via-slate-50 to-slate-100 dark:from-slate-950 dark:via-slate-950 dark:to-slate-900 py-14 sm:py-20">
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex flex-col sm:flex-row items-start sm:items-center gap-6 mb-6">
         <img src="/assets/img/pascal-riester.png" alt="Pascal Riester" width="96" height="96" loading="eager" decoding="async"
@@ -74,12 +64,12 @@ const websiteSchema = {
 
       <!-- Topic Pills -->
       <div class="flex flex-wrap gap-2 mt-6">
-        <span class="text-xs px-3 py-1 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 font-medium">🛡️ Microsoft Entra ID</span>
-        <span class="text-xs px-3 py-1 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 font-medium">🔐 Conditional Access Frameworks</span>
-        <span class="text-xs px-3 py-1 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 font-medium">⚡ Continuous Access Evaluation (CAE)</span>
-        <span class="text-xs px-3 py-1 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 font-medium">👑 Privileged Identity Management (PIM)</span>
-        <span class="text-xs px-3 py-1 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 font-medium">🌐 Zero Trust & Network Security</span>
-        <span class="text-xs px-3 py-1 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 font-medium">🔄 Identity Lifecycle & Governance</span>
+        <button type="button" data-filter-category="Entra ID" class="topic-pill text-xs px-3 py-1 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 font-medium hover:border-blue-500/50 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">🛡️ Microsoft Entra ID</button>
+        <button type="button" data-filter-category="Conditional Access" class="topic-pill text-xs px-3 py-1 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 font-medium hover:border-blue-500/50 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">🔐 Conditional Access Frameworks</button>
+        <button type="button" data-filter-query="CAE" class="topic-pill text-xs px-3 py-1 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 font-medium hover:border-blue-500/50 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">⚡ Continuous Access Evaluation (CAE)</button>
+        <button type="button" data-filter-query="PIM" class="topic-pill text-xs px-3 py-1 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 font-medium hover:border-blue-500/50 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">👑 Privileged Identity Management (PIM)</button>
+        <button type="button" data-filter-query="ZeroTrust" class="topic-pill text-xs px-3 py-1 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 font-medium hover:border-blue-500/50 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">🌐 Zero Trust & Network Security</button>
+        <button type="button" data-filter-query="Governance" class="topic-pill text-xs px-3 py-1 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 font-medium hover:border-blue-500/50 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">🔄 Identity Lifecycle & Governance</button>
       </div>
     </div>
   </section>
@@ -133,14 +123,14 @@ const websiteSchema = {
 
     <!-- Article Cards Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4" id="posts-grid">
-      {postsWithMeta.map(({ post, readingTime, postUrl, searchContent }) => (
+      {postsWithMeta.map(({ post, readingTime, postUrl }) => (
           <article
             class="post-card rounded-2xl sm:rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 sm:p-8 hover:shadow-xl hover:border-blue-500/40 dark:hover:border-blue-500/40 transition-all flex flex-col justify-between group"
+            data-id={post.id}
             data-title={post.data.title.toLowerCase()}
             data-summary={post.data.summary.toLowerCase()}
             data-category={post.data.category}
             data-tags={post.data.tags.join(',').toLowerCase()}
-            data-content={searchContent}
           >
             <div>
               <!-- Meta Badges -->
@@ -208,6 +198,13 @@ const websiteSchema = {
       </div>
       <h3 class="text-base font-bold text-slate-900 dark:text-white">No matching articles found</h3>
       <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Try clearing your search query or selecting a different category filter.</p>
+      <button
+        type="button"
+        id="reset-filters-btn"
+        class="mt-4 inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold bg-slate-900 text-white dark:bg-white dark:text-slate-900 hover:bg-slate-800 dark:hover:bg-slate-100 transition-all shadow-sm"
+      >
+        Reset filters
+      </button>
     </div>
 
   </main>
@@ -218,12 +215,49 @@ const websiteSchema = {
     const searchInput = document.getElementById('search-input');
     const filterButtons = document.querySelectorAll('.category-filter-btn');
     const tagButtons = document.querySelectorAll('.tag-filter-pill');
+    const topicPills = document.querySelectorAll('.topic-pill');
+    const resetFiltersBtn = document.getElementById('reset-filters-btn');
     const postCards = document.querySelectorAll('.post-card');
     const countNumber = document.getElementById('count-number');
     const noResults = document.getElementById('no-results');
+    const mainContent = document.getElementById('main-content');
 
     const INACTIVE_FILTER_CLASSES = 'category-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-950 bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700';
     const ACTIVE_FILTER_CLASSES = 'category-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-950 bg-slate-900 text-white dark:bg-white dark:text-slate-900 shadow-sm active-filter';
+
+    let searchIndexMap = null;
+    let searchIndexPromise = null;
+
+    function ensureSearchIndex() {
+      if (searchIndexMap) return Promise.resolve(searchIndexMap);
+      if (searchIndexPromise) return searchIndexPromise;
+      searchIndexPromise = fetch('/search-index.json')
+        .then(res => (res.ok ? res.json() : []))
+        .then(items => {
+          searchIndexMap = new Map(items.map(item => [item.id, item.content || '']));
+          return searchIndexMap;
+        })
+        .catch(() => {
+          searchIndexMap = new Map();
+          return searchIndexMap;
+        });
+      return searchIndexPromise;
+    }
+
+    function syncUrlParams(query) {
+      const url = new URL(window.location.href);
+      if (query) {
+        url.searchParams.set('q', query);
+      } else {
+        url.searchParams.delete('q');
+      }
+      if (activeCategory && activeCategory !== 'All') {
+        url.searchParams.set('category', activeCategory);
+      } else {
+        url.searchParams.delete('category');
+      }
+      history.replaceState(null, '', url.pathname + url.search + url.hash);
+    }
 
     function setActiveCategoryButton(targetBtn) {
       filterButtons.forEach(b => {
@@ -235,16 +269,32 @@ const websiteSchema = {
       activeCategory = targetBtn.getAttribute('data-category') || 'All';
     }
 
-    function applyFilter() {
-      const query = (searchInput?.value || '').trim().toLowerCase();
+    function selectCategoryByName(categoryName) {
+      const matchingBtn = Array.from(filterButtons).find(
+        b => (b.getAttribute('data-category') || '').toLowerCase() === categoryName.toLowerCase()
+      );
+      if (matchingBtn) {
+        setActiveCategoryButton(matchingBtn);
+      }
+    }
+
+    function applyFilter({ syncUrl = true } = {}) {
+      const rawQuery = (searchInput?.value || '').trim();
+      const query = rawQuery.toLowerCase();
+
+      if (query && !searchIndexMap) {
+        ensureSearchIndex().then(() => applyFilter({ syncUrl: false }));
+      }
+
       let visibleCount = 0;
 
       postCards.forEach(card => {
+        const id = card.getAttribute('data-id') || '';
         const title = card.getAttribute('data-title') || '';
         const summary = card.getAttribute('data-summary') || '';
         const category = card.getAttribute('data-category') || '';
         const tags = card.getAttribute('data-tags') || '';
-        const content = card.getAttribute('data-content') || '';
+        const content = searchIndexMap?.get(id) || '';
 
         const matchesCat = activeCategory === 'All' || category === activeCategory;
         const matchesQuery = !query || title.includes(query) || summary.includes(query) || tags.includes(query) || content.includes(query);
@@ -257,8 +307,9 @@ const websiteSchema = {
         }
       });
 
-      if (countNumber) countNumber.textContent = visibleCount;
+      if (countNumber) countNumber.textContent = String(visibleCount);
       if (noResults) noResults.classList.toggle('hidden', visibleCount > 0);
+      if (syncUrl) syncUrlParams(rawQuery);
     }
 
     filterButtons.forEach(btn => {
@@ -277,7 +328,32 @@ const websiteSchema = {
       });
     });
 
-    searchInput?.addEventListener('input', applyFilter);
+    topicPills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        const targetCategory = pill.getAttribute('data-filter-category');
+        const targetQuery = pill.getAttribute('data-filter-query');
+
+        if (targetCategory) {
+          selectCategoryByName(targetCategory);
+          if (searchInput) searchInput.value = '';
+        } else if (targetQuery) {
+          selectCategoryByName('All');
+          if (searchInput) searchInput.value = targetQuery;
+        }
+
+        applyFilter();
+        mainContent?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+
+    resetFiltersBtn?.addEventListener('click', () => {
+      selectCategoryByName('All');
+      if (searchInput) searchInput.value = '';
+      applyFilter();
+      searchInput?.focus();
+    });
+
+    searchInput?.addEventListener('input', () => applyFilter());
 
     // Initialize filters from URL query parameters (?q=...&category=...)
     const params = new URLSearchParams(window.location.search);
@@ -285,12 +361,7 @@ const websiteSchema = {
     const initialCategory = params.get('category');
 
     if (initialCategory) {
-      const matchingBtn = Array.from(filterButtons).find(
-        b => (b.getAttribute('data-category') || '').toLowerCase() === initialCategory.toLowerCase()
-      );
-      if (matchingBtn) {
-        setActiveCategoryButton(matchingBtn);
-      }
+      selectCategoryByName(initialCategory);
     }
 
     if (initialQuery && searchInput) {
@@ -298,7 +369,7 @@ const websiteSchema = {
     }
 
     if (initialQuery || initialCategory) {
-      applyFilter();
+      applyFilter({ syncUrl: false });
     }
   </script>
 </BaseLayout>

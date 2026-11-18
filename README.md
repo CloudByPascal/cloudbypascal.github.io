@@ -24,27 +24,41 @@ Cross-published and syndicated with [Medium (@riesterpascal)](https://medium.com
 
 ```text
 ├── .github/
+│   ├── dependabot.yml            # Weekly dependency & Actions updates
 │   └── workflows/
-│       └── deploy.yml            # Automated GitHub Actions Astro build & Pages deployment
-├── public/                       # Static public assets (images, sitemap.xml, robots.txt, .nojekyll)
-│   ├── assets/img/
-│   ├── robots.txt
-│   └── sitemap.xml
+│       └── deploy.yml            # Automated GitHub Actions Astro build, validation & Pages deployment
+├── public/                       # Static public assets (self-hosted fonts, images, Mermaid, favicon, robots.txt, .nojekyll)
+│   ├── assets/
+│   │   ├── fonts/
+│   │   ├── img/
+│   │   └── js/mermaid.min.js
+│   ├── favicon.svg
+│   └── robots.txt
+├── scripts/
+│   ├── astro.mjs                 # Astro CLI wrapper (Windows drive casing fix)
+│   └── validate-feeds.mjs        # Post-build XML feed, search index & dist link/asset check
 ├── src/
+│   ├── components/
+│   │   └── Comments.astro        # Lazy-loaded Giscus comments (GitHub Discussions)
 │   ├── content/
-│   │   ├── config.ts             # Zod collection schema for posts
 │   │   └── posts/                # Markdown articles (.md)
+│   ├── content.config.ts         # Astro Content Layer glob loader & Zod schema
 │   ├── layouts/
 │   │   ├── BaseLayout.astro      # Core HTML layout, Anti-FOUC, Header, Footer, Open Graph
-│   │   └── PostLayout.astro      # Article layout with TOC, Mermaid rendering, Code block copy
+│   │   └── PostLayout.astro      # Article layout with TOC, lazy Mermaid, Callouts, Code copy, Prev/Next
 │   ├── pages/
-│   │   ├── [slug].astro          # Dedicated static post pages (/[slug]/index.html)
-│   │   ├── index.astro           # Homepage with dynamic search & category filters
+│   │   ├── [slug].astro          # Dedicated static post pages (/[slug]/)
+│   │   ├── posts/[slug].astro    # Legacy /posts/[slug]/ redirect with canonical header
+│   │   ├── index.astro           # Homepage with category filters & lazy full-text search
+│   │   ├── impressum.astro       # Legal notice (DDG / MStV)
+│   │   ├── datenschutz.astro     # Privacy policy (DSGVO)
+│   │   ├── rss.xml.ts            # Build-time RSS 2.0 feed endpoint
+│   │   ├── sitemap.xml.ts        # Build-time XML sitemap endpoint
+│   │   ├── search-index.json.ts  # Build-time search index endpoint
 │   │   └── 404.astro             # Custom 404 error page
 │   └── styles/
-│       └── custom.css            # Typography, fonts, glassmorphism, scrollbars
-├── astro.config.mjs              # Astro configuration (SSG output, Tailwind, Shiki)
-├── tailwind.config.mjs           # Tailwind configuration matching AGENTS.md tokens
+│       └── custom.css            # Tailwind CSS v4 entry, dark variant, fonts, typography, callouts, print styles
+├── astro.config.mjs              # Astro 7 configuration (SSG output, @tailwindcss/vite, Shiki)
 └── package.json                  # Dependencies and build scripts
 ```
 
@@ -59,8 +73,11 @@ npm install
 # Start local development server
 npm run dev
 
-# Build static site for production (outputs to ./dist)
+# Build static site for production + run TypeScript & feed/link validation (outputs to ./dist)
 npm run build
+
+# Typecheck and validate Astro templates
+npm run check
 
 # Preview production build locally
 npm run preview

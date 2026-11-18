@@ -38,7 +38,7 @@ const recentPosts = (await getCollection('posts', ({ data }) => !data.draft))
           <div class="grid grid-cols-1 gap-3">
             {recentPosts.map(post => (
               <a
-                href={`/${post.slug}/`}
+                href={`/${post.id}/`}
                 class="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:shadow-md hover:border-blue-500/40 dark:hover:border-blue-500/40 transition-all flex items-center justify-between gap-4 group"
               >
                 <div class="min-w-0">

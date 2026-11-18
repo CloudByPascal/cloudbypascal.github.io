@@ -26,24 +26,17 @@ The blog uses a curated **Slate & Brand Blue** aesthetic with support for **Ligh
 | **Brand Subtle Badge** | `bg-blue-50 text-blue-700 border-blue-200` | `dark:bg-blue-950/60 dark:text-blue-300 dark:border-blue-800` |
 | **Code Block Background** | `bg-slate-900` (`#0f172a`) | `bg-slate-900` (`#0f172a`) |
 
-### 1.2 Tailwind Configuration
-Configured in `tailwind.config.mjs` with `darkMode: 'class'`:
-```javascript
-export default {
-  darkMode: 'class',
-  content: ['./src/**/*.{astro,html,js,jsx,md,mdx,ts,tsx}'],
-  theme: {
-    extend: {
-      colors: {
-        brand: {
-          50: '#eff6ff',
-          500: '#3b82f6',
-          600: '#2563eb',
-          700: '#1d4ed8',
-        }
-      }
-    }
-  }
+### 1.2 Tailwind Configuration (v4 CSS-first)
+Configured via `@tailwindcss/vite` in `astro.config.mjs` and `src/styles/custom.css`:
+```css
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-brand-50: #eff6ff;
+  --color-brand-500: #3b82f6;
+  --color-brand-600: #2563eb;
+  --color-brand-700: #1d4ed8;
 }
 ```
 
@@ -92,17 +85,19 @@ All pages import `src/styles/custom.css` which provides:
 
 The site is built with Astro Static Site Generation (SSG):
 
-### 4.1 Layouts
-- **`src/layouts/BaseLayout.astro`**: Standard root HTML document containing meta tags, Anti-FOUC theme handler, accessible skip link (`#main-content`), sticky header with responsive controls (Theme toggle, RSS, Medium, GitHub), global toast handler (`showToast`), and footer.
-- **`src/layouts/PostLayout.astro`**: Layout for individual articles. Automatically injects `BlogPosting` JSON-LD structured data, handles responsive table of contents (TOC), image lightboxes, Mermaid rendering, copy buttons on code blocks, and Medium links.
+### 4.1 Layouts & Components
+- **`src/layouts/BaseLayout.astro`**: Standard root HTML document containing meta tags, primary font preload, Anti-FOUC theme handler, accessible skip link (`#main-content`), sticky header with responsive controls (Theme toggle, RSS, Medium, GitHub), global toast handler (`showToast`), and footer.
+- **`src/layouts/PostLayout.astro`**: Layout for individual articles. Automatically injects `BlogPosting` & `BreadcrumbList` JSON-LD structured data, reading progress bar, responsive table of contents (TOC), image lightboxes, lazy-loaded Mermaid rendering, responsive table wrappers, GitHub-style callout blocks, copy buttons on code blocks, Prev/Next + Related navigation, and Medium links.
+- **`src/components/Comments.astro`**: Lazy-loaded Giscus comments widget (`IntersectionObserver`) backed by GitHub Discussions.
 
 ### 4.2 Content Collections
-Articles are stored in `src/content/posts/*.md`.
-Frontmatter schema defined in `src/content/config.ts`:
+Articles are stored in `src/content/posts/*.md` and referenced by `post.id`.
+Collection loader (`glob`) and Zod frontmatter schema are defined in `src/content.config.ts`:
 ```typescript
 {
   title: string;
   date: string; // YYYY-MM-DD
+  updatedDate?: string; // YYYY-MM-DD
   author?: string; // defaults to 'Pascal Riester'
   category: string;
   tags: string[];
@@ -111,14 +106,16 @@ Frontmatter schema defined in `src/content/config.ts`:
   cover?: string;
   canonical?: string;
   mediumUrl?: string;
+  draft?: boolean; // defaults to false
 }
 ```
 
-### 4.3 Routing
-- Home page: `src/pages/index.astro`
-- Post articles: `src/pages/[slug].astro` (canonical URL format `/[slug]/`)
+### 4.3 Routing & Endpoints
+- Home page: `src/pages/index.astro` (uses lazy `/search-index.json` fetch for full-text queries)
+- Post articles: `src/pages/[slug].astro` (canonical URL format `/[slug]/`, using `post.id` and `render(post)`)
 - Backward compatibility: `src/pages/posts/[slug].astro` redirects legacy `/posts/[slug]/` URLs to `/[slug]/` with canonical headers.
-- Impressum: `src/pages/impressum.astro`
+- Legal pages: `src/pages/impressum.astro` and `src/pages/datenschutz.astro`
+- Feeds & search index: `src/pages/rss.xml.ts`, `src/pages/sitemap.xml.ts`, `src/pages/search-index.json.ts`
 - 404: `src/pages/404.astro`
 
 ---
@@ -164,4 +161,4 @@ Before completing any task, every agent must verify:
 - [ ] Footer uses standard 3-column layout with `#current-year` dynamic year and RSS link.
 - [ ] No hardcoded inline light/dark styles that conflict with Tailwind `dark:` classes.
 - [ ] Contrast meets WCAG AA standards.
-- [ ] Feeds are generated (`node ./scripts/generate-feeds.mjs` runs on build).
+- [ ] `npm run build` passes (`astro check`, `astro build`, and `scripts/validate-feeds.mjs` validating `dist/rss.xml`, `dist/sitemap.xml`, `dist/search-index.json`, and all internal HTML links/assets).

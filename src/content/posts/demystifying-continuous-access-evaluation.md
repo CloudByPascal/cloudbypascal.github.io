@@ -5,6 +5,7 @@ author: "Pascal Riester"
 category: "Conditional Access"
 tags: [EntraID, CAE, ContinuousAccessEvaluation, ConditionalAccess, ZeroTrust, M365Security]
 summary: "A technical deep dive into Continuous Access Evaluation (CAE) in Microsoft Entra ID: understanding real-time token revocation, claims challenges, standard vs. strict location enforcement, and practical operational gotchas."
+cover: "/assets/img/demystifying-continuous-access-evaluation.png"
 ---
 
 ## Introduction
@@ -190,7 +191,7 @@ CAE operates across two fundamentally distinct evaluation engines:
 | --- | --- | --- |
 | **Trigger Mechanism** | Pub/Sub push notification from Entra ID to Resource Provider | IP Named Location tables synchronized into Resource Providers |
 | **License Requirement** | Free / All Tenants (Built-in baseline) | Entra ID P1 / P2 (Requires Conditional Access) |
-| **Evaluated Events** | • Account deleted or disabled• Password reset or changed• MFA enabled for user• Admin explicit session revocation (`Revoke-MgUserSignInSession`)• **High User Risk** flagged by Entra ID Protection | • Real-time user egress IP movements outside allowed [Named Locations](/authentication/conditional-access.md) |
+| **Evaluated Events** | • Account deleted or disabled• Password reset or changed• MFA enabled for user• Admin explicit session revocation (`Revoke-MgUserSignInSession`)• **High User Risk** flagged by Entra ID Protection | • Real-time user egress IP movements outside allowed [Named Locations](https://learn.microsoft.com/en-us/entra/identity/conditional-access/concept-assignment-network) |
 | **Enforcement Latency** | Near real-time (**up to 15 mins** propagation delay) | **Instantaneous** on next HTTP request |
 
 ---

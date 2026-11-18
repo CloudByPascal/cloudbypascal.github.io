@@ -1,12 +1,18 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 import PostLayout from '../layouts/PostLayout.astro';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('posts', ({ data }) => !data.draft);
-  return posts.map(post => {
+  const posts = (await getCollection('posts', ({ data }) => !data.draft)).sort(
+    (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+  );
+
+  return posts.map((post, idx) => {
+    const nextPost = idx > 0 ? posts[idx - 1] : undefined;
+    const prevPost = idx < posts.length - 1 ? posts[idx + 1] : undefined;
+
     const relatedPosts = posts
-      .filter(candidate => candidate.slug !== post.slug)
+      .filter(candidate => candidate.id !== post.id)
       .map(candidate => {
         const categoryScore = candidate.data.category === post.data.category ? 2 : 0;
         const tagScore = candidate.data.tags.filter(t => post.data.tags.includes(t)).length;
@@ -20,16 +26,22 @@ export async function getStaticPaths() {
       .map(item => item.candidate);
 
     return {
-      params: { slug: post.slug },
-      props: { post, relatedPosts },
+      params: { slug: post.id },
+      props: { post, relatedPosts, prevPost, nextPost },
     };
   });
 }
 
-const { post, relatedPosts } = Astro.props;
-const { Content, headings } = await post.render();
+const { post, relatedPosts, prevPost, nextPost } = Astro.props;
+const { Content, headings } = await render(post);
 ---
 
-<PostLayout post={post} headings={headings} relatedPosts={relatedPosts}>
+<PostLayout
+  post={post}
+  headings={headings}
+  relatedPosts={relatedPosts}
+  prevPost={prevPost}
+  nextPost={nextPost}
+>
   <Content />
 </PostLayout>

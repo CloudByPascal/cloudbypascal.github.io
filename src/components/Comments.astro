@@ -39,7 +39,12 @@
 </section>
 
 <script is:inline>
+  let giscusLoaded = false;
+
   function loadGiscusComments() {
+    if (giscusLoaded) return;
+    giscusLoaded = true;
+
     const isDark = document.documentElement.classList.contains('dark');
     const theme = isDark ? 'dark' : 'light';
 
@@ -67,6 +72,27 @@
     }
   }
 
+  function observeGiscusComments() {
+    const container = document.getElementById('giscus-container');
+    if (!container) return;
+
+    if (!('IntersectionObserver' in window)) {
+      loadGiscusComments();
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          observer.disconnect();
+          loadGiscusComments();
+        }
+      },
+      { rootMargin: '200px' }
+    );
+    observer.observe(container);
+  }
+
   // Update theme dynamically when user toggles light/dark mode
   window.addEventListener('themeChanged', (e) => {
     const isDark = e.detail?.isDark ?? document.documentElement.classList.contains('dark');
@@ -81,8 +107,8 @@
   });
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', loadGiscusComments, { once: true });
+    document.addEventListener('DOMContentLoaded', observeGiscusComments, { once: true });
   } else {
-    loadGiscusComments();
+    observeGiscusComments();
   }
 </script>

@@ -3,9 +3,9 @@ title: "How to Secure Your Emergency Access Accounts in Microsoft Entra ID"
 date: "2026-10-18"
 author: "Pascal Riester"
 category: "Entra ID"
-tags: [EntraID, MFA, Authentication, ZeroTrust, Passkey, SMS, Voice, GraphAPI]
+tags: [EntraID, BreakGlass, EmergencyAccess, ConditionalAccess, FIDO2, Passkey, ZeroTrust]
 summary: "A practical guide to securing emergency access accounts in Microsoft Entra ID."
-cover: "/assets/img/securing-emergency-access-accounts.png"
+cover: "/assets/img/securing-emergency-access-accounts.webp"
 ---
 
 ## Introduction

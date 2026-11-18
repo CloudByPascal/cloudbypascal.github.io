@@ -5,11 +5,11 @@ author: "Pascal Riester"
 category: "Conditional Access"
 tags: [EntraID, ConditionalAccess, PIM, Microsoft365, Cybersecurity]
 summary: "A standardized Travel Access Framework using Microsoft Entra Conditional Access, Named Locations, and Privileged Identity Management (PIM) for secure time-based access."
-cover: "https://cdn-images-1.medium.com/max/1024/1*FqL1IYlIlLAcLQ1gEolm9g.jpeg"
+cover: "/assets/img/travel-access-framework.webp"
 mediumUrl: "https://medium.com/@riesterpascal/an-approach-to-handling-travelling-users-within-entra-id-32c46d7fda7a"
 ---
 
-![Travel Access Framework](https://cdn-images-1.medium.com/max/1024/1*FqL1IYlIlLAcLQ1gEolm9g.jpeg)
+![Travel Access Framework](/assets/img/travel-access-framework.webp)
 
 ## Introduction
 
@@ -23,7 +23,7 @@ To improve both security and user experience, we developed a standardized **"Tra
 
 ## Access Matrix by User Type
 
-![Access matrix by user type](https://cdn-images-1.medium.com/max/1024/1*WKgqiU8EMYTCSXiFJ7mGdQ.png)
+![Access matrix by user type](/assets/img/travel-access-matrix.webp)
 
 To achieve this, we moved away from a simple exclude for users who travel and need to access their work resources and created a **tiered location strategy**. Alongside our location-based policies, we always require users to provide **MFA as well as a managed/compliant device**. 
 
@@ -44,7 +44,7 @@ To implement this concept, we used **Microsoft Entra Privileged Identity Managem
 
 For this concept to work, we defined a streamlined process flow for users to be added to the respective risk group:
 
-![Process flow for users to be added to the respective risk group](https://cdn-images-1.medium.com/max/1024/1*479u8eNmlAX56kN1J59eGQ.png)
+![Process flow for users to be added to the respective risk group](/assets/img/travel-access-process-flow.webp)
 
 ### Setting Up Security Groups
 
@@ -55,7 +55,7 @@ To build this architecture, create three dedicated cloud security groups in Entr
 
 Once created, onboard each group to **Entra Privileged Identity Management (PIM) for Groups**. In the PIM settings for each group, define policies tailored to the risk level:
 
-![PIM settings for risk groups](https://cdn-images-1.medium.com/max/1024/1*AoD45NMBqs07cfFyjp0jJQ.png)
+![PIM settings for risk groups](/assets/img/travel-pim-risk-groups.webp)
 
 ---
 

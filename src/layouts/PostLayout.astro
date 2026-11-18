@@ -9,7 +9,7 @@ interface Heading {
 }
 
 interface RelatedPost {
-  slug: string;
+  id: string;
   data: {
     title: string;
     date: string;
@@ -18,9 +18,18 @@ interface RelatedPost {
   };
 }
 
+interface NavPost {
+  id: string;
+  data: {
+    title: string;
+    category: string;
+    date: string;
+  };
+}
+
 interface Props {
   post: {
-    slug: string;
+    id: string;
     data: {
       title: string;
       date: string;
@@ -34,13 +43,15 @@ interface Props {
       canonical?: string;
       mediumUrl?: string;
     };
-    body: string;
+    body?: string;
   };
   headings: Heading[];
   relatedPosts?: RelatedPost[];
+  prevPost?: NavPost;
+  nextPost?: NavPost;
 }
 
-const { post, headings, relatedPosts = [] } = Astro.props;
+const { post, headings, relatedPosts = [], prevPost, nextPost } = Astro.props;
 const { title, date, updatedDate, author = 'Pascal Riester', category, tags = [], summary, description, cover, canonical, mediumUrl } = post.data;
 
 // Calculate estimated reading time
@@ -55,7 +66,7 @@ const tocHeadings = headings.filter(h => h.depth >= 2 && h.depth <= 3);
 const siteOrigin = String(Astro.site || 'https://entraidfieldnotes.com').replace(/\/$/, '');
 const canonicalUrl = canonical?.startsWith(siteOrigin)
   ? canonical
-  : new URL(`/${post.slug}/`, siteOrigin).href;
+  : new URL(`/${post.id}/`, siteOrigin).href;
 const mediumLink = mediumUrl || (canonical && canonical.includes('medium.com') ? canonical : undefined);
 const postImage = cover || '/assets/img/pascal-riester.png';
 const postImageUrl = postImage.startsWith('http') ? postImage : new URL(postImage, siteOrigin).href;
@@ -117,10 +128,12 @@ const jsonLd = [
 >
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} is:inline />
 
-  <main id="main-content" class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex-grow w-full">
+  <div id="reading-progress" aria-hidden="true" class="fixed top-0 left-0 h-0.5 bg-blue-600 dark:bg-blue-400 z-50 transition-[width] duration-75" style="width: 0%"></div>
+
+  <main id="main-content" data-has-mermaid={hasMermaid ? 'true' : 'false'} class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex-grow w-full">
 
     <!-- Breadcrumb & Share Actions -->
-    <div class="flex items-center justify-between pb-6 mb-8 border-b border-slate-200 dark:border-slate-800">
+    <div class="post-nav-chrome flex items-center justify-between pb-6 mb-8 border-b border-slate-200 dark:border-slate-800">
       <a href="/" class="inline-flex items-center gap-2 text-xs font-semibold text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
@@ -227,13 +240,41 @@ const jsonLd = [
               class="w-14 h-14 rounded-2xl object-cover object-top ring-2 ring-blue-500/20 shrink-0">
             <div>
               <div class="text-base font-bold text-slate-900 dark:text-white">Pascal Riester</div>
-              <div class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Author on Medium • <a href="https://medium.com/@riesterpascal" target="_blank" class="text-blue-600 dark:text-blue-400 underline">@riesterpascal</a></div>
+              <div class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Author on Medium • <a href="https://medium.com/@riesterpascal" target="_blank" rel="noopener noreferrer" class="text-blue-600 dark:text-blue-400 underline">@riesterpascal</a></div>
             </div>
           </div>
           <a href="https://medium.com/@riesterpascal" target="_blank" rel="noopener noreferrer" class="px-4 py-2 rounded-xl text-xs font-semibold bg-slate-900 text-white dark:bg-white dark:text-slate-900 hover:bg-slate-800 dark:hover:bg-slate-100 transition-all shadow-sm">
             Follow on Medium ↗
           </a>
         </div>
+
+        {(prevPost || nextPost) && (
+          <nav class="post-pagination-nav grid grid-cols-1 sm:grid-cols-2 gap-4 mt-10" aria-label="Article navigation">
+            {prevPost ? (
+              <a
+                href={`/${prevPost.id}/`}
+                class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:shadow-md hover:border-blue-500/40 dark:hover:border-blue-500/40 transition-all group flex flex-col justify-between"
+              >
+                <span class="text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">← Previous Article</span>
+                <span class="text-sm font-bold text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors leading-snug">
+                  {prevPost.data.title}
+                </span>
+              </a>
+            ) : <div class="hidden sm:block" />}
+
+            {nextPost ? (
+              <a
+                href={`/${nextPost.id}/`}
+                class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:shadow-md hover:border-blue-500/40 dark:hover:border-blue-500/40 transition-all group flex flex-col justify-between sm:text-right"
+              >
+                <span class="text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">Next Article →</span>
+                <span class="text-sm font-bold text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors leading-snug">
+                  {nextPost.data.title}
+                </span>
+              </a>
+            ) : <div class="hidden sm:block" />}
+          </nav>
+        )}
 
         {relatedPosts.length > 0 && (
           <section class="mt-12" aria-labelledby="related-articles-heading">
@@ -243,7 +284,7 @@ const jsonLd = [
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {relatedPosts.map(rel => (
                 <a
-                  href={`/${rel.slug}/`}
+                  href={`/${rel.id}/`}
                   class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:shadow-xl hover:border-blue-500/40 dark:hover:border-blue-500/40 transition-all flex flex-col justify-between group"
                 >
                   <div>
@@ -317,10 +358,7 @@ const jsonLd = [
     </div>
   </dialog>
 
-  <!-- Mermaid.js Engine (self-hosted, loaded only on pages containing diagrams) -->
-  {hasMermaid && <script is:inline src="/assets/js/mermaid.min.js"></script>}
-
-  <!-- Post Interactive Scripts: Code block enhancements, Mermaid diagram render, Share, TOC Spy -->
+  <!-- Post Interactive Scripts: Code block enhancements, Lazy Mermaid diagrams, Tables, Callouts, Reading Progress, Share, TOC Spy -->
   <script is:inline>
     // Share Button Handling
     document.getElementById('share-btn')?.addEventListener('click', async () => {
@@ -410,8 +448,120 @@ const jsonLd = [
       });
     }
 
-    // Mermaid Diagram Handling
+    // Enhance Markdown Tables with responsive horizontal scroll wrapper
+    function enhanceTables() {
+      document.querySelectorAll('#markdown-container table').forEach(table => {
+        if (table.parentElement?.classList.contains('table-wrapper')) return;
+        const wrapper = document.createElement('div');
+        wrapper.className = 'table-wrapper';
+        table.parentNode?.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      });
+    }
+
+    // Enhance GitHub-style Callout/Admonition blockquotes ([!NOTE], [!TIP], etc.)
+    const CALLOUT_LABELS = {
+      note: 'Note',
+      tip: 'Tip',
+      important: 'Important',
+      warning: 'Warning',
+      caution: 'Caution',
+    };
+
+    function enhanceCallouts() {
+      document.querySelectorAll('#markdown-container blockquote').forEach(bq => {
+        if (bq.dataset.calloutEnhanced === 'true') return;
+        const firstP = bq.querySelector('p');
+        if (!firstP) return;
+        const firstChild = firstP.firstChild;
+        if (!firstChild || firstChild.nodeType !== Node.TEXT_NODE) return;
+        const match = firstChild.textContent?.match(/^\s*\[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\](?:\s+|$)/i);
+        if (!match) return;
+
+        const type = match[1].toLowerCase();
+        firstChild.textContent = firstChild.textContent.slice(match[0].length);
+        if (!firstP.textContent?.trim() && firstP.children.length === 0) {
+          firstP.remove();
+        }
+
+        bq.classList.add('callout', `callout-${type}`);
+        bq.dataset.calloutEnhanced = 'true';
+
+        const titleEl = document.createElement('div');
+        titleEl.className = 'callout-title';
+        titleEl.textContent = CALLOUT_LABELS[type] || type;
+        bq.prepend(titleEl);
+      });
+    }
+
+    // Reading Progress Bar
+    function initReadingProgress() {
+      const bar = document.getElementById('reading-progress');
+      const container = document.getElementById('markdown-container');
+      if (!bar || !container) return;
+
+      let ticking = false;
+      const update = () => {
+        ticking = false;
+        const rect = container.getBoundingClientRect();
+        const containerTop = rect.top + window.scrollY;
+        const scrollable = Math.max(container.offsetHeight - window.innerHeight * 0.6, 1);
+        const progress = Math.min(100, Math.max(0, ((window.scrollY - containerTop + window.innerHeight * 0.2) / scrollable) * 100));
+        bar.style.width = `${progress.toFixed(1)}%`;
+      };
+
+      window.addEventListener('scroll', () => {
+        if (!ticking) {
+          ticking = true;
+          requestAnimationFrame(update);
+        }
+      }, { passive: true });
+      update();
+    }
+
+    // Mermaid Diagram Handling (Lazy-loaded via IntersectionObserver)
     let mermaidRenderNonce = 0;
+    let mermaidLoadPromise = null;
+
+    function ensureMermaidLoaded() {
+      if (typeof mermaid !== 'undefined') return Promise.resolve();
+      if (mermaidLoadPromise) return mermaidLoadPromise;
+      mermaidLoadPromise = new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = '/assets/js/mermaid.min.js';
+        script.async = true;
+        script.onload = () => resolve();
+        script.onerror = () => reject(new Error('Failed to load Mermaid'));
+        document.head.appendChild(script);
+      });
+      return mermaidLoadPromise;
+    }
+
+    function observeMermaidDiagrams() {
+      const elements = document.querySelectorAll('#markdown-container pre[data-language="mermaid"], #markdown-container pre code.language-mermaid, #markdown-container .mermaid, #markdown-container pre.mermaid');
+      if (elements.length === 0) return;
+
+      const triggerLoadAndRender = () => {
+        ensureMermaidLoaded().then(() => renderMermaidDiagrams()).catch(err => console.error(err));
+      };
+
+      if (!('IntersectionObserver' in window)) {
+        triggerLoadAndRender();
+        return;
+      }
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          if (entries.some(entry => entry.isIntersecting)) {
+            observer.disconnect();
+            triggerLoadAndRender();
+          }
+        },
+        { rootMargin: '300px' }
+      );
+
+      elements.forEach(el => observer.observe(el));
+    }
 
     async function renderMermaidDiagrams() {
       const isDark = document.documentElement.classList.contains('dark');
@@ -558,9 +708,12 @@ const jsonLd = [
     function initPostInteractions() {
       if (postInteractionsInitialized) return;
       enhanceCodeBlocks();
+      enhanceTables();
+      enhanceCallouts();
       enhanceHeadingAnchors();
-      renderMermaidDiagrams();
+      observeMermaidDiagrams();
       initScrollSpy();
+      initReadingProgress();
       initImageLightbox();
       postInteractionsInitialized = true;
     }
@@ -573,7 +726,9 @@ const jsonLd = [
     }
 
     window.addEventListener('themeChanged', () => {
-      renderMermaidDiagrams();
+      if (typeof mermaid !== 'undefined') {
+        renderMermaidDiagrams();
+      }
     });
   </script>
 </BaseLayout>
